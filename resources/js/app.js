@@ -46,3 +46,10 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 
 Vue.use(VueMaterial);
+
+bootcards.init({
+    offCanvasBackdrop: true,
+    offCanvasHideOnMainClick: true,
+    enableTabletPortraitMode: true,
+    disableRubberBanding: true
+});

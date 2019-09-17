@@ -4,17 +4,17 @@
 @yield('header')
 @yield('side-menu')
 <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-    <div class="container">
+    <div class="container" >
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link" href="/">イベントアルバム</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/users">ユーザーアルバム</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active">ユーザーhogeのアルバム</a>
             </li>
-            {{--                <li class="nav-item">--}}
-            {{--                    <a class="nav-link">タブ3</a>--}}
-            {{--                </li>--}}
             {{--                <li class="nav-item">--}}
             {{--                    <a class="nav-link">タブ4</a>--}}
             {{--                </li>--}}
