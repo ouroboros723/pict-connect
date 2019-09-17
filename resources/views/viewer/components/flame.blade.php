@@ -14,21 +14,6 @@
     <nav id="title-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
         <a class="navbar-brand" href="#">pict-connect</a>{{--TODO:configでサイトタイトルが読み込まれるようにする--}}
     </nav>
-    <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
-                </div>
-            </div>
-        </div>
-    </nav>
 @endsection
 
 @section('side-menu')

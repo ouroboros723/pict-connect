@@ -26,3 +26,24 @@
         margin-right: 5px;
     }
 }
+
+.menu-col {
+    white-space: nowrap !important;
+}
+
+#func-menu-nav {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.nav-tabs .nav-item {
+    width: calc(100vw / 2) !important;
+    text-align: center !important;
+}
+
+.container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}

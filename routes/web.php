@@ -16,3 +16,5 @@
 //});
 
 Route::view('/', 'viewer.pages.event-lib');
+Route::view('/users', 'viewer.pages.user-list');
+Route::view('/user-lib', 'viewer.pages.user-lib');

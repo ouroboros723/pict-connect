@@ -1272,6 +1272,11 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootcards@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/bootcards/-/bootcards-1.1.2.tgz#0c26138b6099d1f9f690104d0e28040715e890ad"
+  integrity sha1-DCYTi2CZ0fn2kBBNDigEBxXokK0=
+
 bootstrap@4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.2.1.tgz#8f8bdca024dbf0e8644da32e918c8a03a90a5757"
