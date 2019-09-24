@@ -37,7 +37,7 @@
 }
 
 .nav-tabs .nav-item {
-    width: calc(100vw / 3) !important;
+    width: calc(100vw / 2) !important;
     text-align: center !important;
 }
 
@@ -46,4 +46,30 @@
     margin: 0 !important;
     padding: 0 !important;
     max-width: 100% !important;
+}
+
+#user-name {
+    text-align: center;
+    position: relative;
+    left: 45%;
+}
+
+#photo-add-button {
+    width: 3rem;
+    height: 3rem;
+    right: 15px;
+    bottom: 15px;
+    position: fixed;
+}
+
+#camera-button {
+    width: 3rem;
+    height: 3rem;
+    right: 80px;
+    bottom: 15px;
+    position: fixed;
+}
+
+#photo-cards {
+    padding-bottom: 80px !important;
 }

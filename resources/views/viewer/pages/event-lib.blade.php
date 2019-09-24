@@ -21,7 +21,7 @@
         </ul>
     </div>
 </nav>
-<div class="container">
+<div id="photo-cards" class="container">
     <div class="row">
         <div class="col">
             <div class="card">
@@ -153,4 +153,6 @@
         </div>
     </div>
 </div>
+<button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0">＋</button>
+<button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0">＋</button>
 @yield('footer')

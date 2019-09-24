@@ -12,16 +12,21 @@
             <li class="nav-item">
                 <a class="nav-link" href="/users">ユーザーアルバム</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active">ユーザーhogeのアルバム</a>
-            </li>
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link active">ユーザーhogeのアルバム</a>--}}
+{{--            </li>--}}
             {{--                <li class="nav-item">--}}
             {{--                    <a class="nav-link">タブ4</a>--}}
             {{--                </li>--}}
         </ul>
     </div>
 </nav>
-<div class="container">
+<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+    <div class="container" >
+        <p id="user-name">ユーザーhogeのアルバム</p>
+    </div>
+</nav>
+<div id="photo-cards-non-button" class="container">
     <div class="row">
         <div class="col">
             <div class="card">
