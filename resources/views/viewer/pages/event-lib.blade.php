@@ -153,6 +153,6 @@
         </div>
     </div>
 </div>
-<button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0">＋</button>
-<button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0">＋</button>
+<button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"> <input id="camera-input" class="photo-input-hidden" type="file" name="image" accept="image/*" capture="enviroment"><label for="camera-input"><img src="{{ asset('img/common/camera.png') }}" /></label></button>
+<button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input id="photo-add-input" class="photo-input-hidden" type="file" name="image" accept="image/*"><label for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}" /></label></button>
 @yield('footer')

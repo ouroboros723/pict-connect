@@ -61,6 +61,9 @@
     bottom: 15px;
     position: fixed;
 }
+#photo-add-button img {
+    width: 30px;
+}
 
 #camera-button {
     width: 3rem;
@@ -69,7 +72,27 @@
     bottom: 15px;
     position: fixed;
 }
+#camera-button img {
+    width: 30px;
+}
 
 #photo-cards {
     padding-bottom: 80px !important;
+}
+
+.photo-input-hidden {
+    width: 0;
+    height: 0;
+}
+
+button {
+    width: auto;
+    padding:0;
+    margin:0;
+    background:none;
+    border:0;
+    font-size:0;
+    line-height:0;
+    overflow:visible;
+    cursor:pointer;
 }
