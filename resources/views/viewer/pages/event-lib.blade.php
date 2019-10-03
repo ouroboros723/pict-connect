@@ -1,6 +1,7 @@
 @include('viewer.components.flame')
 
 @yield('meta')
+<body>
 @yield('header')
 @yield('side-menu')
 <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
@@ -21,6 +22,7 @@
         </ul>
     </div>
 </nav>
+<div id="main-container">
 <div id="photo-cards" class="container">
     <div class="row">
         <div class="col">
@@ -201,3 +203,5 @@
     }
 </script>
 @yield('footer')
+</div>
+</body>
