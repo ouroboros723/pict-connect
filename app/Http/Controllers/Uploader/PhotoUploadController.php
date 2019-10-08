@@ -24,8 +24,8 @@ class PhotoUploadController extends Controller
 
         Photo::create(
             [
-                'user_id' => '0',
-                'event_id' => '0',
+                'user_id' => '1',
+                'event_id' => '1',
                 'store_path' => $stored_path,
             ]
         );

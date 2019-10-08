@@ -2,16 +2,69 @@
 
 namespace App\Http\Controllers\MediaDistributor;
 
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Model\User;
+use App\Model\Photo;
+use Illuminate\Database\Eloquent\Collection;
 
 class GetPhotoController extends Controller
 {
-    public function getPhotos(){
+    public function getPhotos(Request $request)
+    {
+        $user_token = $request->input('token');
+        $user_token_sec = $request->input('token_sec');
+        $event_id = $request->input('event_id');
+
+        $user_id = User::where('token', $user_token)
+            ->where('token_sec',$user_token_sec)
+            ->first(['user_id'])
+            ->toArray()['user_id'];
+
+        if(!empty($user_id))
+        {
+            $photos = Photo::where('event_id', $event_id)
+                ->get()
+                ->offset('0')
+                ->limit('20')
+                ->toArray();
+            foreach($photos as $key => $value)
+            {
+                $photos[$key]['user_info'] = User::where('user_id', $user_id)
+                    ->first(['user_id','screen_name','view_name'])
+                    ->toArray();
+                $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
+            }
+
+            return response()->json(['photos' => $photos], 200);
+        } else {
+            return response()->json(['status' => 'unauthorized'], 401);
+        }
 
     }
 
-    public function getPhotoWithStream(){
+    public function getPhotoWithStream()
+    {
+
+    }
+
+    public function getPhotosByUser(Request $request)
+    {
+        $user_token = $request->input('token');
+        $user_token_sec = $request->input('token_sec');
+
+        $user_id = User::where('token', $user_token)
+            ->where('token_sec',$user_token_sec)
+            ->first(['user_id'])
+            ->toArray();
+        dd($user_id);
+        $photos = Photo::where('token', $user_token)
+            ->where('token_sec',$user_token_sec);
+    }
+
+    public function getPhotosByUserWithStream(Request $request)
+    {
 
     }
 }
