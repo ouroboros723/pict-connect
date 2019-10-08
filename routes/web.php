@@ -13,14 +13,13 @@
 
 Auth::routes();
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/home', function () {
+    return view('welcome');
+});
 
 // web ui routes
-Route::view('/', 'viewer.pages.event-lib');
+Route::get('/', 'Viewer\EventLibController@index');
 Route::view('/users', 'viewer.pages.user-list');
 Route::view('/user-lib', 'viewer.pages.user-lib');
 
 
-//Route::get('/home', 'HomeController@index')->name('home');

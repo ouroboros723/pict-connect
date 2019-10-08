@@ -24,24 +24,25 @@ class GetPhotoController extends Controller
             ->where('token_sec',$user_token_sec)
             ->first(['user_id'])['user_id'];
 
-        if(!empty($user_id))
+        if(empty($user_id))
         {
-            $photos = Photo::where('event_id', $event_id)
-                ->get();
-            foreach($photos as $key => $value)
-            {
-                $photos[$key]['user_info'] = User::where('user_id', $user_id)
-                    ->first(['user_id','screen_name','view_name','user_icon_path']);
-                $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
-            }
-
-            return response()->json([
-                'status' => 'ok',
-                'photos' => $photos,
-                ], 200);
-        } else {
             return response()->json(['status' => 'unauthorized'], 401);
         }
+
+        $photos = Photo::where('event_id', $event_id)->get();
+
+        foreach($photos as $key => $value)
+        {
+            $photos[$key]['user_info'] = User::where('user_id', $user_id)
+                ->first(['user_id','screen_name','view_name','user_icon_path']);
+            $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
+        }
+
+        return response()->json(
+            [
+                'status' => 'ok',
+                'photos' => $photos,
+            ], 200);
 
     }
 

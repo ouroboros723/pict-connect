@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Model\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -64,6 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+//        dd($data);
 
 //        $store_dir = 'user-icon/'.$data['screen_name'];
 //        $stored_path = $request->file('user_icon')->store($store_dir);
@@ -72,8 +73,8 @@ class RegisterController extends Controller
             'screen_name' => $data['screen_name'],
             'view_name' => $data['view_name'],
             'password' => Hash::make($data['password']),
-            'user_token' => uniqid(bin2hex(random_bytes(1))),
-            'user_auth_token' => uniqid(bin2hex(random_bytes(1))),
+            'token' => uniqid(bin2hex(random_bytes(1))),
+            'token_sec' => uniqid(bin2hex(random_bytes(1))),
 //            'user_icon_path' => $stored_path,
         ]);
     }
