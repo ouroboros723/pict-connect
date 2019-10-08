@@ -14,10 +14,12 @@ class GetPhotoController extends Controller
 {
     public function getPhotos(Request $request)
     {
-        $user_token = $request->input('token');
-        $user_token_sec = $request->input('token_sec');
-        $event_id = $request->input('event_id');
+        // Auth Params
+        $user_token = $request->header('X-User-Token');
+        $user_token_sec = $request->header('X-User-Token-Sec');
 
+        // Get Settings Params
+        $event_id = $request->input('event_id');
         $user_id = User::where('token', $user_token)
             ->where('token_sec',$user_token_sec)
             ->first(['user_id'])['user_id'];
