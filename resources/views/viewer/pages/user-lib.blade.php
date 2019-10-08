@@ -1,0 +1,161 @@
+@include('viewer.components.flame')
+
+@yield('meta')
+@yield('header')
+@yield('side-menu')
+<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+    <div class="container" >
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/">イベントアルバム</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users">ユーザーアルバム</a>
+            </li>
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link active">ユーザーhogeのアルバム</a>--}}
+{{--            </li>--}}
+            {{--                <li class="nav-item">--}}
+            {{--                    <a class="nav-link">タブ4</a>--}}
+            {{--                </li>--}}
+        </ul>
+    </div>
+</nav>
+<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+    <div class="container" >
+        <p id="user-name">ユーザーhogeのアルバム</p>
+    </div>
+</nav>
+<div id="photo-cards-non-button" class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">text</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@yield('footer')

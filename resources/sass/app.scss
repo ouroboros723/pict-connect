@@ -6,9 +6,103 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+ @import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap-material-design/scss/bootstrap-material-design';
+
+#main-container {
+    height: calc(100vh - 55px - 57px);
+    width: 100vw;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+// gnavつきのナビゲーションバーは2段表示可能
+.gnav {
+    flex-direction: column;
+}
+
+#func-menu-nav{
+    .container {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+.menu-col {
+    white-space: nowrap !important;
+}
+
+#func-menu-nav {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.nav-tabs {
+    flex-wrap: unset !important;
+}
+.nav-tabs .nav-item {
+    width: calc(100vw / 2) !important;
+    text-align: center !important;
+}
+
+.container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+#user-name {
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+#photo-add-button {
+    width: 3rem;
+    height: 3rem;
+    right: 15px;
+    bottom: 15px;
+    position: fixed;
+}
+#photo-add-button img {
+    width: 30px;
+}
+
+#camera-button {
+    width: 3rem;
+    height: 3rem;
+    right: 80px;
+    bottom: 15px;
+    position: fixed;
+}
+#camera-button img {
+    width: 30px;
+}
+
+#photo-cards {
+    padding-bottom: 80px !important;
+}
+
+.photo-input-hidden {
+    width: 0;
+    height: 0;
+}
+
+button {
+    width: auto;
+    padding:0;
+    margin:0;
+    background:none;
+    border:0;
+    font-size:0;
+    line-height:0;
+    overflow:visible;
+    cursor:pointer;
 }
