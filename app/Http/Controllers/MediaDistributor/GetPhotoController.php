@@ -36,6 +36,7 @@ class GetPhotoController extends Controller
             $photos[$key]['user_info'] = User::where('user_id', $user_id)
                 ->first(['user_id','screen_name','view_name','user_icon_path']);
             $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
+            $photos[$key]['mime_type'] = mime_content_type(storage_path().'/app/'.$value['store_path']);
         }
 
         return response()->json(

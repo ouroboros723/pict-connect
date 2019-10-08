@@ -25,135 +25,135 @@
     <div id="main-container">
         <div id="photo-cards" class="container">
             <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">text</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="row">--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row">--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row">--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="row">--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col">--}}
+{{--                    <div class="card">--}}
+{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+{{--                        <div class="card-body">--}}
+{{--                            <p class="card-text">text</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
         {{-- 写真選択・アップロードボタン --}}
         <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"> <input id="camera-input" class="photo-input-hidden" type="file" name="image" accept="image/*" capture><label for="camera-input"><img src="{{ asset('img/common/camera.png') }}" /></label></button>
@@ -192,29 +192,46 @@
     <script>
         var user_info = @json($user_info);
 
+        window.addEventListener('load', function(){getPhotos();})
+
         document.getElementById("camera-button").addEventListener("change", function(){photoUploadExec(user_info);});
         document.getElementById("photo-add-button").addEventListener("change", function(){photoUploadExec(user_info);});
 
 
         //写真取得
-        function getPhotos($count) {
+        function getPhotos(count, start_id) {
             $.ajax(
                 {
-                    url:'/api/uploader/photo-upload',
-                    type:'POST',
+                    url:'/api/media/photo?event_id=1',
+                    type:'GET',
                     processData: false,
                     contentType: false,
                     headers: {
                         'X-User-Token': user_info.token,
                         'X-User-Token-Sec': user_info.token_sec,
                     },
-                    data:fd, //FormDataオブジェクトはそのままdataとして渡す。
+                    data: {
+                        "event_id": '1',
+                    },
                 }
             )
             // Ajaxリクエストが成功した時発動
                 .done(
                     (data) => {
-                        console.log(data);
+                        console.log(data.photos[0].mime_type);
+                        Object.keys(data.photos).forEach(function(key){
+                            console.log(key);
+                            $("#photo-cards").children(".row").append(
+                                '<div class="col">\n' +
+                                '                    <div class="card">\n' +
+                                '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
+                            '                        <div class="card-body">\n' +
+                            '                            <p class="card-text">text</p>\n' +
+                            '                        </div>\n' +
+                            '                    </div>\n' +
+                            '                </div>');
+                        });
+
                     }
                 )
                 // Ajaxリクエストが失敗した時発動
@@ -292,6 +309,7 @@
 
             if (photo_data !== ""){
                 fd.append("photo_data", photo_data[0]); //(key(form name), data) 複数渡すときはここを拡張
+                fd.append("event_id", "1");
 
                 $.ajax(
                     {
@@ -310,6 +328,7 @@
                 .done(
                     (data) => {
                         console.log(data);
+                        getPhotos();
                     }
                 )
                 // Ajaxリクエストが失敗した時発動
