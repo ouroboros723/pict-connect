@@ -24,7 +24,7 @@ class GetPhotoController extends Controller
             ->where('token_sec',$user_token_sec)
             ->first(['user_id'])['user_id'];
 
-        if(empty($user_id))
+        if(empty($user_token) || empty($user_token_sec) || empty($user_id))
         {
             return response()->json(['status' => 'unauthorized'], 401);
         }
