@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// ajax routes
+Route::post('uploader/photo-upload','Uploader\PhotoUploadController@photoStore');
