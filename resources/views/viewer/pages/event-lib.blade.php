@@ -190,9 +190,47 @@
 
 
     <script>
-        document.getElementById("camera-button").addEventListener("change", function(){photoUploadExec(this);});
-        document.getElementById("photo-add-button").addEventListener("change", function(){photoUploadExec(this);});
+        var user_info = @json($user_info);
 
+        document.getElementById("camera-button").addEventListener("change", function(){photoUploadExec(user_info);});
+        document.getElementById("photo-add-button").addEventListener("change", function(){photoUploadExec(user_info);});
+
+
+        //写真取得
+        function getPhotos($count) {
+            $.ajax(
+                {
+                    url:'/api/uploader/photo-upload',
+                    type:'POST',
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-User-Token': user_info.token,
+                        'X-User-Token-Sec': user_info.token_sec,
+                    },
+                    data:fd, //FormDataオブジェクトはそのままdataとして渡す。
+                }
+            )
+            // Ajaxリクエストが成功した時発動
+                .done(
+                    (data) => {
+                        console.log(data);
+                    }
+                )
+                // Ajaxリクエストが失敗した時発動
+                .fail(
+                    (data) => {
+                        console.log(data);
+                    }
+                )
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always(
+                    (data) => {
+                        document.getElementById("camera-input").value = "";
+                        document.getElementById("photo-add-input").value = "";
+                    }
+                );
+        }
 
         //アップロード確認ダイアログ(今回使用しない)
         function uploadConfirmDialog() {
@@ -237,7 +275,7 @@
             }
         }
 
-        function photoUploadExec(thisObj) {
+        function photoUploadExec(user_info) {
             var fd = new FormData();
             if (document.getElementById("camera-input").value !== ""){
                 var photo_data = document.querySelector('#camera-input').files;
@@ -261,6 +299,10 @@
                         type:'POST',
                         processData: false,
                         contentType: false,
+                        headers: {
+                            'X-User-Token': user_info.token,
+                            'X-User-Token-Sec': user_info.token_sec,
+                        },
                         data:fd, //FormDataオブジェクトはそのままdataとして渡す。
                     }
                 )

@@ -11,12 +11,15 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Auth::routes();
+
+Route::get('/home', function () {
+    return view('welcome');
+});
 
 // web ui routes
-Route::view('/', 'viewer.pages.event-lib');
+Route::get('/', 'Viewer\EventLibController@index');
 Route::view('/users', 'viewer.pages.user-list');
 Route::view('/user-lib', 'viewer.pages.user-lib');
+
 
