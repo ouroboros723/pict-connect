@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Model\User;
 use App\Model\Photo;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class GetPhotoController extends Controller
 {
@@ -19,25 +20,23 @@ class GetPhotoController extends Controller
 
         $user_id = User::where('token', $user_token)
             ->where('token_sec',$user_token_sec)
-            ->first(['user_id'])
-            ->toArray()['user_id'];
+            ->first(['user_id'])['user_id'];
 
         if(!empty($user_id))
         {
             $photos = Photo::where('event_id', $event_id)
-                ->get()
-                ->offset('0')
-                ->limit('20')
-                ->toArray();
+                ->get();
             foreach($photos as $key => $value)
             {
                 $photos[$key]['user_info'] = User::where('user_id', $user_id)
-                    ->first(['user_id','screen_name','view_name'])
-                    ->toArray();
+                    ->first(['user_id','screen_name','view_name','user_icon_path']);
                 $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
             }
 
-            return response()->json(['photos' => $photos], 200);
+            return response()->json([
+                'status' => 'ok',
+                'photos' => $photos,
+                ], 200);
         } else {
             return response()->json(['status' => 'unauthorized'], 401);
         }
