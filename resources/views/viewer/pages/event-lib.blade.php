@@ -24,7 +24,8 @@
     </nav>
     <div id="main-container">
         <div id="photo-cards" class="container">
-            <div class="row">
+            <div id="photo-list-top"></div>
+{{--            <div class="row">--}}
 {{--                <div class="col">--}}
 {{--                    <div class="card">--}}
 {{--                        <img class="card-img-top" src="" alt="Card image cap">--}}
@@ -49,7 +50,7 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-            </div>
+{{--            </div>--}}
 {{--            <div class="row">--}}
 {{--                <div class="col">--}}
 {{--                    <div class="card">--}}
@@ -192,6 +193,12 @@
     <script>
         var user_info = @json($user_info);
         var last_photo_id = "";
+        var photo_count = 0;
+
+        if( '' === user_info || null === user_info) {
+                window.location.href = '/login';
+        }
+
 
         window.addEventListener('load', function(){getPhotos();})
 
@@ -221,12 +228,15 @@
                     (data) => {
                         console.log(data.photos[0].mime_type);
                         last_photo_id = data.photos[0].photo_id;
+                        var photo_list_elements = '';
 
-                        var photo_count = 0;
                         Object.keys(data.photos).forEach(function(key){
                             console.log(key);
-                            photo_count ++;
-                            $("#photo-cards").children(".row").append(
+                            if(photo_count == 0){
+                                photo_list_elements += '<div class="row">'
+                            }
+                            photo_list_elements +=
+
                                 '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell" style="width: calc(100vw/3);">\n' +
                                 '                    <div class="card">\n' +
                                 '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
@@ -234,8 +244,16 @@
                             '                            <p class="card-text">text</p>\n' +
                             '                        </div>\n' +
                             '                    </div>\n' +
-                            '                </div>');
+                            '                </div>';
+                            if(photo_count == 2){
+                                photo_list_elements += '</div>';
+                                photo_count = -1;
+                            }
+                            photo_count ++;
                         });
+                        $("#photo-list-top").after(
+                            photo_list_elements
+                        );
 
                     }
                 )
@@ -243,6 +261,9 @@
                 .fail(
                     (data) => {
                         console.log(data);
+                        if(data.status == "unauthorized"){
+                            window.location.href = '/login';
+                        }
                     }
                 )
                 // Ajaxリクエストが成功・失敗どちらでも発動
@@ -340,6 +361,9 @@
                 .fail(
                     (data) => {
                         console.log(data);
+                        if(data.status == "unauthorized"){
+                            window.location.href = '/login';
+                        }
                     }
                 )
                 // Ajaxリクエストが成功・失敗どちらでも発動
