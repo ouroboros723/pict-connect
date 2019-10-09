@@ -17,9 +17,10 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
+Route::group(['middleware' => 'auth'], function() {
 // web ui routes
-Route::get('/', 'Viewer\EventLibController@index');
-Route::view('/users', 'viewer.pages.user-list');
-Route::view('/user-lib', 'viewer.pages.user-lib');
-
+    Route::get('/', 'Viewer\EventLibController@index');
+    Route::view('/users', 'viewer.pages.user-list');
+    Route::view('/user-lib', 'viewer.pages.user-lib');
+});
 

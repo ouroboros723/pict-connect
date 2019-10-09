@@ -22,6 +22,7 @@
             </ul>
         </div>
     </nav>
+    <div id="loading"><img src="{{asset("img/common/loading.gif")}}"></div>
     <div id="main-container">
         <div id="photo-cards" class="container">
             <div id="photo-list-top"></div>
@@ -226,14 +227,14 @@
             // Ajaxリクエストが成功した時発動
                 .done(
                     (data) => {
-                        console.log(data.photos[0].mime_type);
+                        console.log(data.photos);
                         last_photo_id = data.photos[0].photo_id;
                         var photo_list_elements = '';
 
                         Object.keys(data.photos).forEach(function(key){
                             console.log(key);
                             if(photo_count == 0){
-                                photo_list_elements += '<div class="row">'
+                                // photo_list_elements += '<div class="row">'
                             }
                             photo_list_elements +=
 
@@ -241,12 +242,12 @@
                                 '                    <div class="card">\n' +
                                 '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
                             '                        <div class="card-body">\n' +
-                            '                            <p class="card-text">text</p>\n' +
+                            '                            <p class="card-text">'+data.photos[key].user_info.view_name+'</p>\n' +
                             '                        </div>\n' +
                             '                    </div>\n' +
                             '                </div>';
                             if(photo_count == 2){
-                                photo_list_elements += '</div>';
+                                // photo_list_elements += '</div>';
                                 photo_count = -1;
                             }
                             photo_count ++;

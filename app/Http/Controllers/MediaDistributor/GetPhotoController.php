@@ -44,7 +44,7 @@ class GetPhotoController extends Controller
 
         foreach($photos as $key => $value)
         {
-            $photos[$key]['user_info'] = User::where('user_id', $user_id)
+            $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id','screen_name','view_name','user_icon_path']);
 
             $image = \Image::make(storage_path().'/app/'.$value['store_path']);
