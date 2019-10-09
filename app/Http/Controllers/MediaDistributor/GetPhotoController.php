@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class GetPhotoController extends Controller
 {
-    public function getPhotos(Request $request)
+    public function getPhotosList(Request $request)
     {
         // Auth Params
         $user_token = $request->header('X-User-Token');
@@ -46,7 +46,10 @@ class GetPhotoController extends Controller
         {
             $photos[$key]['user_info'] = User::where('user_id', $user_id)
                 ->first(['user_id','screen_name','view_name','user_icon_path']);
-            $photos[$key]['photo_base64'] = base64_encode(Storage::get($value['store_path']));
+
+            $image = \Image::make(storage_path().'/app/'.$value['store_path']);
+            $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
+            $photos[$key]['photo_base64'] = base64_encode($tumbnail);
             $photos[$key]['mime_type'] = mime_content_type(storage_path().'/app/'.$value['store_path']);
         }
 

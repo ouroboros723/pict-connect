@@ -203,7 +203,7 @@
         function getPhotos() {
             $.ajax(
                 {
-                    url:'/api/media/photo?event_id=1&last_photo_id='+last_photo_id,
+                    url:'/api/media/photo/list?event_id=1&last_photo_id='+last_photo_id,
                     type:'GET',
                     processData: false,
                     contentType: false,
