@@ -20,6 +20,8 @@ class GetPhotoController extends Controller
 
         // Get Settings Params
         $event_id = $request->input('event_id');
+        $last_photo_id = $request->input('last_photo_id');
+
         $user_id = User::where('token', $user_token)
             ->where('token_sec',$user_token_sec)
             ->first(['user_id'])['user_id'];
@@ -29,7 +31,16 @@ class GetPhotoController extends Controller
             return response()->json(['status' => 'unauthorized'], 401);
         }
 
-        $photos = Photo::where('event_id', $event_id)->get();
+        if(empty($last_photo_id)){
+            $photos = Photo::where('event_id', $event_id)
+                ->orderBy('photo_id', 'desc')
+                ->get();
+        } else {
+            $photos = Photo::where('event_id', $event_id)
+                ->where('photo_id', '>', $last_photo_id)
+                ->orderBy('photo_id', 'desc')
+                ->get();
+        }
 
         foreach($photos as $key => $value)
         {

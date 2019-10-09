@@ -191,6 +191,7 @@
 
     <script>
         var user_info = @json($user_info);
+        var last_photo_id = "";
 
         window.addEventListener('load', function(){getPhotos();})
 
@@ -199,10 +200,10 @@
 
 
         //写真取得
-        function getPhotos(count, start_id) {
+        function getPhotos() {
             $.ajax(
                 {
-                    url:'/api/media/photo?event_id=1',
+                    url:'/api/media/photo?event_id=1&last_photo_id='+last_photo_id,
                     type:'GET',
                     processData: false,
                     contentType: false,
@@ -219,10 +220,14 @@
                 .done(
                     (data) => {
                         console.log(data.photos[0].mime_type);
+                        last_photo_id = data.photos[0].photo_id;
+
+                        var photo_count = 0;
                         Object.keys(data.photos).forEach(function(key){
                             console.log(key);
+                            photo_count ++;
                             $("#photo-cards").children(".row").append(
-                                '<div class="col">\n' +
+                                '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell" style="width: calc(100vw/3);">\n' +
                                 '                    <div class="card">\n' +
                                 '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
                             '                        <div class="card-body">\n' +
