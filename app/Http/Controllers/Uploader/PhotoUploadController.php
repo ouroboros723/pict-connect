@@ -6,6 +6,7 @@ use App\Model\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Photo;
+use App\Events\PublicEvent;
 
 class PhotoUploadController extends Controller
 {
@@ -48,6 +49,7 @@ class PhotoUploadController extends Controller
             ]
         );
 
+        broadcast(new PublicEvent());
         return response()->json(['status' => 'success'], 200);
 
     }

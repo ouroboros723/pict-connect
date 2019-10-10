@@ -22,7 +22,7 @@
             </ul>
         </div>
     </nav>
-    <div id="loading"><img src="{{asset("img/common/loading.gif")}}"></div>
+    <div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
     <div id="main-container">
         <div id="photo-cards" class="container">
             <div id="photo-list-top"></div>
@@ -184,11 +184,14 @@
     </div>
 
 {{--page unique scripts--}}
+    <script src="{{asset('js/app.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" crossorigin="anonymous">
 
 
     <script>
@@ -199,7 +202,6 @@
         if( '' === user_info || null === user_info) {
                 window.location.href = '/login';
         }
-
 
         window.addEventListener('load', function(){getPhotos();})
 
@@ -222,6 +224,9 @@
                     data: {
                         "event_id": '1',
                     },
+                    beforeSend: function() {
+                        $("#loading").css("display","block");
+                    },
                 }
             )
             // Ajaxリクエストが成功した時発動
@@ -238,7 +243,7 @@
                             }
                             photo_list_elements +=
 
-                                '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell" style="width: calc(100vw/3);">\n' +
+                                '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell" style="width: calc(100vw); display: flex;">\n' +
                                 '                    <div class="card">\n' +
                                 '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
                             '                        <div class="card-body">\n' +
@@ -265,6 +270,7 @@
                         if(data.status == "unauthorized"){
                             window.location.href = '/login';
                         }
+                        ziToast.error({ title: 'pict-viewer', message: '写真の取得に失敗しました。しばらくしてから再度お試しください。' });
                     }
                 )
                 // Ajaxリクエストが成功・失敗どちらでも発動
@@ -272,6 +278,8 @@
                     (data) => {
                         document.getElementById("camera-input").value = "";
                         document.getElementById("photo-add-input").value = "";
+
+                        $("#loading").css("display","none");
                     }
                 );
         }
@@ -349,12 +357,16 @@
                             'X-User-Token-Sec': user_info.token_sec,
                         },
                         data:fd, //FormDataオブジェクトはそのままdataとして渡す。
+                        beforeSend: function() {
+                            $("#loading").css("display","block");
+                        },
                     }
                 )
                 // Ajaxリクエストが成功した時発動
                 .done(
                     (data) => {
                         console.log(data);
+                        iziToast.success({ title: 'pict-throw', message: '写真のアップロードに成功しました。' });
                         getPhotos();
                     }
                 )
@@ -362,6 +374,7 @@
                 .fail(
                     (data) => {
                         console.log(data);
+                        iziToast.error({ title: 'pict-throw', message: '写真のアップロードに失敗しました。' });
                         if(data.status == "unauthorized"){
                             window.location.href = '/login';
                         }
@@ -372,6 +385,7 @@
                     (data) => {
                         document.getElementById("camera-input").value = "";
                         document.getElementById("photo-add-input").value = "";
+                        $("#loading").css("display","none");
                     }
                 );
             }

@@ -42,14 +42,15 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 // });
 
 import Vue from 'vue'
-import VueMaterial from 'vue-material'
+// import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+require('izitoast');
 
-Vue.use(VueMaterial);
+// Vue.use(VueMaterial);
 
-bootcards.init({
-    offCanvasBackdrop: true,
-    offCanvasHideOnMainClick: true,
-    enableTabletPortraitMode: true,
-    disableRubberBanding: true
-});
+// bootcards.init({
+//     offCanvasBackdrop: true,
+//     offCanvasHideOnMainClick: true,
+//     enableTabletPortraitMode: true,
+//     disableRubberBanding: true
+// });

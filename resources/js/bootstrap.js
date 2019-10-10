@@ -44,13 +44,27 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import iziToast from 'izitoast';
 
-// window.Pusher = require('pusher-js');
+//for Echo
+import Echo from 'laravel-echo';
+window.io = require('socket.io-client');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
-// });
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: 'https://ws.dev.pc-photolib.net',
+});
+
+
+window.Echo.channel('event-lib')
+    .listen('PublicEvent', (e) => {
+        console.log(e);
+    });
+
+//
+// window.Echo.private('event-lib')
+//     .listen('PrivateEvent', (e) => {
+//         console.log(e);
+//     });
+
+
