@@ -87,7 +87,22 @@
 }
 
 #photo-cards {
-    padding-bottom: 80px !important;
+    display: none;
+}
+
+
+@media screen and (max-width: 699px) {
+    #photo-cards {
+        padding-bottom: 80px !important;
+    }
+}
+@media screen and (min-width: 700px) {
+    #photo-cards {
+        width: 500px;
+        left: calc(100vw / 2 - 250px);
+        margin: 0;
+        padding: 0;
+    }
 }
 
 .photo-input-hidden {
@@ -118,4 +133,8 @@ button {
     top: calc(100% / 2);
     left: calc(100% / 2);
     z-index: 1000;
+}
+
+.photo-cell {
+    height: 100vw;
 }

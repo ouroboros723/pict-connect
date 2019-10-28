@@ -24,7 +24,7 @@
     </nav>
     <div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
     <div id="main-container">
-        <div id="photo-cards" class="container">
+        <div id="photo-cards" class="card">
             <div id="photo-list-top"></div>
 {{--            <div class="row">--}}
 {{--                <div class="col">--}}
@@ -243,8 +243,8 @@
                             }
                             photo_list_elements +=
 
-                                '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell" style="width: calc(100vw); display: flex;">\n' +
-                                '                    <div class="card">\n' +
+                                '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell">\n' +
+                                '                    <div class="card p-3">\n' +
                                 '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
                             '                        <div class="card-body">\n' +
                             '                            <p class="card-text">'+data.photos[key].user_info.view_name+'</p>\n' +
@@ -260,6 +260,7 @@
                         $("#photo-list-top").after(
                             photo_list_elements
                         );
+                        $("#photo-cards").css("display","flex");
 
                     }
                 )
@@ -270,7 +271,7 @@
                         if(data.status == "unauthorized"){
                             window.location.href = '/login';
                         }
-                        ziToast.error({ title: 'pict-viewer', message: '写真の取得に失敗しました。しばらくしてから再度お試しください。' });
+                        iziToast.error({ title: 'pict-viewer', message: '写真の取得に失敗しました。しばらくしてから再度お試しください。' });
                     }
                 )
                 // Ajaxリクエストが成功・失敗どちらでも発動
