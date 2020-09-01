@@ -29,7 +29,9 @@ class TwitterController extends Controller
         }
 //         各自ログイン処理
         $user = User::where('user_id', $twitterUser->id)->first();
-        $prof_icon_path = $this->_putProfileImage($twitterUser->id, $twitterUser->user['profile_image_url_https']);
+        //オリジナルサイズのプロフィール画像取得
+        $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);;
+        $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
         if (!$user) {
             //TODO: pc用トークン発行処理
             User::create([
@@ -69,6 +71,9 @@ class TwitterController extends Controller
 
         //画像を保存
         $prof_icon_path = 'proficons/' . $userid . '.' . $img_ext;
+        if (File::exists($prof_icon_path)) {
+            Storage::delete($prof_icon_path);
+        }
         Storage::disk('local')->put($prof_icon_path, $img);
         return $prof_icon_path;
     }
