@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Model\User;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class TwitterController extends Controller
@@ -19,18 +21,19 @@ class TwitterController extends Controller
     {
         try {
             $twitterUser = Socialite::driver('twitter')->user();
+//            dd($twitterUser);
         } catch (Exception $e) {
             return redirect('auth/twitter');
         }
-        // 各自ログイン処理
-        // 例
-        // $user = User::where('auth_id', $twitterUser->id)->first();
-        // if (!$user) {
-        //     $user = User::create([
-        //         'auth_id' => $twitterUser->id
-        //   ]);
-        // }
-        // Auth::login($user);
+//         各自ログイン処理
+//         例
+         $user = User::where('auth_id', $twitterUser->id)->first();
+         if (!$user) {
+             $user = User::create([
+                 'auth_id' => $twitterUser->id
+           ]);
+         }
+         Auth::login($user);
         return redirect('/');
     }
 
