@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Model\SnsIdList;
 use App\Model\User;
 use \File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
+use mysql_xdevapi\Exception;
 
 class TwitterController extends Controller
 {
@@ -27,24 +30,41 @@ class TwitterController extends Controller
         } catch (Exception $e) {
             return redirect('auth/twitter');
         }
-//         各自ログイン処理
-        $user = User::where('user_id', $twitterUser->id)->first();
+//         ログイン処理
+        $pc_user_id = SnsIdList::getOrigID($twitterUser->id);
+        $user = User::where('user_id', $pc_user_id)->first();
         //オリジナルサイズのプロフィール画像取得
-        $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);;
+        $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);
         $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
         if (!$user) {
-            User::create([
-                'user_id' => $twitterUser->id,
-                'screen_name' => $twitterUser->nickname,
-                'view_name' => $twitterUser->name,
-                'description' => $twitterUser->user['description'],
-                'user_icon_path' => $prof_icon_path,
-                'token' => User::makeToken(),
-                'token_sec' => User::makeToken(),
-            ]);
-            $user = User::where('user_id', $twitterUser->id)->first();
+            DB::beginTransaction();
+            try {
+                //user_id重複対策(オートインクリメント)
+                $next_user_id = User::maxOrigUserID() + 1;
+                User::create([
+                    'user_id' => $next_user_id,
+                    'screen_name' => $twitterUser->nickname,
+                    'view_name' => $twitterUser->name,
+                    'description' => $twitterUser->user['description'],
+                    'user_icon_path' => $prof_icon_path,
+                    'token' => User::makeToken(),
+                    'token_sec' => User::makeToken(),
+                    'is_from_sns' => 1,
+                ]);
+                SnsIdList::create([
+                    'pc_user_id' => $next_user_id,
+                    'sns_id' => $twitterUser->id,
+                    'sns_type' => SnsIdList::SNS_TYPE_TWITTER,
+                ]);
+                $user = User::where('user_id', $next_user_id)->first();
+            } catch (Exception $e) {
+                DB::rollBack();
+                dd($e);
+            }
+            DB::commit();
+
         } else {
-            //TODO: Twitterの情報が変わってたら新しい情報に更新
+            //Twitterの情報が変わってたら新しい情報に更新
 
             $user->screen_name = $twitterUser->nickname;
             $user->view_name = $twitterUser->name;

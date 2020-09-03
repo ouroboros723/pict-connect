@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Model\SnsIdList;
 use App\Model\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -72,13 +73,19 @@ class RegisterController extends Controller
 //        $store_dir = 'user-icon/'.$data['screen_name'];
 //        $stored_path = $request->file('user_icon')->store($store_dir);
 
+
+        //user_id重複対策(オートインクリメント)
+        $next_user_id = User::maxOrigUserID() + 1;
+
         return User::create([
+            'user_id' => $next_user_id,
             'screen_name' => $data['screen_name'],
             'view_name' => $data['view_name'],
             'password' => Hash::make($data['password']),
             'token' => User::makeToken(),
             'token_sec' => User::makeToken(),
 //            'user_icon_path' => $stored_path,
+            'is_from_sns' => 0,
         ]);
     }
 }

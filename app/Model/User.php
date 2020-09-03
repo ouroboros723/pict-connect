@@ -49,4 +49,9 @@ class User extends Authenticatable
             return 'error';
         }
     }
+
+    public static function maxOrigUserID()
+    {
+        return self::query()->max('user_id');
+    }
 }
