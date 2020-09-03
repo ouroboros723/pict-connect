@@ -33,13 +33,14 @@ class TwitterController extends Controller
         $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);;
         $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
         if (!$user) {
-            //TODO: pc用トークン発行処理
             User::create([
                 'user_id' => $twitterUser->id,
                 'screen_name' => $twitterUser->nickname,
                 'view_name' => $twitterUser->name,
                 'description' => $twitterUser->user['description'],
                 'user_icon_path' => $prof_icon_path,
+                'token' => User::makeToken(),
+                'token_sec' => User::makeToken(),
             ]);
             $user = User::where('user_id', $twitterUser->id)->first();
         } else {
@@ -56,12 +57,11 @@ class TwitterController extends Controller
     }
 
     // ログアウト
-    public function logout(Request $request)
+    public function logout()
     {
-        // 各自ログアウト処理
-        // 例
-        // Auth::logout();
-        return redirect('/');
+        // ログアウト処理
+        Auth::logout();
+        return redirect('/about');
     }
 
     private function _putProfileImage($userid, $photo_url)

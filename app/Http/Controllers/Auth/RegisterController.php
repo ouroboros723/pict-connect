@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
     /*
@@ -56,11 +60,10 @@ class RegisterController extends Controller
         ]);
     }
 
+
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
+     * @param array $data
+     * @return mixed
      */
     protected function create(array $data)
     {
@@ -73,8 +76,8 @@ class RegisterController extends Controller
             'screen_name' => $data['screen_name'],
             'view_name' => $data['view_name'],
             'password' => Hash::make($data['password']),
-            'token' => uniqid(bin2hex(random_bytes(1))),
-            'token_sec' => uniqid(bin2hex(random_bytes(1))),
+            'token' => User::makeToken(),
+            'token_sec' => User::makeToken(),
 //            'user_icon_path' => $stored_path,
         ]);
     }

@@ -4,6 +4,8 @@ namespace App\Model;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+//使用予定
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -38,4 +40,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function makeToken()
+    {
+        try {
+            return uniqid(bin2hex(random_bytes(1)), true);
+        } catch (\Exception $e) {
+            return 'error';
+        }
+    }
 }
