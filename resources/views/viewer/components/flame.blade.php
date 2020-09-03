@@ -14,7 +14,8 @@
 
 @section('header')
     <nav id="title-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-        <a class="navbar-brand" href="#">pict-connect</a>{{--TODO:configでサイトタイトルが読み込まれるようにする--}}
+        <a id="app-title" class="navbar-brand" href="#">pict-connect</a>{{--TODO:configでサイトタイトルが読み込まれるようにする--}}
+        <div id="user-icon"><img src="https://pbs.twimg.com/profile_images/1261692452261335045/fBbo2hhw_400x400.jpg" /></div>
     </nav>
 @endsection
 

@@ -1,6 +1,7 @@
 @include('viewer.components.flame')
 
 @yield('meta')
+<body>
 @yield('header')
 @yield('side-menu')
 <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">

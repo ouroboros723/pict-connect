@@ -70,4 +70,11 @@
         </div>
     </div>
 </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div id="twitter-login-box">
+            <a href="/login/twitter"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterボタン"></a>
+        </div>
+    </div>
+</div>
 @endsection

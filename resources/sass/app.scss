@@ -175,3 +175,29 @@ button {
         max-width: 100%;
     }
 }
+
+#twitter-login-box {
+    width: 300px;
+    margin: 50px;
+}
+
+#title-nav {
+    position: relative;
+    display: block;
+    height: 45px;
+}
+
+#user-icon {
+    float: right;
+}
+#user-icon img {
+    width: 30px !important;
+}
+
+#app-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+}
