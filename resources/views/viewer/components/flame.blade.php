@@ -3,7 +3,7 @@
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
@@ -15,7 +15,19 @@
 @section('header')
     <nav id="title-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
         <a id="app-title" class="navbar-brand" href="#">pict-connect</a>{{--TODO:configでサイトタイトルが読み込まれるようにする--}}
-        <div id="user-icon"><img src="https://pbs.twimg.com/profile_images/1261692452261335045/fBbo2hhw_400x400.jpg" /></div>
+        <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">ユーザー設定</a>
+                <a href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
+            </div>'
+        >
+            <img src="@if(isset($user_info['avatar']))
+                data:image/@if($user_info['avatar_ext'] === 'jpg')jpeg @else {{$user_info['avatar_ext']}}@endif;base64,{{$user_info['avatar']}}
+            @else
+                {{asset('img/common/anonman.svg')}}
+            @endif
+                " />
+        </button>
     </nav>
 @endsection
 
@@ -26,4 +38,12 @@
 @section('footer')
     {{--footerを作る必要があればここに記述--}}
     </html>
+@endsection
+
+@section('commonscript')
+    <script>
+    $(function () {
+        $('#user-icon').popover({'html': true});
+    });
+    </script>
 @endsection

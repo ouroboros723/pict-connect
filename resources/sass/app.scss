@@ -177,8 +177,9 @@ button {
 }
 
 #twitter-login-box {
-    width: 300px;
-    margin: 50px;
+    width: 400px;
+    max-width: 70%;
+    margin: 50px auto;
 }
 
 #title-nav {
@@ -201,3 +202,18 @@ button {
     -webkit-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
 }
+
+#user-icon {
+    background-color: unset;
+    border-color: unset;
+}
+#user-icon:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+main .container {
+    overflow-x: hidden;
+}
+

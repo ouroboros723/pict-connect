@@ -33,11 +33,13 @@ class GetPhotoController extends Controller
 
         if(empty($last_photo_id)){
             $photos = Photo::where('event_id', $event_id)
+                ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
                 ->get();
         } else {
             $photos = Photo::where('event_id', $event_id)
                 ->where('photo_id', '>', $last_photo_id)
+                ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
                 ->get();
         }
