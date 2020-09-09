@@ -9,6 +9,16 @@
  @import '~bootstrap/scss/bootstrap';
 // @import '~bootstrap-material-design/scss/bootstrap-material-design';
 
+body {
+    touch-action: manipulation;
+    //height: 100vh !important;
+}
+
+//Safari拡大対策
+input.form-control {
+    font-size: 16px;
+}
+
 #main-container {
     height: calc(100vh - 55px - 57px);
     width: 100vw;
