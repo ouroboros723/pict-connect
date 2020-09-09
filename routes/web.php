@@ -27,7 +27,7 @@ Route::middleware(['cors'])->group(function () {
     // 紹介ページ
     Route::get('/about', function () {
         return view('welcome');
-    });
+    })->name('about');
 
     // 会員専用ページ
     Route::group(['middleware' => 'auth'], function () {

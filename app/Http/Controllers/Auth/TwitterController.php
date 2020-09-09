@@ -32,7 +32,11 @@ class TwitterController extends Controller
         }
 //         ログイン処理
         $pc_user_id = SnsIdList::getOrigID($twitterUser->id);
-        $user = User::where('user_id', $pc_user_id)->first();
+        if (empty($pc_user_id)) {
+            $user = false;
+        } else {
+            $user = User::where('user_id', $pc_user_id)->first();
+        }
         //オリジナルサイズのプロフィール画像取得
         $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);
         $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
@@ -72,7 +76,7 @@ class TwitterController extends Controller
             $user->user_icon_path = $prof_icon_path;
             $user->save();
         }
-         Auth::login($user);
+        Auth::login($user);
         return redirect('/');
     }
 
@@ -81,7 +85,7 @@ class TwitterController extends Controller
     {
         // ログアウト処理
         Auth::logout();
-        return redirect('/about');
+        return redirect('/login');
     }
 
     private function _putProfileImage($userid, $photo_url)
