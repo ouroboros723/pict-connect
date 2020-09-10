@@ -24,7 +24,7 @@
     </nav>
     <div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
     <div id="main-container">
-        <div id="photo-cards" class="card">
+        <div id="photo-cards" class="">
             <div id="photo-list-top"></div>
 {{--            <div class="row">--}}
 {{--                <div class="col">--}}
@@ -209,6 +209,7 @@
         var user_info = @json($user_info);
         var last_photo_id = "";
         var photo_count = 0;
+        var ajax_status = true;
 
         if( '' === user_info || null === user_info) {
                 window.location.href = '/login';
@@ -218,6 +219,15 @@
 
         document.getElementById("camera-button").addEventListener("change", function(){photoUploadExec(user_info);});
         document.getElementById("photo-add-button").addEventListener("change", function(){photoUploadExec(user_info);});
+
+        $(document).ready(function () {
+            window.Echo.channel('event-lib')
+                .listen('PublicEvent', (e) => {
+                    if(e.message = 'new_photo_posted' && ajax_status){
+                        getPhotos();
+                    }
+                });
+        });
 
         //写真取得
         function getPhotos() {
@@ -235,6 +245,7 @@
                         "event_id": '1',
                     },
                     beforeSend: function() {
+                        ajax_status = false;
                         $("#loading").css("display","block");
                     },
                 }
@@ -243,6 +254,9 @@
                 .done(
                     (data) => {
                         console.log(data.photos);
+                        if(data.photos.length === 0){
+                            return;
+                        }
                         last_photo_id = data.photos[0].photo_id;
                         var photo_list_elements = '';
 
@@ -261,10 +275,7 @@
                             '                        </div>\n' +
                             '                    </div>\n' +
                             '                </div>';
-                            if(photo_count == 2){
-                                // photo_list_elements += '</div>';
-                                photo_count = -1;
-                            }
+
                             photo_count ++;
                         });
                         $("#photo-list-top").after(
@@ -289,6 +300,7 @@
                         document.getElementById("camera-input").value = "";
                         document.getElementById("photo-add-input").value = "";
 
+                        ajax_status = true;
                         $("#loading").css("display","none");
                     }
                 );

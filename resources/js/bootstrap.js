@@ -55,12 +55,6 @@ window.Echo = new Echo({
     host: 'https://ws.dev.pc-photolib.net',
 });
 
-
-window.Echo.channel('event-lib')
-    .listen('PublicEvent', (e) => {
-        console.log(e);
-    });
-
 //
 // window.Echo.private('event-lib')
 //     .listen('PrivateEvent', (e) => {
