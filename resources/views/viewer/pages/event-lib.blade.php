@@ -270,7 +270,6 @@
                         $("#photo-list-top").after(
                             photo_list_elements
                         );
-                        $("#photo-cards").css("display","flex");
 
                     }
                 )
