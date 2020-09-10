@@ -149,26 +149,37 @@
 {{--                </div>--}}
 {{--                <div class="col">--}}
 {{--                    <div class="card">--}}
-{{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
-{{--                        <div class="card-body">--}}
-{{--                            <p class="card-text">text</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+            {{--                        <div class="card-body">--}}
+            {{--                            <p class="card-text">text</p>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
         </div>
         {{-- 写真選択・アップロードボタン --}}
-        <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"> <input id="camera-input" class="photo-input-hidden" type="file" name="image" accept="image/*" capture><label for="camera-input"><img src="{{ asset('img/common/camera.png') }}" /></label></button>
-        <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input id="photo-add-input" class="photo-input-hidden" type="file" name="image" accept="image/*"><label for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}" /></label></button>
+        <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"><input id="camera-input"
+                                                                                                   class="photo-input-hidden"
+                                                                                                   type="file"
+                                                                                                   name="image"
+                                                                                                   accept="image/jpeg, image/png"
+                                                                                                   capture><label
+                for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
+        <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input
+                id="photo-add-input" class="photo-input-hidden" type="file" name="image" accept="image/jpeg, image/png"><label
+                for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
 
-        <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4><div class="modal-title" id="myModalLabel">投稿しますか？</div></h4>
+                        <h4>
+                            <div class="modal-title" id="myModalLabel">投稿しますか？</div>
+                        </h4>
                     </div>
                     <div class="modal-body">
-                        <img src="https://unsplash.it/630/400" style="width: 100%" />
+                        <img src="https://unsplash.it/630/400" style="width: 100%"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
