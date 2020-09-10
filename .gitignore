@@ -14,3 +14,4 @@ yarn-error.log
 /.idea
 /public/js
 /public/css
+/laravel-echo-server.json
