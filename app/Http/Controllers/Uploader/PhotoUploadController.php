@@ -49,7 +49,7 @@ class PhotoUploadController extends Controller
             ]
         );
 
-        broadcast(new PublicEvent());
+        event(new PublicEvent());
         return response()->json(['status' => 'success'], 200);
 
     }

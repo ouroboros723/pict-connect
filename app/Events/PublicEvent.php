@@ -36,7 +36,6 @@ class PublicEvent implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        echo "hoge"; exit;
         return [
             'message' => 'new_photo_posted',
         ];
