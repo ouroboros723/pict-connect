@@ -35,12 +35,14 @@ class GetPhotoController extends Controller
             $photos = Photo::where('event_id', $event_id)
                 ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
+                ->limit('20')
                 ->get();
         } else {
             $photos = Photo::where('event_id', $event_id)
                 ->where('photo_id', '>', $last_photo_id)
                 ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
+                ->limit('20')
                 ->get();
         }
 
@@ -63,10 +65,13 @@ class GetPhotoController extends Controller
 
     }
 
-    public function getPhotoWithStream()
-    {
+    //TODO: getPrevPhotosList()アクション
 
-    }
+    //多分要らない
+//    public function getPhotoWithStream()
+//    {
+//
+//    }
 
     public function getPhotosByUser(Request $request)
     {
@@ -74,16 +79,17 @@ class GetPhotoController extends Controller
         $user_token_sec = $request->input('token_sec');
 
         $user_id = User::where('token', $user_token)
-            ->where('token_sec',$user_token_sec)
+            ->where('token_sec', $user_token_sec)
             ->first(['user_id'])
             ->toArray();
         dd($user_id);
         $photos = Photo::where('token', $user_token)
-            ->where('token_sec',$user_token_sec);
+            ->where('token_sec', $user_token_sec);
     }
 
-    public function getPhotosByUserWithStream(Request $request)
-    {
-
-    }
+    //多分要らない
+//    public function getPhotosByUserWithStream(Request $request)
+//    {
+//
+//    }
 }
