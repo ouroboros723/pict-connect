@@ -42,6 +42,12 @@
 
 @section('commonscript')
     <script>
+        window.Echo.connector.socket.on('connect', function(){
+            iziToast.success({ message: 'サーバーに接続しました。' , position: 'bottomCenter',});
+        });
+        window.Echo.connector.socket.on('disconnect', function(){
+            iziToast.warning({ message: 'サーバーから切断されました。' , position: 'bottomCenter',});
+        });
     $(function () {
         $('#user-icon').popover({'html': true});
     });

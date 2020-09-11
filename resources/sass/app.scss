@@ -139,12 +139,15 @@ button {
 /* loading icon css */
 //#container{display:none;}
 #loading{
-    position:absolute;
+    position:fixed;
+    display: block;
     //left: 50vw;
     //top: 50vw;
     margin-left:-30px;
-    top: calc(100% / 2);
-    left: calc(100% / 2);
+    //top: calc(100% / 2);
+    //left: calc(100% / 2);
+    left: 40px;
+    bottom: 10px;
     z-index: 1000;
 }
 
