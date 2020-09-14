@@ -156,6 +156,7 @@
             {{--                    </div>--}}
             {{--                </div>--}}
             {{--            </div>--}}
+            <div id="photo-list-bottom"></div>
         </div>
         {{-- 写真選択・アップロードボタン --}}
         <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"><input id="camera-input"
@@ -208,45 +209,61 @@
     <script>
         var user_info = @json($user_info);
         var last_photo_id = "";
+        var begin_photo_id = "";
         var photo_count = 0;
         var ajax_status = true;
 
-        if( '' === user_info || null === user_info) {
-                window.location.href = '/login';
+        if ('' === user_info || null === user_info) {
+            window.location.href = '/login';
         }
 
-        window.addEventListener('load', function(){getPhotos();});
-        window.addEventListener('focus', function(){
+        window.addEventListener('load', function () {
+            getPhotos();
+        });
+        window.addEventListener('focus', function () {
             getPhotos();
             setTimeout(function () {
                 window.Echo.channel('event-lib')
                     .listen('PublicEvent', (e) => {
-                        if(e.message = 'new_photo_posted' && ajax_status){
+                        if (e.message = 'new_photo_posted' && ajax_status) {
                             getPhotos();
                         }
                     });
             }, 500);
         });
 
-        document.getElementById("camera-button").addEventListener("change", function(){photoUploadExec(user_info);});
-        document.getElementById("photo-add-button").addEventListener("change", function(){photoUploadExec(user_info);});
+        document.getElementById("camera-button").addEventListener("change", function () {
+            photoUploadExec(user_info);
+        });
+        document.getElementById("photo-add-button").addEventListener("change", function () {
+            photoUploadExec(user_info);
+        });
 
         $(document).ready(function () {
             window.Echo.channel('event-lib')
                 .listen('PublicEvent', (e) => {
-                    if(e.message = 'new_photo_posted' && ajax_status){
+                    if (e.message = 'new_photo_posted' && ajax_status) {
                         getPhotos();
                     }
                 });
+            $('#main-container').on('scroll', function () {
+                var scrollPosition = document.getElementById("main-container").scrollTop;
+                // スクロール要素の高さ
+                var scrollHeight = document.getElementById("main-container").scrollHeight;
+                var mainHeight = $("#main-container").height();
+                if (Math.floor(scrollHeight - (scrollPosition + mainHeight)) <= 3) {
+                    getPrevPhotos();
+                }
+            });
         });
 
         //写真取得
         function getPhotos() {
-            if(ajax_status){
+            if (ajax_status) {
                 $.ajax(
                     {
-                        url:'/api/media/photo/list?event_id=1&last_photo_id='+last_photo_id,
-                        type:'GET',
+                        url: '/api/media/photo/list?event_id=1&last_photo_id=' + last_photo_id,
+                        type: 'GET',
                         processData: false,
                         contentType: false,
                         headers: {
@@ -256,9 +273,9 @@
                         data: {
                             "event_id": '1',
                         },
-                        beforeSend: function() {
+                        beforeSend: function () {
                             ajax_status = false;
-                            $("#loading").css("display","block");
+                            $("#loading").css("display", "block");
                         },
                     }
                 )
@@ -266,29 +283,29 @@
                     .done(
                         (data) => {
                             console.log(data.photos);
-                            if(data.photos.length === 0){
+                            if (data.photos.length === 0) {
                                 return;
                             }
                             last_photo_id = data.photos[0].photo_id;
                             var photo_list_elements = '';
 
-                            Object.keys(data.photos).forEach(function(key){
+                            Object.keys(data.photos).forEach(function (key) {
                                 console.log(key);
-                                if(photo_count == 0){
-                                    // photo_list_elements += '<div class="row">'
+                                if (photo_count == 0) {
+                                    begin_photo_id = data.photos[data.photos.length - 1].photo_id;
                                 }
                                 photo_list_elements +=
 
-                                    '<div id="photo_'+data.photos[key].photo_id+'" class="col photo-cell">\n' +
+                                    '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
                                     '                    <div class="card p-3">\n' +
-                                    '                        <img class="card-img-top" src="data:'+data.photos[key].mime_type+';base64,'+data.photos[key].photo_base64+'" />\n' +
+                                    '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text">'+data.photos[key].user_info.view_name+'</p>\n' +
+                                    '                            <p class="card-text">' + data.photos[key].user_info.view_name + '</p>\n' +
                                     '                        </div>\n' +
                                     '                    </div>\n' +
                                     '                </div>';
 
-                                photo_count ++;
+                                photo_count++;
                             });
                             $("#photo-list-top").after(
                                 photo_list_elements
@@ -303,7 +320,7 @@
                             if(data.status == "unauthorized"){
                                 window.location.href = '/login';
                             }
-                            iziToast.error({ message: '写真の取得に失敗しました。しばらくしてから再度お試しください。'  , position: 'bottomCenter',});
+                            iziToast.error({message: '写真の取得に失敗しました。しばらくしてから再度お試しください。', position: 'bottomCenter',});
                         }
                     )
                     // Ajaxリクエストが成功・失敗どちらでも発動
@@ -313,7 +330,87 @@
                             document.getElementById("photo-add-input").value = "";
 
                             ajax_status = true;
-                            $("#loading").css("display","none");
+                            $("#loading").css("display", "none");
+                        }
+                    );
+            }
+
+        }
+
+        //写真取得
+        function getPrevPhotos() {
+            if (ajax_status) {
+                $.ajax(
+                    {
+                        url: '/api/media/photo/prev_list?event_id=1&begin_photo_id=' + begin_photo_id,
+                        type: 'GET',
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-User-Token': user_info.token,
+                            'X-User-Token-Sec': user_info.token_sec,
+                        },
+                        data: {
+                            "event_id": '1',
+                        },
+                        beforeSend: function () {
+                            ajax_status = false;
+                            $("#loading").css("display", "block");
+                        },
+                    }
+                )
+                    // Ajaxリクエストが成功した時発動
+                    .done(
+                        (data) => {
+                            console.log(data.photos);
+                            if (data.photos.length === 0) {
+                                return;
+                            }
+                            begin_photo_id = data.photos[data.photos.length - 1].photo_id;
+                            var photo_list_elements = '';
+
+                            Object.keys(data.photos).forEach(function (key) {
+                                console.log(key);
+                                if (photo_count == 0) {
+                                    // photo_list_elements += '<div class="row">'
+                                }
+                                photo_list_elements +=
+
+                                    '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
+                                    '                    <div class="card p-3">\n' +
+                                    '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
+                                    '                        <div class="card-body">\n' +
+                                    '                            <p class="card-text">' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                        </div>\n' +
+                                    '                    </div>\n' +
+                                    '                </div>';
+
+                                photo_count++;
+                            });
+                            $("#photo-list-bottom").before(
+                                photo_list_elements
+                            );
+
+                        }
+                    )
+                    // Ajaxリクエストが失敗した時発動
+                    .fail(
+                        (data) => {
+                            console.log(data);
+                            if (data.status == "unauthorized") {
+                                window.location.href = '/login';
+                            }
+                            iziToast.error({message: '写真の取得に失敗しました。しばらくしてから再度お試しください。', position: 'bottomCenter',});
+                        }
+                    )
+                    // Ajaxリクエストが成功・失敗どちらでも発動
+                    .always(
+                        (data) => {
+                            document.getElementById("camera-input").value = "";
+                            document.getElementById("photo-add-input").value = "";
+
+                            ajax_status = true;
+                            $("#loading").css("display", "none");
                         }
                     );
             }
@@ -324,12 +421,11 @@
         function uploadConfirmDialog() {
             // console.log(document.getElementById("camera-input").value);
             // console.log(document.getElementById("photo-add-input").value);
-            if (document.getElementById("camera-input").value != "" || document.getElementById("photo-add-input").value != "" ) {
+            if (document.getElementById("camera-input").value != "" || document.getElementById("photo-add-input").value != "") {
 
-                if (document.getElementById("camera-input").value != ""){
+                if (document.getElementById("camera-input").value != "") {
                     var photo_input_path = document.getElementById("camera-input").value;
-                }
-                else if (document.getElementById("photo-add-input").value != ""){
+                } else if (document.getElementById("photo-add-input").value != "") {
                     var photo_input_path = document.getElementById("photo-add-input").value;
                 } else {
                     var photo_input_path = "";

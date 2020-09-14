@@ -49,12 +49,13 @@ class GetPhotoController extends Controller
         foreach($photos as $key => $value)
         {
             $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
-                ->first(['user_id','screen_name','view_name','user_icon_path']);
+                ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = \Image::make(storage_path().'/app/'.$value['store_path']);
+            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image->orientate();
             $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
             $photos[$key]['photo_base64'] = base64_encode($tumbnail);
-            $photos[$key]['mime_type'] = mime_content_type(storage_path().'/app/'.$value['store_path']);
+            $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
         }
 
         return response()->json(
@@ -66,6 +67,101 @@ class GetPhotoController extends Controller
     }
 
     //TODO: getPrevPhotosList()アクション
+    public function getPrevPhotosList(Request $request)
+    {
+        // Auth Params
+        $user_token = $request->header('X-User-Token');
+        $user_token_sec = $request->header('X-User-Token-Sec');
+
+        // Get Settings Params
+        $event_id = $request->input('event_id');
+        $begin_photo_id = $request->input('begin_photo_id');
+
+        $user_id = User::where('token', $user_token)
+            ->where('token_sec', $user_token_sec)
+            ->first(['user_id'])['user_id'];
+
+        if (empty($user_token) || empty($user_token_sec) || empty($user_id)) {
+            return response()->json(['status' => 'unauthorized'], 401);
+        }
+
+        if (empty($begin_photo_id)) {
+            return response()->json(['status' => 'begin_photo_id_is_undefined'], 400);
+        } else {
+            $photos = Photo::where('event_id', $event_id)
+                ->where('photo_id', '<', $begin_photo_id)
+                ->where('deleted_at', null)
+                ->orderBy('photo_id', 'desc')
+                ->limit('20')
+                ->get();
+        }
+
+        foreach ($photos as $key => $value) {
+            $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
+                ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
+
+            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image->orientate();
+            $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
+            $photos[$key]['photo_base64'] = base64_encode($tumbnail);
+            $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+        }
+
+        return response()->json(
+            [
+                'status' => 'ok',
+                'photos' => $photos,
+            ], 200);
+
+    }
+
+    public function getFullSizePhoto(Request $request)
+    {
+        // Auth Params
+        $user_token = $request->header('X-User-Token');
+        $user_token_sec = $request->header('X-User-Token-Sec');
+
+        // Get Settings Params
+        $event_id = $request->input('event_id');
+        $photo_id = $request->input('photo_id');
+
+        $user_id = User::where('token', $user_token)
+            ->where('token_sec', $user_token_sec)
+            ->first(['user_id'])['user_id'];
+
+        if (empty($user_token) || empty($user_token_sec) || empty($user_id)) {
+            return response()->json(['status' => 'unauthorized'], 401);
+        }
+
+        if (empty($photo_id)) {
+            return response()->json(['status' => 'photo_id_is_undefined'], 400);
+        } else {
+            $photos = Photo::where('event_id', $event_id)
+                ->where('photo_id', '<', $photo_id)
+                ->where('deleted_at', null)
+                ->orderBy('photo_id', 'desc')
+                ->limit('20')
+                ->get();
+        }
+
+        foreach ($photos as $key => $value) {
+            $photo['user_info'] = User::where('user_id', $value["user_id"])
+                ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
+
+            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image->orientate();
+            $pict = $image->stream('jpg', 100); //元サイズ画像バイナリ生成
+            $photo['photo_base64'] = base64_encode($pict);
+            $photo['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+        }
+
+        return response()->json(
+            [
+                'status' => 'ok',
+                'photos' => $photos,
+            ], 200);
+
+    }
 
     //多分要らない
 //    public function getPhotoWithStream()
