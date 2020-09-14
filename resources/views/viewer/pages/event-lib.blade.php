@@ -212,6 +212,8 @@
         var begin_photo_id = "";
         var photo_count = 0;
         var ajax_status = true;
+        var prev_photo_ajax_status = true;
+        var upload_status = true;
 
         if ('' === user_info || null === user_info) {
             window.location.href = '/login';
@@ -255,7 +257,17 @@
                     getPrevPhotos();
                 }
             });
+            setInterval("loadingIconSwitcher()", 100);
         });
+
+        function loadingIconSwitcher() {
+            // console.log(!ajax_status || !prev_photo_ajax_status || !upload_status);
+            if (!ajax_status || !prev_photo_ajax_status || !upload_status) {
+                $("#loading").css("display", "block");
+            } else {
+                $("#loading").css("display", "none");
+            }
+        }
 
         //写真取得
         function getPhotos() {
@@ -275,7 +287,7 @@
                         },
                         beforeSend: function () {
                             ajax_status = false;
-                            $("#loading").css("display", "block");
+                            // $("#loading").css("display", "block");
                         },
                     }
                 )
@@ -330,7 +342,7 @@
                             document.getElementById("photo-add-input").value = "";
 
                             ajax_status = true;
-                            $("#loading").css("display", "none");
+                            // $("#loading").css("display", "none");
                         }
                     );
             }
@@ -339,7 +351,7 @@
 
         //写真取得
         function getPrevPhotos() {
-            if (ajax_status) {
+            if (prev_photo_ajax_status) {
                 $.ajax(
                     {
                         url: '/api/media/photo/prev_list?event_id=1&begin_photo_id=' + begin_photo_id,
@@ -354,8 +366,8 @@
                             "event_id": '1',
                         },
                         beforeSend: function () {
-                            ajax_status = false;
-                            $("#loading").css("display", "block");
+                            prev_photo_ajax_status = false;
+                            // $("#loading").css("display", "block");
                         },
                     }
                 )
@@ -409,8 +421,8 @@
                             document.getElementById("camera-input").value = "";
                             document.getElementById("photo-add-input").value = "";
 
-                            ajax_status = true;
-                            $("#loading").css("display", "none");
+                            prev_photo_ajax_status = true;
+                            // $("#loading").css("display", "none");
                         }
                     );
             }
@@ -494,6 +506,7 @@
                             data: fd, //FormDataオブジェクトはそのままdataとして渡す。
                             beforeSend: function () {
                                 // $("#loading").css("display", "block");
+                                upload_status = false;
                             },
                         }
                     )
@@ -521,6 +534,7 @@
                                 document.getElementById("camera-input").value = "";
                                 document.getElementById("photo-add-input").value = "";
                                 // $("#loading").css("display", "none");
+                                upload_status = true;
                             }
                         );
                 }
