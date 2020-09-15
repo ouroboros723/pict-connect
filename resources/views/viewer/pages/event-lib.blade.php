@@ -312,7 +312,7 @@
                                     '                    <div class="card p-3">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text">' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <p class="card-text"> <img src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
                                     '                        </div>\n' +
                                     '                    </div>\n' +
                                     '                </div>';
@@ -392,7 +392,7 @@
                                     '                    <div class="card p-3">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text">' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <p class="card-text"> <img src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
                                     '                        </div>\n' +
                                     '                    </div>\n' +
                                     '                </div>';

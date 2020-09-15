@@ -9,6 +9,7 @@ use App\Model\User;
 use App\Model\Photo;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class GetPhotoController extends Controller
 {
@@ -46,16 +47,20 @@ class GetPhotoController extends Controller
                 ->get();
         }
 
-        foreach($photos as $key => $value)
-        {
+        foreach ($photos as $key => $value) {
             $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
             $image->orientate();
             $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
             $photos[$key]['photo_base64'] = base64_encode($tumbnail);
             $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+            $user_icon = Image::make(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+            $user_icon->orientate();
+            $user_icon_bin = $user_icon->stream('jpg', 60);
+            $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
+            $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
         }
 
         return response()->json(
@@ -100,11 +105,17 @@ class GetPhotoController extends Controller
             $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
             $image->orientate();
             $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
             $photos[$key]['photo_base64'] = base64_encode($tumbnail);
             $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+            $user_icon = Image::make(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
+            $user_icon->orientate();
+            $user_icon_bin = $user_icon->stream('jpg', 60);
+            $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
+            $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
+
         }
 
         return response()->json(
@@ -148,11 +159,15 @@ class GetPhotoController extends Controller
             $photo['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = \Image::make(storage_path() . '/app/' . $value['store_path']);
+            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
             $image->orientate();
             $pict = $image->stream('jpg', 100); //元サイズ画像バイナリ生成
             $photo['photo_base64'] = base64_encode($pict);
-            $photo['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+            $user_icon = Image::make(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
+            $user_icon->orientate();
+            $user_icon_bin = $user_icon->stream('jpg', 60);
+            $photo['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
+            $photo['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
         }
 
         return response()->json(

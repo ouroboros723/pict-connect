@@ -11,7 +11,11 @@
 |
 */
 /*** 認証 ***/
+
 // 標準ログインルートインポート
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 // TwitterログインURL
@@ -33,6 +37,7 @@ Route::middleware(['cors'])->group(function () {
     Route::group(['middleware' => 'auth'], function () {
         // web ui routes
         Route::get('/', 'Viewer\EventLibController@index');
+        Route::view('/event-slide-show', 'viewer.pages.event-lib-slideshow');
         Route::view('/users', 'viewer.pages.user-list');
         Route::view('/user-lib', 'viewer.pages.user-lib');
 

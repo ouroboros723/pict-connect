@@ -26,13 +26,15 @@
     "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
-    "bootcards": "^1.1.2",
-    "izitoast": "^1.4.0",
-    "laravel-echo": "^1.6.1",
-    "material-dashboard": "^2.1.0",
-    "muuri": "^0.9.1",
-    "socket.io-client": "^2.3.0",
-    "vue-material": "^1.0.0-beta-11",
-    "web-animations-js": "^2.3.2"
+      "bootcards": "^1.1.2",
+      "izitoast": "^1.4.0",
+      "laravel-echo": "^1.6.1",
+      "material-dashboard": "^2.1.0",
+      "muuri": "^0.9.1",
+      "slick-carousel": "^1.8.1",
+      "slick-slider": "^1.8.2",
+      "socket.io-client": "^2.3.0",
+      "vue-material": "^1.0.0-beta-11",
+      "web-animations-js": "^2.3.2"
   }
 }
