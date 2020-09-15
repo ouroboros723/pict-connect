@@ -95,6 +95,7 @@ input.form-control {
     bottom: 15px;
     position: fixed;
 }
+
 #camera-button img {
     width: 30px;
 }
@@ -103,12 +104,22 @@ input.form-control {
     display: block !important;
 }
 
+#photo-cards .card-body {
+    padding: 0px;
+}
+
+#photo-cards .user-icon {
+    width: 25px;
+    margin: 5px;
+}
+
 
 @media screen and (max-width: 699px) {
     #photo-cards {
         padding-bottom: 80px !important;
     }
 }
+
 @media screen and (min-width: 700px) {
     #photo-cards {
         width: 500px;

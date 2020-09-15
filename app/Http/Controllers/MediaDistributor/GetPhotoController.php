@@ -51,16 +51,21 @@ class GetPhotoController extends Controller
             $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
-            $image->orientate();
-            $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
-            $photos[$key]['photo_base64'] = base64_encode($tumbnail);
-            $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
-            $user_icon = Image::make(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
-            $user_icon->orientate();
-            $user_icon_bin = $user_icon->stream('jpg', 60);
-            $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
-            $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+            if (\File::exists(storage_path() . '/app/' . $value['store_path']) && !empty($value['store_path'])) {
+                $image = Image::make(storage_path() . '/app/' . $value['store_path']);
+                $image->orientate();
+                $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
+                $photos[$key]['photo_base64'] = base64_encode($tumbnail);
+                $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+            }
+
+            if (\File::exists(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']) && !empty($photos[$key]['user_info']['user_icon_path'])) {
+                $user_icon = Image::make(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+                $user_icon->orientate();
+                $user_icon_bin = $user_icon->stream('jpg', 40);
+                $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
+                $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+            }
         }
 
         return response()->json(
@@ -105,16 +110,21 @@ class GetPhotoController extends Controller
             $photos[$key]['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
-            $image->orientate();
-            $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
-            $photos[$key]['photo_base64'] = base64_encode($tumbnail);
-            $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
-            $user_icon = Image::make(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
-            $user_icon->orientate();
-            $user_icon_bin = $user_icon->stream('jpg', 60);
-            $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
-            $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
+            if (\File::exists(storage_path() . '/app/' . $value['store_path']) && !empty($value['store_path'])) {
+                $image = Image::make(storage_path() . '/app/' . $value['store_path']);
+                $image->orientate();
+                $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
+                $photos[$key]['photo_base64'] = base64_encode($tumbnail);
+                $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
+            }
+
+            if (\File::exists(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']) && !empty($photos[$key]['user_info']['user_icon_path'])) {
+                $user_icon = Image::make(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+                $user_icon->orientate();
+                $user_icon_bin = $user_icon->stream('jpg', 40);
+                $photos[$key]['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
+                $photos[$key]['user_info']['user_icon_mime_type'] = mime_content_type(storage_path() . '/app/' . $photos[$key]['user_info']['user_icon_path']);
+            }
 
         }
 

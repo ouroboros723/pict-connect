@@ -309,10 +309,10 @@
                                 photo_list_elements +=
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
-                                    '                    <div class="card p-3">\n' +
+                                    '                    <div class="card">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text"> <img src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <p class="card-text"> <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
                                     '                        </div>\n' +
                                     '                    </div>\n' +
                                     '                </div>';
@@ -389,10 +389,10 @@
                                 photo_list_elements +=
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
-                                    '                    <div class="card p-3">\n' +
+                                    '                    <div class="card">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text"> <img src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <p class="card-text"> <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
                                     '                        </div>\n' +
                                     '                    </div>\n' +
                                     '                </div>';
@@ -487,9 +487,10 @@
             }
 
             iziToast.info({message: '写真をアップロードしています...', position: 'bottomCenter',});
-            $.each(photo_data, function(index, val) {
+            $.each(photo_data, function (index, val) {
                 if (val !== "") {
                     console.log('val:', val);
+                    //todo: このappend部分をループさせるようにする
                     fd.append("photo_data", val); //(key(form name), data) 複数渡すときはここを拡張
                     fd.append("event_id", "1");
 

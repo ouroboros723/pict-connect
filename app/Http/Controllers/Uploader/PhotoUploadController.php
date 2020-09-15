@@ -38,7 +38,9 @@ class PhotoUploadController extends Controller
         $screen_name = User::where('user_id', $user_id)
             ->first(['screen_name'])['screen_name'];
 
-        $store_dir = 'photos/'.$screen_name.'/'.$today;
+        $store_dir = 'photos/' . $screen_name . '/' . $today;
+
+        //TODO: ここをforeachで回す。
         $stored_path = $request->file('photo_data')->store($store_dir);
 
         Photo::create(
