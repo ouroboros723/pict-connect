@@ -309,12 +309,12 @@
                                 photo_list_elements +=
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
-                                    '                    <div class="card">\n' +
+                                    // '                    <div class="card">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text"> <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
                                     '                        </div>\n' +
-                                    '                    </div>\n' +
+                                    // '                    </div>\n' +
                                     '                </div>';
 
                                 photo_count++;
@@ -389,12 +389,12 @@
                                 photo_list_elements +=
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
-                                    '                    <div class="card">\n' +
+                                    // '                    <div class="card">\n' +
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <p class="card-text"> <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" />' + data.photos[key].user_info.view_name + '</p>\n' +
+                                    '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
                                     '                        </div>\n' +
-                                    '                    </div>\n' +
+                                    // '                    </div>\n' +
                                     '                </div>';
 
                                 photo_count++;

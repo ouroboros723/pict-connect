@@ -39,7 +39,7 @@
 </head>
 
 
-<body>
+<body id="event-lib-slideshow">
 <div class='container'>
     <div class='slider'>
         <div>
@@ -93,33 +93,55 @@
         $slider.slick({
             lazyLoad: 'ondemand',
             pauseOnHover: false,
+            pauseOnFocus: false,
             arrows: false,
             autoplay: true,
-            autoplaySpeed: 1000,
+            autoplaySpeed: 4000,
             accessibility: true, // 高さを合わせる
             useTransform: true,
             fade: true,
             centerMode: true, // 中央揃え
-            speed: 3000,
-            rows: 1
+            speed: 5
+            000,
+            rows: 1,
         });
 
         // 新規のスライドを追加
         var imgList = [];
         $slider.on('afterChange', function (event, slick, currentSlide, nextSlide) {
-            $.getJSON('imgList.json', function (imgListJSON) {
-                let imgListAdd = getArrayDiff(imgListJSON, imgList);
-                let imgListRemove = getArrayDiff(imgList, imgListJSON);
-                let pathToImg = '/path/to/img_dir/'; // 写真を保存するディレクトリ
-                let k = 1;
-                for (let i = 0; i < imgListAdd.length; i++) {
-                    $slider.slick("slickAdd", '<div><img data-lazy = "' + pathToImg + imgListAdd[i].src + '"></div>', currentSlide + k);
-                    k++;
-                }
-                var slick_obj = $slider.slick('getSlick');
-                imgList = imgListJSON;
+            if (prev_photo_ajax_status) {
+                $.ajax(
+                    {
+                        url: '/api/media/photo/prev_list?event_id=1&begin_photo_id=' + begin_photo_id,
+                        type: 'GET',
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-User-Token': user_info.token,
+                            'X-User-Token-Sec': user_info.token_sec,
+                        },
+                        data: {
+                            "event_id": '1',
+                        },
+                        beforeSend: function () {
+                            prev_photo_ajax_status = false;
+                            // $("#loading").css("display", "block");
+                        },
+                    }
+                )
+                $.getJSON('imgList.json', function (imgListJSON) {
+                    let imgListAdd = getArrayDiff(imgListJSON, imgList);
+                    let imgListRemove = getArrayDiff(imgList, imgListJSON);
+                    let pathToImg = '/path/to/img_dir/'; // 写真を保存するディレクトリ
+                    let k = 1;
+                    for (let i = 0; i < imgListAdd.length; i++) {
+                        $slider.slick("slickAdd", '<div><img data-lazy = "' + pathToImg + imgListAdd[i].src + '"></div>', currentSlide + k);
+                        k++;
+                    }
+                    var slick_obj = $slider.slick('getSlick');
+                    imgList = imgListJSON;
+                });
             });
-        });
     });
 </script>
 </body>
