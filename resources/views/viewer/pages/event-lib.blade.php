@@ -253,7 +253,7 @@
                 // スクロール要素の高さ
                 var scrollHeight = document.getElementById("main-container").scrollHeight;
                 var mainHeight = $("#main-container").height();
-                if (Math.floor(scrollHeight - (scrollPosition + mainHeight)) <= 3) {
+                if (Math.floor(scrollHeight - (scrollPosition + mainHeight + 70)) <= 3) {
                     getPrevPhotos();
                 }
             });
