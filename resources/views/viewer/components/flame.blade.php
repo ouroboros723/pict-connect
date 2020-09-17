@@ -17,7 +17,7 @@
         <a id="app-title" class="navbar-brand" href="#">pict-connect</a>{{--TODO:configでサイトタイトルが読み込まれるようにする--}}
         <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action">ユーザー設定</a>
+{{--                <a href="#" class="list-group-item list-group-item-action">ユーザー設定</a>--}}
                 <a href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
             </div>'
         >

@@ -207,6 +207,13 @@ button {
         bottom: 0;
         object-fit: cover;
     }
+    .photo-cell a img.trash-icon {
+        width: 25px;
+        height: 25px !important;
+        position: absolute;
+        top: 7px;
+        left: calc(100% - 30px);
+    }
 }
 @media screen and (min-width: 700px) {
     .photo-cell {
@@ -231,6 +238,13 @@ button {
         right: 0;
         bottom: 0;
         object-fit: cover;
+    }
+    .photo-cell a img.trash-icon {
+        width: 25px;
+        height: 25px !important;
+        position: absolute;
+        top: 7px;
+        left: calc(100% - 30px);
     }
 }
 

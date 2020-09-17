@@ -2,37 +2,37 @@
 
 @yield('meta')
 <body>
-    @yield('header')
-    @yield('side-menu')
-    <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-        <div class="container">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active">イベントアルバム</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/users">ユーザーアルバム</a>
-                </li>
-                {{--                <li class="nav-item">--}}
-                {{--                    <a class="nav-link">タブ3</a>--}}
-                {{--                </li>--}}
-                {{--                <li class="nav-item">--}}
-                {{--                    <a class="nav-link">タブ4</a>--}}
-                {{--                </li>--}}
-            </ul>
-        </div>
-    </nav>
-    <div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
-    <div id="main-container">
-        <div id="photo-cards" class="">
-            <div id="photo-list-top"></div>
-{{--            <div class="row">--}}
-{{--                <div class="col">--}}
-{{--                    <div class="card">--}}
-{{--                        <img class="card-img-top" src="" alt="Card image cap">--}}
-{{--                        <div class="card-body">--}}
-{{--                            <p class="card-text">text</p>--}}
-{{--                        </div>--}}
+@yield('header')
+@yield('side-menu')
+<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active">イベントアルバム</a>
+            </li>
+            {{--                <li class="nav-item">--}}
+            {{--                    <a class="nav-link" href="/users">ユーザーアルバム</a>--}}
+            {{--                </li>--}}
+            {{--                <li class="nav-item">--}}
+            {{--                    <a class="nav-link">タブ3</a>--}}
+            {{--                </li>--}}
+            {{--                <li class="nav-item">--}}
+            {{--                    <a class="nav-link">タブ4</a>--}}
+            {{--                </li>--}}
+        </ul>
+    </div>
+</nav>
+<div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
+<div id="main-container">
+    <div id="photo-cards" class="">
+        <div id="photo-list-top"></div>
+        {{--            <div class="row">--}}
+        {{--                <div class="col">--}}
+        {{--                    <div class="card">--}}
+        {{--                        <img class="card-img-top" src="" alt="Card image cap">--}}
+        {{--                        <div class="card-body">--}}
+        {{--                            <p class="card-text">text</p>--}}
+        {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
 {{--                <div class="col">--}}
@@ -325,8 +325,12 @@
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
-                                    '                        </div>\n' +
-                                    // '                    </div>\n' +
+                                    '                        </div>\n';
+                                if (user_info.user_id == data.photos[key].user_info.user_id) {
+                                    photo_list_elements +=
+                                        '                    <a href="#" onclick="deletePhoto(' + data.photos[key].photo_id + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
+                                }
+                                photo_list_elements +=
                                     '                </div>';
 
                                 photo_count++;
@@ -405,8 +409,12 @@
                                     '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
-                                    '                        </div>\n' +
-                                    // '                    </div>\n' +
+                                    '                        </div>\n';
+                                if (user_info.user_id == data.photos[key].user_info.user_id) {
+                                    photo_list_elements +=
+                                        '                    <a href="#" onclick="deletePhoto(' + data.photos[key].photo_id + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
+                                }
+                                photo_list_elements +=
                                     '                </div>';
 
                                 photo_count++;
