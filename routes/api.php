@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // ajax routes
 Route::post('uploader/photo-upload', 'Uploader\PhotoUploadController@photoStore');
+Route::post('uploader/photo-delete', 'Uploader\PhotoDeleteController@photoDelete');
 Route::get('media/photo/list', 'MediaDistributor\GetPhotoController@getPhotosList');
 Route::get('media/photo/prev_list', 'MediaDistributor\GetPhotoController@getPrevPhotosList');

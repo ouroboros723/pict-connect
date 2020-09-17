@@ -230,6 +230,12 @@
                         if (e.message = 'new_photo_posted' && ajax_status) {
                             getPhotos();
                         }
+                    }).listen('PhotoDeleteEvent', (e) => {
+                        alert();
+                        if (e.message = 'photo_deleted') {
+                            console.log(e.delete_target_id);
+                            photoDeleteEvent(e.delete_target_id);
+                        }
                     });
             }, 500);
         });
@@ -246,6 +252,12 @@
                 .listen('PublicEvent', (e) => {
                     if (e.message = 'new_photo_posted' && ajax_status) {
                         getPhotos();
+                    }
+                }).listen('PhotoDeleteEvent', (e) => {
+                    alert();
+                    if (e.message = 'photo_deleted') {
+                        console.log(e.delete_target_id)
+                        photoDeleteEvent(e.delete_target_id);
                     }
                 });
             $('#main-container').on('scroll', function () {
@@ -523,7 +535,7 @@
                         .fail(
                             (data) => {
                                 console.log(data);
-                                iziToast.error({title: 'pict-throw', message: '写真のアップロードに失敗しました。', position: 'bottomCenter',});
+                                iziToast.error({message: '写真のアップロードに失敗しました。', position: 'bottomCenter',});
                                 if (data.status == "unauthorized") {
                                     window.location.href = '/login';
                                 }
@@ -540,6 +552,58 @@
                         );
                 }
             });
+        }
+
+        function deletePhoto(delete_target_id) {
+            console.log(delete_target_id);
+            $.ajax(
+                {
+                        url: '/api/uploader/photo-delete',
+                        type:'POST',
+                        dataType: 'json',
+                        timeout:3000,
+                    headers: {
+                        'X-User-Token': user_info.token,
+                        'X-User-Token-Sec': user_info.token_sec,
+                    },
+                    data : {"delete_target_id" : delete_target_id},
+                    beforeSend: function () {
+                        // $("#loading").css("display", "block");
+                        upload_status = false;
+                    },
+                }
+            )
+                // Ajaxリクエストが成功した時発動
+                .done(
+                    (data) => {
+                        console.log(data);
+                        iziToast.success({message: '写真の削除に成功しました。', position: 'bottomCenter',});
+                        photoDeleteEvent(delete_target_id);
+                    }
+                )
+                // Ajaxリクエストが失敗した時発動
+                .fail(
+                    (data) => {
+                        console.log(data);
+                        iziToast.error({message: '写真の削除に失敗しました。', position: 'bottomCenter',});
+                        if (data.status == "unauthorized") {
+                            window.location.href = '/login';
+                        }
+                    }
+                )
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always(
+                    (data) => {
+                        document.getElementById("camera-input").value = "";
+                        document.getElementById("photo-add-input").value = "";
+                        // $("#loading").css("display", "none");
+                        upload_status = true;
+                    }
+                );
+        }
+
+        function photoDeleteEvent(delete_target_id){
+            $('#photo_'+delete_target_id).remove();
         }
     </script>
 </body>
