@@ -20,18 +20,17 @@ class PhotoUploadController extends Controller
         // Get Settings Params
         $event_id = $request->input('event_id');
         $user_id = User::where('token', $user_token)
-            ->where('token_sec',$user_token_sec)
+            ->where('token_sec', $user_token_sec)
             ->first(['user_id'])['user_id'];
 
 
-        if(empty($user_token) || empty($user_token_sec) || empty($user_id))
-        {
+        if (empty($user_token) || empty($user_token_sec) || empty($user_id)) {
             return response()->json(['status' => 'unauthorized'], 401);
         }
 
-        $request->validate([
-            'photo_data' => 'bail|required|mimes:jpeg,bmp,png,gif',
-        ]);
+//        $request->validate([
+//            'photo_data' => 'bail|required|mimes:jpeg,bmp,png,gif',
+//        ]);
 
         $today = new \DateTime();
         $today = $today->format('Ymd');
@@ -41,6 +40,7 @@ class PhotoUploadController extends Controller
 
         $store_dir = 'photos/' . $screen_name . '/' . $today;
 
+//        dd($_FILES);
         //TODO: ここをforeachで回す。
         $stored_path = $request->file('photo_data')->store($store_dir);
 

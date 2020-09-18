@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use http\Env\Response;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -32,8 +34,12 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        if ($request->pass_code !== 'bskw4sQXYz7AW3xNk6QNMkQMGhkMxN') {
+            echo "Unauthorize";
+            exit;
+        }
         $this->middleware('guest')->except('logout');
     }
 
@@ -41,5 +47,6 @@ class LoginController extends Controller
     {
         return 'screen_name'; // 対象のカラム名に。後述するように view も変えます
     }
+
 
 }

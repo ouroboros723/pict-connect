@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Model\SnsIdList;
 use App\Model\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -40,8 +41,13 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        if ($request->pass_code !== 'bskw4sQXYz7AW3xNk6QNMkQMGhkMxN') {
+            echo "Unauthorize";
+            exit;
+        }
+
         $this->middleware('guest');
     }
 

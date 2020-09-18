@@ -147,46 +147,50 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-{{--                <div class="col">--}}
-{{--                    <div class="card">--}}
-            {{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
-            {{--                        <div class="card-body">--}}
-            {{--                            <p class="card-text">text</p>--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--            </div>--}}
-            <div id="photo-list-bottom"></div>
-        </div>
-        {{-- 写真選択・アップロードボタン --}}
-        <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"><input id="camera-input"
-                                                                                                   class="photo-input-hidden"
-                                                                                                   type="file"
-                                                                                                   name="image"
-                                                                                                   accept="image/*"
-                                                                                                   capture><label
-                for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
-        <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input multiple
-                id="photo-add-input" class="photo-input-hidden" type="file" name="image[]" accept="image/jpeg, image/png"><label
-                for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
+        {{--                <div class="col">--}}
+        {{--                    <div class="card">--}}
+        {{--                        <img class="card-img-top" src="https://unsplash.it/630/400" alt="Card image cap">--}}
+        {{--                        <div class="card-body">--}}
+        {{--                            <p class="card-text">text</p>--}}
+        {{--                        </div>--}}
+        {{--                    </div>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        <div id="photo-list-bottom"></div>
+    </div>
+    {{-- 写真選択・アップロードボタン --}}
+    <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"><input id="camera-input"
+                                                                                               class="photo-input-hidden"
+                                                                                               type="file"
+                                                                                               name="image"
+                                                                                               accept="image/*"
+                                                                                               capture><label
+            for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
+    <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input {{--multiple--}}
+                                                                                                  id="photo-add-input"
+                                                                                                  class="photo-input-hidden"
+                                                                                                  type="file"
+                                                                                                  name="image[]"
+                                                                                                  accept="image/jpeg, image/png"><label
+            for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
 
-        <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>
-                            <div class="modal-title" id="myModalLabel">投稿しますか？</div>
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <img src="https://unsplash.it/630/400" style="width: 100%"/>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-                        <button type="button" class="btn btn-danger">アップロード</button>
-                    </div>
+    <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>
+                        <div class="modal-title" id="myModalLabel">投稿しますか？</div>
+                    </h4>
                 </div>
+                <div class="modal-body">
+                    <img src="https://unsplash.it/630/400" style="width: 100%"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-danger">アップロード</button>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -493,12 +497,11 @@
 
         function photoUploadExec(user_info) {
             var fd = new FormData();
-            if (document.getElementById("camera-input").value !== ""){
+            if (document.getElementById("camera-input").value !== "") {
                 var photo_data = document.querySelector('#camera-input').files;
                 console.log(document.querySelector('#camera-input').files);
                 console.log(photo_data);
-            }
-            else if (document.getElementById("photo-add-input").value != ""){
+            } else if (document.getElementById("photo-add-input").value != "") {
                 var photo_data = document.querySelector('#photo-add-input').files;
                 console.log(document.querySelector('#photo-add-input').files);
                 console.log(photo_data);
@@ -508,30 +511,34 @@
 
             // iziToast.info({message: '写真をアップロードしています...', position: 'bottomCenter',});
             $.each(photo_data, function (index, val) {
+                console.log('val:', val);
                 if (val !== "") {
-                    console.log('val:', val);
-                    //todo: このappend部分をループさせるようにする
-                    fd.append("photo_data", val); //(key(form name), data) 複数渡すときはここを拡張
-                    fd.append("event_id", "1");
+                    fd.append("photo_data", val);
+                }
+            });
 
-                    $.ajax(
-                        {
-                            url: '/api/uploader/photo-upload',
-                            type: 'POST',
-                            processData: false,
-                            contentType: false,
-                            headers: {
-                                'X-User-Token': user_info.token,
-                                'X-User-Token-Sec': user_info.token_sec,
-                            },
-                            data: fd, //FormDataオブジェクトはそのままdataとして渡す。
-                            beforeSend: function () {
-                                // $("#loading").css("display", "block");
-                                upload_status = false;
-                            },
-                        }
-                    )
-                        // Ajaxリクエストが成功した時発動
+            //todo: このappend部分をループさせるようにする
+            //(key(form name), data) 複数渡すときはここを拡張
+            fd.append("event_id", "1");
+
+            $.ajax(
+                {
+                    url: '/api/uploader/photo-upload',
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-User-Token': user_info.token,
+                        'X-User-Token-Sec': user_info.token_sec,
+                    },
+                    data: fd, //FormDataオブジェクトはそのままdataとして渡す。
+                    beforeSend: function () {
+                        // $("#loading").css("display", "block");
+                        upload_status = false;
+                    },
+                }
+            )
+                // Ajaxリクエストが成功した時発動
                         .done(
                             (data) => {
                                 console.log(data);
@@ -558,8 +565,7 @@
                                 upload_status = true;
                             }
                         );
-                }
-            });
+
         }
 
         function deletePhoto(delete_target_id) {
