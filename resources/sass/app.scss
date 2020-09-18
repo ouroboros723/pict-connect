@@ -9,6 +9,8 @@
  @import '~bootstrap/scss/bootstrap';
 // @import '~bootstrap-material-design/scss/bootstrap-material-design';
 
+@import "~lity/dist/lity.min.css";
+
 body {
     touch-action: manipulation;
     //height: 100vh !important;
@@ -20,7 +22,7 @@ input.form-control {
 }
 
 #main-container {
-    height: calc(100vh - 55px - 57px);
+    height: calc(100vh - 55px);
     width: 100vw;
     position: relative;
     overflow-y: scroll;

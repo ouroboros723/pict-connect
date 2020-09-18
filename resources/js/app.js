@@ -48,6 +48,7 @@ import 'vue-material/dist/vue-material.min.css'
 require('izitoast');
 require('slick-carousel');
 require('slick-slider');
+require('lity');
 // Vue.use(VueMaterial);
 
 // bootcards.init({

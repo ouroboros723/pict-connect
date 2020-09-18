@@ -54,7 +54,7 @@ class GetPhotoController extends Controller
             if (\File::exists(storage_path() . '/app/' . $value['store_path']) && !empty($value['store_path'])) {
                 $image = Image::make(storage_path() . '/app/' . $value['store_path']);
                 $image->orientate();
-                $tumbnail = $image->stream('jpg', 70); //サムネイル画像バイナリ生成
+                $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
                 $photos[$key]['photo_base64'] = base64_encode($tumbnail);
                 $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
             }

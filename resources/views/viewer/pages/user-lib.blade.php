@@ -10,9 +10,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">イベントアルバム</a>
             </li>
-            {{--            <li class="nav-item">--}}
-            {{--                <a class="nav-link" href="/users">ユーザーアルバム</a>--}}
-            {{--            </li>--}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users">ユーザーアルバム</a>
+                        </li>
             {{--            <li class="nav-item">--}}
             {{--                <a class="nav-link active">ユーザーhogeのアルバム</a>--}}
             {{--            </li>--}}

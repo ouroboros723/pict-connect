@@ -4,24 +4,24 @@
 <body>
 @yield('header')
 @yield('side-menu')
-<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-    <div class="container">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active">イベントアルバム</a>
-            </li>
-            {{--                <li class="nav-item">--}}
-            {{--                    <a class="nav-link" href="/users">ユーザーアルバム</a>--}}
-            {{--                </li>--}}
-            {{--                <li class="nav-item">--}}
-            {{--                    <a class="nav-link">タブ3</a>--}}
-            {{--                </li>--}}
-            {{--                <li class="nav-item">--}}
-            {{--                    <a class="nav-link">タブ4</a>--}}
-            {{--                </li>--}}
-        </ul>
-    </div>
-</nav>
+{{--<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">--}}
+{{--    <div class="container">--}}
+{{--        <ul class="nav nav-tabs">--}}
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link active">イベントアルバム</a>--}}
+{{--            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a class="nav-link" href="/users">ユーザーアルバム</a>--}}
+{{--                            </li>--}}
+{{--            --}}{{--                <li class="nav-item">--}}
+{{--            --}}{{--                    <a class="nav-link">タブ3</a>--}}
+{{--            --}}{{--                </li>--}}
+{{--            --}}{{--                <li class="nav-item">--}}
+{{--            --}}{{--                    <a class="nav-link">タブ4</a>--}}
+{{--            --}}{{--                </li>--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+{{--</nav>--}}
 <div id="loading" style="display: none;"><img src="{{asset("img/common/loading.gif")}}"></div>
 <div id="main-container">
     <div id="photo-cards" class="">
@@ -322,10 +322,10 @@
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
                                     // '                    <div class="card">\n' +
-                                    '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
+                                    '                        <a href="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" data-lity="data-lity"><img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
-                                    '                        </div>\n';
+                                    '                        </div></a>\n';
                                 if (user_info.user_id == data.photos[key].user_info.user_id) {
                                     photo_list_elements +=
                                         '                    <a href="#" onclick="deletePhoto(' + data.photos[key].photo_id + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
@@ -406,10 +406,10 @@
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
                                     // '                    <div class="card">\n' +
-                                    '                        <img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
+                                    '                        <a href="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" data-lity="data-lity"><img class="card-img-top" src="data:' + data.photos[key].mime_type + ';base64,' + data.photos[key].photo_base64 + '" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon" src="data:' + data.photos[key].user_info.user_icon_mime_type + ';base64,' + data.photos[key].user_info.user_icon_base64 + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
-                                    '                        </div>\n';
+                                    '                        </div></a>\n';
                                 if (user_info.user_id == data.photos[key].user_info.user_id) {
                                     photo_list_elements +=
                                         '                    <a href="#" onclick="deletePhoto(' + data.photos[key].photo_id + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
@@ -506,7 +506,7 @@
                 var photo_data = "";
             }
 
-            iziToast.info({message: '写真をアップロードしています...', position: 'bottomCenter',});
+            // iziToast.info({message: '写真をアップロードしています...', position: 'bottomCenter',});
             $.each(photo_data, function (index, val) {
                 if (val !== "") {
                     console.log('val:', val);
@@ -535,7 +535,7 @@
                         .done(
                             (data) => {
                                 console.log(data);
-                                iziToast.success({message: '写真のアップロードに成功しました。', position: 'bottomCenter',});
+                                // iziToast.success({message: '写真のアップロードに成功しました。', position: 'bottomCenter',});
                                 getPhotos();
                             }
                         )
@@ -563,51 +563,55 @@
         }
 
         function deletePhoto(delete_target_id) {
-            console.log(delete_target_id);
-            $.ajax(
-                {
+            var res = confirm("削除しますか？");
+            if( res == true ) {
+                console.log(delete_target_id);
+                $.ajax(
+                    {
                         url: '/api/uploader/photo-delete',
                         type:'POST',
                         dataType: 'json',
                         timeout:3000,
-                    headers: {
-                        'X-User-Token': user_info.token,
-                        'X-User-Token-Sec': user_info.token_sec,
-                    },
-                    data : {"delete_target_id" : delete_target_id},
-                    beforeSend: function () {
-                        // $("#loading").css("display", "block");
-                        upload_status = false;
-                    },
-                }
-            )
-                // Ajaxリクエストが成功した時発動
-                .done(
-                    (data) => {
-                        console.log(data);
-                        iziToast.success({message: '写真の削除に成功しました。', position: 'bottomCenter',});
-                        photoDeleteEvent(delete_target_id);
+                        headers: {
+                            'X-User-Token': user_info.token,
+                            'X-User-Token-Sec': user_info.token_sec,
+                        },
+                        data : {"delete_target_id" : delete_target_id},
+                        beforeSend: function () {
+                            // $("#loading").css("display", "block");
+                            upload_status = false;
+                        },
                     }
                 )
-                // Ajaxリクエストが失敗した時発動
-                .fail(
-                    (data) => {
-                        console.log(data);
-                        iziToast.error({message: '写真の削除に失敗しました。', position: 'bottomCenter',});
-                        if (data.status == "unauthorized") {
-                            window.location.href = '/login';
+                    // Ajaxリクエストが成功した時発動
+                    .done(
+                        (data) => {
+                            console.log(data);
+                            iziToast.success({message: '写真の削除に成功しました。', position: 'bottomCenter',});
+                            photoDeleteEvent(delete_target_id);
                         }
-                    }
-                )
-                // Ajaxリクエストが成功・失敗どちらでも発動
-                .always(
-                    (data) => {
-                        document.getElementById("camera-input").value = "";
-                        document.getElementById("photo-add-input").value = "";
-                        // $("#loading").css("display", "none");
-                        upload_status = true;
-                    }
-                );
+                    )
+                    // Ajaxリクエストが失敗した時発動
+                    .fail(
+                        (data) => {
+                            console.log(data);
+                            iziToast.error({message: '写真の削除に失敗しました。', position: 'bottomCenter',});
+                            if (data.status == "unauthorized") {
+                                window.location.href = '/login';
+                            }
+                        }
+                    )
+                    // Ajaxリクエストが成功・失敗どちらでも発動
+                    .always(
+                        (data) => {
+                            document.getElementById("camera-input").value = "";
+                            document.getElementById("photo-add-input").value = "";
+                            // $("#loading").css("display", "none");
+                            upload_status = true;
+                        }
+                    );
+            }
+
         }
 
         function photoDeleteEvent(delete_target_id){

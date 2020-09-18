@@ -9,9 +9,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">イベントアルバム</a>
             </li>
-            {{--            <li class="nav-item">--}}
-            {{--                <a class="nav-link active">ユーザーアルバム</a>--}}
-            {{--            </li>--}}
+                        <li class="nav-item">
+                            <a class="nav-link active">ユーザーアルバム</a>
+                        </li>
             {{--                <li class="nav-item">--}}
             {{--                    <a class="nav-link">タブ3</a>--}}
             {{--                </li>--}}

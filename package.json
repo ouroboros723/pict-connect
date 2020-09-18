@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "bootcards": "^1.1.2",
+        "install": "^0.13.0",
         "izitoast": "^1.4.0",
         "laravel-echo": "^1.6.1",
         "laravel-echo-server": "^1.6.2",

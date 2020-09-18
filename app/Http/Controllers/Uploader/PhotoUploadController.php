@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Photo;
 use App\Events\PublicEvent;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoUploadController extends Controller
 {
