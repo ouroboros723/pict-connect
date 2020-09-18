@@ -85,7 +85,7 @@ class TwitterController extends Controller
     {
         // ログアウト処理
         Auth::logout();
-        return redirect('/login');
+        return redirect('/login?pass_code=bskw4sQXYz7AW3xNk6QNMkQMGhkMxN');
     }
 
     private function _putProfileImage($userid, $photo_url)
