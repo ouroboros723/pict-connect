@@ -166,12 +166,12 @@
                                                                                                accept="image/*"
                                                                                                capture><label
             for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
-    <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input {{--multiple--}}
+    <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input multiple
                                                                                                   id="photo-add-input"
                                                                                                   class="photo-input-hidden"
                                                                                                   type="file"
-                                                                                                  name="image[]"
-                                                                                                  accept="image/jpeg, image/png"><label
+                                                                                                  name="image"
+                                                                                                  accept="image/*"><label
             for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
 
     <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
@@ -510,15 +510,17 @@
             }
 
             // iziToast.info({message: '写真をアップロードしています...', position: 'bottomCenter',});
-            $.each(photo_data, function (index, val) {
-                console.log('val:', val);
-                if (val !== "") {
-                    fd.append("photo_data", val);
-                }
-            });
+// debugger
+            console.log('photo_data:', photo_data);
 
             //todo: このappend部分をループさせるようにする
             //(key(form name), data) 複数渡すときはここを拡張
+
+            var imgobj = [];
+            for (i = 0; i < photo_data.length; i++) {
+                fd.append('photo_data[' + i + ']', photo_data[i]);
+            }
+            // fd.append("photo_data", imgobj);
             fd.append("event_id", "1");
 
             $.ajax(

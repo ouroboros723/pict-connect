@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Photo;
 use App\Events\PublicEvent;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PhotoUploadController extends Controller
 {
@@ -40,17 +41,19 @@ class PhotoUploadController extends Controller
 
         $store_dir = 'photos/' . $screen_name . '/' . $today;
 
-//        dd($_FILES);
+//        dd($request->file('photo_data'));
         //TODO: ここをforeachで回す。
-        $stored_path = $request->file('photo_data')->store($store_dir);
+        foreach ($request->file('photo_data') as $value) {
+            $stored_path = Storage::putFileAs($store_dir, $value, Str::random());
+            Photo::create(
+                [
+                    'user_id' => $user_id,
+                    'event_id' => $event_id,
+                    'store_path' => $stored_path,
+                ]
+            );
+        }
 
-        Photo::create(
-            [
-                'user_id' => $user_id,
-                'event_id' => $event_id,
-                'store_path' => $stored_path,
-            ]
-        );
 
         event(new PublicEvent());
         return response()->json(['status' => 'success'], 200);

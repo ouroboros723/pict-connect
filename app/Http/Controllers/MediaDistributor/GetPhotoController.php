@@ -36,14 +36,14 @@ class GetPhotoController extends Controller
             $photos = Photo::where('event_id', $event_id)
                 ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
-                ->limit('30')
+                ->limit('20')
                 ->get();
         } else {
             $photos = Photo::where('event_id', $event_id)
                 ->where('photo_id', '>', $last_photo_id)
                 ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
-                ->limit('30')
+                ->limit('20')
                 ->get();
         }
 
@@ -162,7 +162,7 @@ class GetPhotoController extends Controller
                 ->where('photo_id', '<', $begin_photo_id)
                 ->where('deleted_at', null)
                 ->orderBy('photo_id', 'desc')
-                ->limit('30')
+                ->limit('20')
                 ->get();
         }
 
