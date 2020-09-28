@@ -4442,6 +4442,11 @@ lodash.isarray@^3.0.0:
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
   integrity sha1-eeTriMNqgSKvhvhEqpvNhRtfu1U=
 
+lodash.isundefined@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.isundefined/-/lodash.isundefined-3.0.1.tgz#23ef3d9535565203a66cefd5b830f848911afb48"
+  integrity sha1-I+89lTVWUgOmbO/VuDD4SJEa+0g=
+
 lodash.keys@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
@@ -7213,6 +7218,13 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+unsupported@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/unsupported/-/unsupported-1.1.0.tgz#c58789af28a0e3fb45ccb2734a30add149a7f4dc"
+  integrity sha1-xYeJryig4/tFzLJzSjCt0Umn9Nw=
+  dependencies:
+    lodash.isundefined "^3.0.1"
 
 upath@^1.1.1:
   version "1.1.2"
