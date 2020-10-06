@@ -14,3 +14,10 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Route::get('/event-lib', function(){
+
+    broadcast(new \App\Events\PublicEvent());
+    return 'public';
+
+});

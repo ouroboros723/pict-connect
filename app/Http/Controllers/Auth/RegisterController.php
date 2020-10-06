@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Model\SnsIdList;
+use App\Model\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
     /*
@@ -28,15 +34,20 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        if ($request->pass_code !== 'bskw4sQXYz7AW3xNk6QNMkQMGhkMxN') {
+            echo "Unauthorize";
+            exit;
+        }
+
         $this->middleware('guest');
     }
 
@@ -49,24 +60,38 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'screen_name' => ['required', 'string', 'max:255'],
+            'view_name' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_icon' => ['bail','mimes:jpeg,bmp,png,gif'],
         ]);
     }
 
+
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
+     * @param array $data
+     * @return mixed
      */
     protected function create(array $data)
     {
+//        dd($data);
+
+//        $store_dir = 'user-icon/'.$data['screen_name'];
+//        $stored_path = $request->file('user_icon')->store($store_dir);
+
+
+        //user_id重複対策(オートインクリメント)
+        $next_user_id = User::maxOrigUserID() + 1;
+
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'user_id' => $next_user_id,
+            'screen_name' => $data['screen_name'],
+            'view_name' => $data['view_name'],
             'password' => Hash::make($data['password']),
+            'token' => User::makeToken(),
+            'token_sec' => User::makeToken(),
+//            'user_icon_path' => $stored_path,
+            'is_from_sns' => 0,
         ]);
     }
 }

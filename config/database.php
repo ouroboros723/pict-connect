@@ -117,6 +117,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'predis'),
+            'prefix' => env('REDIS_PREFIX', ''),
         ],
 
         'default' => [
