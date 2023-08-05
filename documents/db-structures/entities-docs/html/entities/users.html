@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+		<title>テーブル定義書&#32;pict-connect</title>
+		<link rel="stylesheet" href="a5m2.css">
+	</head>
+	<body>
+	<table border="1">
+		<caption>エンティティ情報</caption>
+			<colgroup>
+				<col width="115">
+				<col width="180">
+				<col width="115">
+				<col width="180">
+			</colgroup>
+			<th>システム名</th>
+			<td>pict-connect&nbsp;</td>
+			<th>作成者</th>
+			<td>Tatsuya&#32;Ootani&#32;-&#32;Oolong&nbsp;</td>
+		</tr>
+		<tr>
+			<th>サブシステム名</th>
+			<td>&nbsp;</td>
+			<th>作成日</th>
+			<td>2023/08/05&nbsp;</td>
+		</tr>
+		<tr>
+			<th>スキーマ名</th>
+			<td>&nbsp;</td>
+			<th>更新日</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<th>論理エンティティ名</th>
+			<td>ユーザー&nbsp;</td>
+			<th>タグ&nbsp;</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<th>物理エンティティ名</th>
+			<td>users&nbsp;</td>
+			<th>&nbsp;</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="4"><b>備考</b><br></td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>カラム情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="120">
+				<col width="100">
+				<col width="60">
+				<col width="60">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>論理名</th>
+			<th>物理名</th>
+			<th>データ型</th>
+			<th>Not Null</th>
+			<th>デフォルト</th>
+			<th>備考</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td>ユーザーid</td>
+			<td>user_id</td>
+			<td>bigint&#32;unsigned</td>
+			<td>Yes (PK)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">2</td>
+			<td>ScreenName</td>
+			<td>screen_name</td>
+			<td>varchar(255)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">3</td>
+			<td>表示名</td>
+			<td>view_name</td>
+			<td>varchar(255)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">4</td>
+			<td>パスワード(ハッシュ化済み)</td>
+			<td>password</td>
+			<td>varchar(255)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td>SNSログインの場合は任意</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">5</td>
+			<td>ユーザーアイコンのパス</td>
+			<td>user_icon_path</td>
+			<td>text</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td>任意</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">6</td>
+			<td>認証トークン</td>
+			<td>token</td>
+			<td>text</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td>自動生成</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">7</td>
+			<td>認証トークン(sec)</td>
+			<td>token_sec</td>
+			<td>text</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td>自動生成</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">8</td>
+			<td>rememberトークン</td>
+			<td>remember_token</td>
+			<td>varchar(100)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td>Laravel標準&#32;自動生成</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">9</td>
+			<td>備考</td>
+			<td>description</td>
+			<td>text</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">10</td>
+			<td>SNSログインを利用して登録したユーザーか？</td>
+			<td>is_from_sns</td>
+			<td>tinyint</td>
+			<td>Yes</td>
+			<td>0</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">11</td>
+			<td>メールアドレス</td>
+			<td>email</td>
+			<td>varchar(255)</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">12</td>
+			<td>作成日時</td>
+			<td>created_at</td>
+			<td>datetime</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">13</td>
+			<td>更新日時</td>
+			<td>updated_at</td>
+			<td>datetime</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">14</td>
+			<td>削除日時</td>
+			<td>deleted_at</td>
+			<td>datetime</td>
+			<td>&nbsp;</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>インデックス情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="170">
+				<col width="230">
+				<col width="60">
+				<col width="100">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>インデックス名</th>
+			<th>カラムリスト</th>
+			<th>ユニーク</th>
+			<th>オプション</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td>users_user_id_uindex</td>
+			<td>user_id</td>
+			<td>制約</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>リレーションシップ情報</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="160">
+				<col width="120">
+				<col width="160">
+			</colgroup>
+			<th>No.</th>
+			<th>動詞句</th>
+			<th>カラムリスト</th>
+			<th>参照先</th>
+			<th>参照先カラムリスト</th>
+		</tr>
+	</table>
+
+<br>
+<br>
+	<table border="1">
+		<caption>リレーションシップ情報(PK側)</caption>
+			<colgroup>
+				<col width="30">
+				<col width="120">
+				<col width="160">
+				<col width="120">
+				<col width="160">
+			</colgroup>
+		<tr>
+			<th>No.</th>
+			<th>動詞句</th>
+			<th>カラムリスト</th>
+			<th>参照元</th>
+			<th>参照元カラムリスト</th>
+		</tr>
+		<tr>
+			<td style="text-align:right;">1</td>
+			<td></td>
+			<td>user_id</td>
+			<td>album_access_authorities</td>
+			<td>authorized_user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">2</td>
+			<td></td>
+			<td>user_id</td>
+			<td>photo_reactions</td>
+			<td>reaction_user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">3</td>
+			<td></td>
+			<td>user_id</td>
+			<td>photo_comments</td>
+			<td>author_user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">4</td>
+			<td></td>
+			<td>user_id</td>
+			<td>event_participants</td>
+			<td>user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">5</td>
+			<td></td>
+			<td>user_id</td>
+			<td>events</td>
+			<td>event_admin_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">6</td>
+			<td></td>
+			<td>user_id</td>
+			<td>photos</td>
+			<td>user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">7</td>
+			<td></td>
+			<td>user_id</td>
+			<td>album_masters</td>
+			<td>user_id</td>
+		</tr>
+		<tr>
+			<td style="text-align:right;">8</td>
+			<td></td>
+			<td>user_id</td>
+			<td>sns_id_lists</td>
+			<td>pc_user_id</td>
+		</tr>
+	</table>
+
+
+	</body>
