@@ -1,5 +1,12 @@
 ドキュメント準備中...
 
+#　動作に必要なもの
+- node.js（Ver.18 LTS）
+- yarn（npmは取り敢えず非推奨とします）
+- GNU Make
+- Docker
+- docker-compose
+
 # セットアップ方法
 - `.env.example` を `.env` という名前でコピーします。
   - Twitterログインを使用するには、APIキーを取得して.envにセットする必要があります。
