@@ -37,6 +37,7 @@
         "material-dashboard": "^2.1.0",
         "muuri": "^0.9.1",
         "npm-cli": "^0.1.0",
+        "npmlog": "4.1.2",
         "slick-carousel": "^1.8.1",
         "slick-slider": "^1.8.2",
         "socket.io-client": "^2.3.0",
