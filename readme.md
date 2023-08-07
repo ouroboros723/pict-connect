@@ -6,6 +6,7 @@
 - GNU Make
 - Docker
 - docker-compose
+- laravel-echo-server
 
 # セットアップ方法
 - `.env.example` を `.env` という名前でコピーします。
