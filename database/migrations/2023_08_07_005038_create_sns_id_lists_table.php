@@ -13,15 +13,18 @@ class CreateSnsIdListsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('sns_id_lists', function(Blueprint $table)
-		{
-			$table->bigInteger('pc_user_id')->unsigned()->unique('sns_id_lists_pc_user_id_uindex');
-			$table->bigInteger('sns_id');
-			$table->boolean('sns_type');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('deleted_at')->nullable();
-		});
+        DB::transaction(function (){
+            Schema::create('sns_id_lists', function(Blueprint $table) {
+
+                    $table->bigInteger('pc_user_id')->unsigned()->unique('sns_id_lists_pc_user_id_uindex')->comment('pict_connectユーザーid');
+                    $table->bigInteger('sns_id')->comment('連携先SNSid');
+                    $table->boolean('sns_type')->comment('SNS種別');
+                    $table->dateTime('created_at')->nullable()->comment('作成日時');
+                    $table->dateTime('updated_at')->nullable()->comment('更新日時');
+                    $table->dateTime('deleted_at')->nullable()->comment('削除日時');
+            });
+            DB::statement("ALTER TABLE sns_id_lists COMMENT 'SNSidリスト'");
+        });
 	}
 
 

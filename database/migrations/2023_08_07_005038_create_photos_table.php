@@ -13,17 +13,23 @@ class CreatePhotosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('photos', function(Blueprint $table)
-		{
-			$table->bigInteger('photo_id', true)->unsigned();
-			$table->bigInteger('user_id')->nullable();
-			$table->bigInteger('event_id')->nullable();
-			$table->text('store_path')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('deleted_at')->nullable();
-		});
-	}
+        DB::transaction(function () {
+            Schema::create('photos', function(Blueprint $table)
+            {
+
+                $table->bigInteger('photo_id', true)->unsigned()->comment('写真id');
+                $table->bigInteger('user_id')->nullable()->comment('投稿ユーザーid');
+                $table->bigInteger('event_id')->nullable()->comment('イベントid');
+                $table->text('store_path')->nullable()->comment('写真保存パス');
+                $table->dateTime('created_at')->nullable()->comment('作成日時');
+                $table->dateTime('updated_at')->nullable()->comment('更新日時');
+                $table->dateTime('deleted_at')->nullable()->comment('削除日時');
+            });
+
+            DB::statement("ALTER TABLE photos COMMENT '写真'");
+        });
+
+    }
 
 
 	/**

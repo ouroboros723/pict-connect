@@ -3,11 +3,9 @@
 namespace App\Model;
 
 use Exception;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-//使用予定
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable;
 
 /**
  * App\Model\User
@@ -45,11 +43,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserIconPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereViewName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends BaseModel
 {
     use Notifiable;
+    use Authenticatable;
+    use SoftDeletes;
 
     protected $table = "users";
     protected $primaryKey = "user_id";

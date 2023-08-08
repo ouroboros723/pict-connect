@@ -5,7 +5,28 @@ namespace {{ namespace }};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class {{ class }} extends Model
+class {{ class }} extends BaseModel
 {
-    use HasFactory;
+    // todo: if have factories, this use.
+    //use HasFactory;
+
+    use SoftDeletes;
+
+    protected $table = ''; // table name.
+    protected $primaryKey = ''; // primary key name.
+
+    protected $guarded = [
+        'created_at',
+        'updated_at',
+    ];
+
+    // setting casts.
+    protected $casts = [
+
+    ];
+
+    // setting hidden data columns. (option)
+    protected $hidden = [
+
+    ];
 }

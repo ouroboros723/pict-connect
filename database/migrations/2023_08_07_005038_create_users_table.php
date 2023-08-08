@@ -13,23 +13,26 @@ class CreateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
-		{
-			$table->bigInteger('user_id')->unsigned()->unique('users_user_id_uindex');
-			$table->string('screen_name')->nullable();
-			$table->string('view_name')->nullable();
-			$table->string('password')->nullable();
-			$table->text('user_icon_path')->nullable();
-			$table->text('token')->nullable();
-			$table->text('token_sec')->nullable();
-			$table->string('remember_token', 100)->nullable();
-			$table->text('description')->nullable();
-			$table->boolean('is_from_sns')->default(0);
-			$table->string('email')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('deleted_at')->nullable();
-		});
+        DB::transaction(function (){
+            Schema::create('users', function(Blueprint $table)
+            {
+                $table->bigInteger('user_id')->unsigned()->unique('users_user_id_uindex')->comment('ユーザーid');
+                $table->string('screen_name')->nullable()->comment('ScreenName');
+                $table->string('view_name')->nullable()->comment('表示名');
+                $table->string('password')->nullable()->comment('パスワード(ハッシュ化済み)');
+                $table->text('user_icon_path')->nullable()->comment('ユーザーアイコンのパス');
+                $table->text('token')->nullable()->comment('認証トークン');
+                $table->text('token_sec')->nullable()->comment('認証トークン(sec)');
+                $table->string('remember_token', 100)->nullable()->comment('rememberトークン');
+                $table->text('description')->nullable()->comment('備考');
+                $table->boolean('is_from_sns')->default(0)->comment('SNSログインを利用して登録したユーザーか？');
+                $table->string('email')->nullable()->comment('メールアドレス');
+                $table->dateTime('created_at')->nullable()->comment('作成日時');
+                $table->dateTime('updated_at')->nullable()->comment('更新日時');
+                $table->dateTime('deleted_at')->nullable()->comment('削除日時');
+            });
+            DB::statement("ALTER TABLE users COMMENT 'ユーザー'");
+        });
 	}
 
 
