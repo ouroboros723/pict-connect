@@ -5,7 +5,7 @@ namespace App\Model;
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Model\User
@@ -48,10 +48,9 @@ use Illuminate\Auth\Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-class User extends BaseModel
+class User extends Authenticatable
 {
     use Notifiable;
-    use Authenticatable;
     use SoftDeletes;
 
     protected $table = "users";
