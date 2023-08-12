@@ -110,13 +110,14 @@
         アプリをインストールする
     </button>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav id="title-nav" class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     @if (Route::getCurrentRoute()->uri() === 'user/edit')
-                        <b>←</b>
+                        <b><</b>
+                        <a id="app-title" class="navbar-brand" href="#">ユーザー設定</a>
                     @else
-                        {{ config('app.name', 'Laravel') }}
+                        <span style="color: whitesmoke">{{ config('app.name', 'Laravel') }}</span>
                     @endif
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
