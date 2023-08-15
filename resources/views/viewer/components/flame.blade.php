@@ -63,13 +63,15 @@
             media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
         />
 
-        <title>{{Config::get('app.name')}}</title>{{--TODO:configでサイト・ページタイトルが読み込まれるようにする--}}
+        <title>{{Config::get('app.name')}}</title>
     </head>
 @endsection
 
 @section('header')
     <nav id="title-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
-        <a id="app-title" class="navbar-brand" href="#">{{Config::get('app.name')}}</a>
+        <span id="app-title" class="navbar-brand">
+            {{Config::get('app.name')}}
+        </span>
         <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
             <div class="list-group">
                 <a href="/user/edit" class="list-group-item list-group-item-action">ユーザー設定</a>
@@ -135,6 +137,9 @@
         });
     $(function () {
         $('#user-icon').popover({'html': true});
+        $('#app-title').on('click', () => {
+            $('#main-container').animate({scrollTop: 0}, 200);
+        });
     });
     </script>
 @endsection
