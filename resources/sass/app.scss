@@ -374,27 +374,10 @@ button {
     margin: 20px 0;
 }
 
-#register-box {
-    width: 400px;
-    height: 69.69px;
-    text-align: center;
-    background-color: gray;
-    line-height: 69.69px;
-    a {
-        width: 100%;
-        height: 100%;
-        display: block;
-    }
-
-    a:hover{
-        text-decoration: none;
-    }
-}
-
-#twitter-login-box {
+.other-login-box {
     width: 400px;
     max-width: 70%;
-    margin: 20px auto;
+    margin-bottom: 20px;
 }
 
 #title-nav {
