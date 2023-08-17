@@ -11,6 +11,9 @@
 
 @import "~lity/dist/lity.min.css";
 
+// global settings
+$header-height: 45px;
+
 body {
     touch-action: manipulation;
     //height: 100vh !important;
@@ -22,11 +25,12 @@ input.form-control {
 }
 
 #main-container {
-    height: calc(100vh - 55px);
+    height: calc(100vh - $header-height);
     width: 100vw;
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
+    padding-top: 2%;
     padding-bottom: 70px;
 }
 
@@ -141,6 +145,7 @@ input.form-control {
     bottom: 0;
     width: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    border-radius: 3px;
 }
 
 #photo-cards .card-body img {
@@ -167,13 +172,13 @@ input.form-control {
 
 @media screen and (max-width: 699px) {
     #photo-cards {
-        padding-bottom: 80px !important;
+        //padding-bottom: 80px !important;
     }
 }
 
 @media screen and (min-width: 700px) {
     #photo-cards {
-        width: 90%;
+        width: 98%;
         display: block;
         margin: 0 auto;
         //padding: 0;
@@ -222,8 +227,8 @@ button {
         position: relative;
         width: calc(100% / 2 - 10px);
         display: inline-block;
-        float: left;
-        margin: 5px;
+        //float: left;
+        margin: 2px 5px;
         padding: 0 !important;
     }
     .photo-cell:before {
@@ -261,8 +266,8 @@ button {
         position: relative;
         width: calc(100% / 3 - 10px);
         display: inline-block;
-        float: left;
-        margin: 5px;
+        //float: left;
+        margin: 2px 5px;
         padding: 0 !important;
     }
     .photo-cell:before {
@@ -300,8 +305,8 @@ button {
         position: relative;
         width: calc(100% / 6 - 10px);
         display: inline-block;
-        float: left;
-        margin: 5px;
+        //float: left;
+        margin: 2px 5px;
         padding: 0 !important;
     }
     .photo-cell:before {
@@ -383,7 +388,7 @@ button {
 #title-nav {
     position: relative;
     display: block;
-    height: 45px;
+    height: $header-height;
     background-color: #3490dc;
     box-shadow: gainsboro  0 5px 2px ;
 }
@@ -393,6 +398,7 @@ button {
 }
 #user-icon img {
     width: 30px !important;
+    border-radius: 3px;
 }
 
 #app-title {
@@ -472,7 +478,7 @@ main .container {
     //}
 }
 
-//.card-img-top {
+.card-img-top {
 //    position: absolute;
 //    width: 100%;
 //    height: 100%;
@@ -482,7 +488,8 @@ main .container {
 //    //left: 0;
 //    //margin: auto;
 //    object-fit: cover;
-//}
+    border-radius: 3px;
+}
 
 #event-lib-slideshow {
     overflow: hidden;
