@@ -79,8 +79,8 @@ class TwitterController extends Controller
         }
 
         Auth::login($user);
-        Cookie::queue(Cookie::make('X-User-Token', $user->token));
-        Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec));
+        Cookie::queue(Cookie::make('X-User-Token', $user->token, 2147483647));
+        Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec, 2147483647));
 
         return redirect('/');
     }

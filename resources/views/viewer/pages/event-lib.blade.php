@@ -218,7 +218,7 @@
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
                                     // '                    <div class="card">\n' +
-                                    '                        <a href="/api/media/photo/' + data.photos[key].photo_id + '" data-lity="data-lity"><img class="card-img-top lazyload" data-src="/api/media/photo/' + data.photos[key].photo_id + '/thumbnail" />\n' +
+                                    '                        <a href="/api/media/photo/' + data.photos[key].photo_id + '" data-lity="data-lity"><img class="card-img-top lazyload" src="/img/common/photoloading.gif" data-src="/api/media/photo/' + data.photos[key].photo_id + '/thumbnail" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon lazyload" data-src="/api/media/profile-icon/' + data.photos[key].user_info.user_id + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
                                     '                        </div></a>\n';
@@ -236,7 +236,9 @@
                             $("#photo-list-top").after(
                                 photo_list_elements
                             );
-                            $("img.lazyload").lazyload();
+                            $("img.lazyload").lazyload({
+                                placeholder: '/img/common/photoloading.gif',
+                            });
                         }
                     )
                     // Ajaxリクエストが失敗した時発動

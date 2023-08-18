@@ -77,8 +77,8 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            Cookie::queue(Cookie::make('X-User-Token', Auth::User()->token));
-            Cookie::queue(Cookie::make('X-User-Token-Sec', Auth::User()->token_sec));
+            Cookie::queue(Cookie::make('X-User-Token', Auth::User()->token, 2147483647));
+            Cookie::queue(Cookie::make('X-User-Token-Sec', Auth::User()->token_sec, 2147483647));
             return $this->sendLoginResponse($request);
         }
 
