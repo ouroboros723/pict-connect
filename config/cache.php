@@ -99,4 +99,13 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
 
+    'photo' => [
+        'thumbnail' => [
+            'max-age' => env('PHOTO_CACHE_THUMBNAIL_MAX_AGE', 259200),
+        ],
+        'full' => [
+            'max-age' => env('PHOTO_CACHE_FULL_PREVIEW_MAX_AGE', 259200),
+        ],
+    ]
+
 ];

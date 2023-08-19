@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\MediaDistributor;
 
+use Config;
 use File;
 use http\Env\Response;
 use Illuminate\Http\JsonResponse;
@@ -172,7 +173,9 @@ class GetPhotoController extends Controller
         $photo = Photo::wherePhotoId($photo_id)->firstOrFail();
 
         if (File::exists(storage_path() . '/app/' . $photo->store_path) && !empty($photo->store_path)) {
-            return Storage::response($photo->store_path);
+            return Storage::response($photo->store_path, null, [
+                'Cache-Control' => 'max-age='.Config::get('cache.photo.full.max-age').', private',
+            ]);
         }
         return Redirect::to('/img/common/photos.png');
     }
@@ -195,7 +198,9 @@ class GetPhotoController extends Controller
         $photo = Photo::wherePhotoId($photo_id)->firstOrFail();
 
         if (File::exists(storage_path() . '/app/thumbnails/' . $photo->store_path) && !empty($photo->store_path)) {
-            return Storage::response('thumbnails/' . $photo->store_path);
+            return Storage::response('thumbnails/' . $photo->store_path, null, [
+                'Cache-Control' => 'max-age='.Config::get('cache.photo.thumbnail.max-age').', private',
+            ]);
         }
         return Redirect::to('/img/common/photos.png');
     }
