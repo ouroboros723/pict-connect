@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div id="login-card" class="card">
                     <div class="card-header">{{ __('ログイン') }}</div>
 
                     <div class="card-body">
@@ -73,8 +73,13 @@
 {{--    TwitterAPIサスペンドに付き無効化--}}
     <div class="container">
         <div class="row justify-content-center">
-            <div id="twitter-login-box">
-                <a href="/login/twitter"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterボタン"></a>
+            <div id="register-box" class="other-login-box">
+                <a href="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}"><img src="{{asset('/img/login/new_regist_button.png')}}" alt="新規登録ボタン"></a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div id="twitter-login-box" class="other-login-box">
+                <a href="/login/twitter"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterログイン"></a>
             </div>
         </div>
     </div>

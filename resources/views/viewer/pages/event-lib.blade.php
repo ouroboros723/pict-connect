@@ -110,17 +110,17 @@
             setTimeout(function () {
                 window.Echo.channel('event-lib')
                     .listen('PublicEvent', (e) => {
-                        console.log(e.message);
+                        // console.log(e.message);
                         if (e.message === 'new_photo_posted' && ajax_status) {
                             getPhotos();
                         } else if (e.message === 'photo_deleted' && ajax_status) {
-                            console.log(e.delete_target_id);
+                            // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
                     }).listen('PhotoDeleteEvent', (e) => {
                         alert();
                         if (e.message === 'photo_deleted') {
-                            console.log(e.delete_target_id);
+                            // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
                     });
@@ -137,17 +137,17 @@
         $(document).ready(function () {
             window.Echo.channel('event-lib')
                 .listen('PublicEvent', (e) => {
-                    console.log(e.message);
+                    // console.log(e.message);
                     if (e.message === 'new_photo_posted' && ajax_status) {
                         getPhotos();
                     } else if (e.message === 'photo_deleted' && ajax_status) {
-                        console.log(e.delete_target_id);
+                        // console.log(e.delete_target_id);
                         photoDeleteEvent(e.delete_target_id);
                     }
                 }).listen('PhotoDeleteEvent', (e) => {
                     alert();
                     if (e.message === 'photo_deleted') {
-                        console.log(e.delete_target_id)
+                        // console.log(e.delete_target_id)
                         photoDeleteEvent(e.delete_target_id);
                     }
                 });
@@ -202,7 +202,7 @@
                     // Ajaxリクエストが成功した時発動
                     .done(
                         (data) => {
-                            console.log(data.photos);
+                            // console.log(data.photos);
                             if (data.photos.length === 0) {
                                 return;
                             }
@@ -210,7 +210,7 @@
                             var photo_list_elements = '';
 
                             Object.keys(data.photos).forEach(function (key) {
-                                console.log(key);
+                                // console.log(key);
                                 if (photo_count == 0) {
                                     begin_photo_id = data.photos[data.photos.length - 1].photo_id;
                                 }
@@ -218,7 +218,7 @@
 
                                     '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
                                     // '                    <div class="card">\n' +
-                                    '                        <a href="/api/media/photo/' + data.photos[key].photo_id + '" data-lity="data-lity"><img class="card-img-top lazyload" data-src="/api/media/photo/' + data.photos[key].photo_id + '/thumbnail" />\n' +
+                                    '                        <a href="/api/media/photo/' + data.photos[key].photo_id + '" data-lity="data-lity"><img class="card-img-top lazyload" src="/img/common/photoloading.gif" data-src="/api/media/photo/' + data.photos[key].photo_id + '/thumbnail" />\n' +
                                     '                        <div class="card-body">\n' +
                                     '                            <img class="user-icon lazyload" data-src="/api/media/profile-icon/' + data.photos[key].user_info.user_id + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
                                     '                        </div></a>\n';
@@ -236,13 +236,45 @@
                             $("#photo-list-top").after(
                                 photo_list_elements
                             );
-                            $("img.lazyload").lazyload();
+                            $("img.lazyload").lazyload({
+                                placeholder: '/img/common/photoloading.gif',
+                            });
+
+                            // unloadと再lazyload設定の処理
+                            $('#main-container').on('scroll', function() {
+                                // 画像コンテナ内の全ての画像要素を取得
+                                let images = $('.card-img-top');
+
+                                // 画像要素ごとに処理を行う
+                                images.each(function() {
+                                    let image = $(this);
+                                    // console.log('image: ', image);
+                                    if (isOutOfViewport(image)) {
+                                        // console.log(image.attr('src')+ 'was out of viewport.')
+                                        image.attr('src', '/img/common/photoloading.gif'); // 画像を非表示
+                                        image.lazyload(); // lazyload を再設定
+                                    }
+                                });
+                            });
+
+                            // Viewport外に出たかどうかを判定する関数
+                            function isOutOfViewport($element) {
+                                let elementOffset = $element.offset();
+                                let elementHeight = $element.height();
+                                let viewportTop = $(window).scrollTop();
+                                let viewportBottom = viewportTop + $(window).height();
+
+                                return (elementOffset.top + elementHeight < viewportTop || elementOffset.top > viewportBottom);
+                            }
+
+                            // 初期表示時にも1回スクロールイベントを発火して画像表示を更新
+                            // $(window).trigger('scroll');
                         }
                     )
                     // Ajaxリクエストが失敗した時発動
                     .fail(
                         (data) => {
-                            console.log(data);
+                            // console.log(data);
                             if(data.status == "unauthorized"){
                                 window.location.href = '/login?pass_code={{\Config::get('auth.access_code')}}';
                             }
@@ -289,7 +321,7 @@
                     // Ajaxリクエストが成功した時発動
                     .done(
                         (data) => {
-                            console.log(data.photos);
+                            // console.log(data.photos);
                             if (data.photos.length === 0) {
                                 return;
                             }
@@ -297,7 +329,7 @@
                             var photo_list_elements = '';
 
                             Object.keys(data.photos).forEach(function (key) {
-                                console.log(key);
+                                // console.log(key);
                                 if (photo_count == 0) {
                                     // photo_list_elements += '<div class="row">'
                                 }
@@ -327,7 +359,7 @@
                     // Ajaxリクエストが失敗した時発動
                     .fail(
                         (data) => {
-                            console.log(data);
+                            // console.log(data);
                             if (data.status == "unauthorized") {
                                 window.location.href = '/login?pass_code={{\Config::get('auth.access_code')}}';
                             }
@@ -362,7 +394,7 @@
                     var photo_input_path = "";
                 }
 
-                console.log(photo_input_path);
+                // console.log(photo_input_path);
 
                 var element = document.getElementById("upload-confirm-dialog-trigger");
                 if (document.createEvent) {
@@ -394,12 +426,12 @@
             var fd = new FormData();
             if (document.getElementById("camera-input").value !== "") {
                 var photo_data = document.querySelector('#camera-input').files;
-                console.log(document.querySelector('#camera-input').files);
-                console.log(photo_data);
+                // console.log(document.querySelector('#camera-input').files);
+                // console.log(photo_data);
             } else if (document.getElementById("photo-add-input").value != "") {
                 var photo_data = document.querySelector('#photo-add-input').files;
-                console.log(document.querySelector('#photo-add-input').files);
-                console.log(photo_data);
+                // console.log(document.querySelector('#photo-add-input').files);
+                // console.log(photo_data);
             } else {
                 var photo_data = "";
             }
@@ -414,7 +446,7 @@
                 }
             );
 // debugger
-            console.log('photo_data:', photo_data);
+//             console.log('photo_data:', photo_data);
 
             //todo: このappend部分をループさせるようにする
             //(key(form name), data) 複数渡すときはここを拡張
@@ -438,7 +470,7 @@
                         if(XHR.upload){
                             XHR.upload.addEventListener('progress',function(e){
                                 var progre = parseInt((e.loaded/e.total*100) + 1);
-                                console.log(progre);
+                                // console.log(progre);
                                 if(progre >= 101){
                                     $('#uploading-toast .iziToast-message').text('写真を処理しています...');
                                 } else {
@@ -462,7 +494,7 @@
                 // Ajaxリクエストが成功した時発動
                         .done(
                             (data) => {
-                                console.log(data);
+                                // console.log(data);
                                 iziToast.success({message: '写真のアップロードに成功しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                                 getPhotos();
                             }
@@ -470,7 +502,7 @@
                         // Ajaxリクエストが失敗した時発動
                         .fail(
                             (data) => {
-                                console.log(data);
+                                // console.log(data);
                                 iziToast.error({message: '写真のアップロードに失敗しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                                 if (data.status == "unauthorized") {
                                     window.location.href = '/login?pass_code={{\Config::get('auth.access_code')}}';
@@ -493,7 +525,7 @@
         function deletePhoto(delete_target_id) {
             var res = confirm("削除しますか？");
             if( res == true ) {
-                console.log(delete_target_id);
+                // console.log(delete_target_id);
                 $.ajax(
                     {
                         url: '/api/uploader/photo-delete',
@@ -515,7 +547,7 @@
                     // Ajaxリクエストが成功した時発動
                     .done(
                         (data) => {
-                            console.log(data);
+                            // console.log(data);
                             iziToast.success({message: '写真の削除に成功しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                             photoDeleteEvent(delete_target_id);
                         }
@@ -523,7 +555,7 @@
                     // Ajaxリクエストが失敗した時発動
                     .fail(
                         (data) => {
-                            console.log(data);
+                            // console.log(data);
                             iziToast.error({message: '写真の削除に失敗しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                             if (data.status == "unauthorized") {
                                 window.location.href = '/login?pass_code={{\Config::get('auth.access_code')}}';

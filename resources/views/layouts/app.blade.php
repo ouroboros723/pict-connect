@@ -110,61 +110,72 @@
         アプリをインストールする
     </button>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    @if (Route::getCurrentRoute()->uri() === 'user/edit')
-                        <b>←</b>
-                    @else
-                        {{ config('app.name', 'Laravel') }}
-                    @endif
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <nav id="title-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+                @switch(Route::getCurrentRoute()->uri())
+                    @case('register')
+                        <span id="app-title" class="navbar-brand">
+                            {{Config::get('app.name')}}
+                        </span>
+                        <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
+                <div class="list-group">
+                    <a href="/login" class="list-group-item list-group-item-action">ログイン</a>
+                </div>'
+                        >
+                            <span id="guest-dropdown-icon">▼</span>
+                        </button>
+                        @break
+                    @case('login')
+                        <span id="app-title" class="navbar-brand">
+                            {{Config::get('app.name')}}
+                        </span>
+                        @break
+                    @case('user/edit')
+                    <button id="back-icon" type="button" class="btn btn-secondary" onClick="history.back()">
+                        <span><</span>
+                    </button>
+                        <span id="app-title" class="navbar-brand">
+                            {{Config::get('app.name')}}
+                        </span>
+                        <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='{{"
+                    <div class=\"list-group\">
+                                       <span id=\"menu-logout\" class=\"dropdown-item\" href=\"#\" onClick=\"event.preventDefault();document.getElementById('logout-form').submit();\">
+                                        <span>ログアウト</span>
+                                    </span>
+                    </div>"}}'
+                        >
+                            <span id="guest-dropdown-icon">▼</span>
+                        </button>
+                        @break
+                    @default
+                    <a id="app-title" class="navbar-brand" href="#">{{Config::get('app.name')}}</a>
+                    <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
+            <div class="list-group">
+                <a href="/user/edit" class="list-group-item list-group-item-action">ユーザー設定</a>
+                <a href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
+            </div>'
+                    >
+                        <img src="@if(isset($user_info['avatar']))
+                data:image/@if($user_info['avatar_ext'] === 'jpg')jpeg @else {{$user_info['avatar_ext']}}@endif;base64,{{$user_info['avatar']}}
+            @else
+                {{asset('img/common/anonman.svg')}}
+            @endif
+                " />
+                    </button>
+               @endswitch
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::getCurrentRoute()->uri() === 'login')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}">{{ __('新規登録') }}</a>
-                                </li>
-                            @else(Route::getCurrentRoute()->uri() === 'register')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}?pass_code={{Config::get('auth.access_code')}}">{{ __('ログイン') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li>
-                                <div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('ログアウト') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}?pass_code={{Config::get('auth.access_code')}}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
         </nav>
-
-        <main class="py-4">
+        <main id="main-container" class="py-4">
             @yield('content')
         </main>
     </div>
+    <form id="logout-form" action="{{ route('logout') }}?pass_code={{Config::get('auth.access_code')}}" method="POST" style="display: none;">
+        @csrf
+    </form>
+    <script>
+        $(function () {
+            $('#user-icon').popover({'html': true});
+        });
+    </script>
 </body>
 </html>
