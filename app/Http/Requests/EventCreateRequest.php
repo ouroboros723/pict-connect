@@ -24,9 +24,9 @@ class EventCreateRequest extends FormRequest
             'eventName' => ['required', 'string'],
             'eventDetail' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
-            'icon' => ['nullable', 'file', 'image'],
             'eventPeriodStart' => ['required', 'date'],
             'eventPeriodEnd' => ['required', 'date'],
+            'icon' => ['nullable', 'file', 'image'],
         ];
     }
 

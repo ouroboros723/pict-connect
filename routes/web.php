@@ -40,6 +40,7 @@ Route::middleware(['cors'])->group(function () {
         Route::view('/event-slide-show', 'viewer.pages.event-lib-slideshow');
         Route::view('/users', 'viewer.pages.user-list');
         Route::view('/user-lib', 'viewer.pages.user-lib');
+        Route::view('/event/create', 'viewer.pages.event-create');
         Route::get('/user/edit', 'Viewer\UserEditController@show');
         Route::post('/user/edit', 'Viewer\UserEditController@update');
     });

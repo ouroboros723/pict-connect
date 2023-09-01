@@ -130,6 +130,7 @@
                         </span>
                         @break
                     @case('user/edit')
+                    @case('event/create')
                     <button id="back-icon" type="button" class="btn btn-secondary" onClick="history.back()">
                         <span><</span>
                     </button>
