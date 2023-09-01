@@ -22,7 +22,8 @@
         "laravel/ui": "^3.0",
         "morrislaptop/laravel-queue-clear": "*",
         "predis/predis": "*",
-        "stechstudio/laravel-zipstream": "^4.13"
+        "stechstudio/laravel-zipstream": "^4.13",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "*",
