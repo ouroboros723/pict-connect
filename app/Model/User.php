@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Exception;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,24 +11,29 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * App\Model\User
  *
- * @property int $user_id
- * @property string|null $screen_name
- * @property string|null $view_name
- * @property string|null $password
- * @property string|null $user_icon_path
- * @property string|null $token
- * @property string|null $token_sec
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property string|null $remember_token
- * @property string|null $description
- * @property bool $is_from_sns
- * @property string $email
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property int $user_id ユーザーid
+ * @property string|null $screen_name ScreenName
+ * @property string|null $view_name 表示名
+ * @property string|null $password パスワード(ハッシュ化済み)
+ * @property string|null $user_icon_path ユーザーアイコンのパス
+ * @property string|null $token 認証トークン
+ * @property string|null $token_sec 認証トークン(sec)
+ * @property string|null $remember_token rememberトークン
+ * @property string|null $description 備考
+ * @property bool $is_from_sns SNSログインを利用して登録したユーザーか？
+ * @property string|null $email メールアドレス
+ * @property \Illuminate\Support\Carbon|null $created_at 作成日時
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
+ * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\Event> $adminEvents
+ * @property-read int|null $admin_events_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\EventParticipant> $joinedEvents
+ * @property-read int|null $joined_events_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
@@ -43,7 +49,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserIconPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereViewName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
@@ -111,5 +116,24 @@ class User extends Authenticatable
     public static function maxOrigUserID()
     {
         return self::query()->max('user_id');
+    }
+
+    /*** Relations ***/
+    /**
+     * 管理しているイベント
+     * @return HasMany
+     */
+    public function adminEvents(): HasMany
+    {
+        return $this->hasMany(Event::class, 'event_admin_id', 'user_id');
+    }
+
+    /**
+     * 管理しているイベント
+     * @return HasMany
+     */
+    public function joinedEvents(): HasMany
+    {
+        return $this->hasMany(EventParticipant::class, 'user_id', 'user_id');
     }
 }
