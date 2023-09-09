@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
  * @property-read \App\Model\Event|null $event
- * @property-read \App\Model\User|null $participant
+ * @property-read \App\Model\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant onlyTrashed()
@@ -54,11 +54,12 @@ class EventParticipant extends BaseModel
         'user_id' => 'integer',
     ];
 
+    /*** Relations ***/
     /**
      * イベント参加者
      * @return BelongsTo
      */
-    public function participant(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
@@ -72,4 +73,16 @@ class EventParticipant extends BaseModel
         return $this->belongsTo(Event::class, 'event_id', 'event_id');
     }
 
+    /*** Methods ***/
+    /**
+     * @param int $eventId
+     * @param int $userId
+     * @return bool
+     */
+    public function joinEvent(int $eventId, int $userId): bool
+    {
+        $this->event_id = $eventId;
+        $this->user_id = $userId;
+        return $this->save();
+    }
 }

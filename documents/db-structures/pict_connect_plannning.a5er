@@ -1,7 +1,7 @@
 ﻿# A5:ER FORMAT:17
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.18.2 Copyright © 1997 - 2023 m.matsubara
+# A5:SQL Mk-2 Version 2.18.4 Copyright © 1997 - 2023 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -47,7 +47,7 @@ PName=migrations
 LName=migrations
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=50
 Top=50
 Field="id","id","int unsigned auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
@@ -56,7 +56,7 @@ Field="batch","batch","int","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-Position="Main",50,50
+Position="MAIN",50,50
 ZOrder=-1
 
 [Entity]
@@ -64,7 +64,7 @@ PName=password_resets
 LName=password_resets
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=50
 Top=250
 Field="メールアドレス","email","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
@@ -74,7 +74,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805133359
-Position="Main",50,250
+Position="MAIN",50,250
 ZOrder=-2
 
 [Entity]
@@ -82,7 +82,7 @@ PName=photos
 LName=写真
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=450
 Top=50
 Field="写真id","photo_id","bigint unsigned auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
@@ -93,7 +93,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805133444
-Position="Main",450,50
+Position="MAIN",450,50
 ZOrder=-3
 
 [Entity]
@@ -101,7 +101,7 @@ PName=sns_id_lists
 LName=SNSidリスト
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=750
 Top=150
 Field="pict_connectユーザーid","pc_user_id","bigint unsigned","NOT NULL",0,"","",$FFFFFFFF,""
@@ -112,7 +112,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805132954
-Position="Main",750,150
+Position="MAIN",750,150
 ZOrder=-4
 
 [Entity]
@@ -120,7 +120,7 @@ PName=users
 LName=ユーザー
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=1250
 Top=50
 Field="ユーザーid","user_id","bigint unsigned","NOT NULL",0,"","",$FFFFFFFF,""
@@ -139,7 +139,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805133329
-Position="Main",1250,50
+Position="MAIN",1250,50
 ZOrder=-5
 
 [Entity]
@@ -147,7 +147,7 @@ PName=album_masters
 LName=アルバムマスター
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=400
 Top=350
 Field="アルバムマスタid","album_master_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -158,7 +158,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805125036
-Position="Main",400,350
+Position="MAIN",400,350
 ZOrder=1
 
 [Relation]
@@ -230,7 +230,7 @@ PName=album_photos
 LName=アルバム-写真
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=750
 Top=500
 Field="アルバム-写真id","album_photo_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -241,7 +241,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805140422
-Position="Main",750,500
+Position="MAIN",750,500
 ZOrder=5
 
 [Relation]
@@ -291,7 +291,7 @@ PName=events
 LName=イベント
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=250
 Top=650
 Field="イベントid","event_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -303,7 +303,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805135126
-Position="Main",250,650
+Position="MAIN",250,650
 ZOrder=10
 
 [Relation]
@@ -333,7 +333,7 @@ PName=event_participants
 LName=イベント参加者
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=600
 Top=800
 Field="イベント参加者id","event_participants_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -343,7 +343,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805135546
-Position="Main",600,800
+Position="MAIN",600,800
 ZOrder=12
 
 [Relation]
@@ -393,7 +393,7 @@ PName=photo_comments
 LName=写真コメント
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=1250
 Top=550
 Field="写真コメントid","photo_comment_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -404,7 +404,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805140255
-Position="Main",1250,550
+Position="MAIN",1250,550
 ZOrder=15
 
 [Relation]
@@ -475,7 +475,7 @@ PName=photo_reactions
 LName=写真リアクション
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=1250
 Top=800
 Field="写真コメントid","photo_reaction_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -486,7 +486,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805140809
-Position="Main",1250,800
+Position="MAIN",1250,800
 ZOrder=20
 
 [Relation]
@@ -536,7 +536,7 @@ PName=album_access_authorities
 LName=アルバムアクセス権限設定
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=950
 Top=1100
 Field="アルバムアクセス権限id","album_access_authority_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
@@ -548,7 +548,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230805141538
-Position="Main",950,1100
+Position="MAIN",950,1100
 ZOrder=23
 
 [Relation]
@@ -592,3 +592,44 @@ Bar3=990
 TermPos1=R
 TermPos2=R
 ZOrder=25
+
+[Entity]
+PName=event_join_tokens
+LName=イベント参加トークン
+Comment=
+TableOption=
+Page=MAIN
+Left=200
+Top=1000
+Field="イベント参加トークンid","event_join_token_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"UNIQUE AUTO_INCREMENT"
+Field="イベントid","event_id","BIGINT UNSIGNED","NOT NULL",,"","",$FFFFFFFF,""
+Field="有効期限","expired_at","DATETIME",,,"","nullの場合は無制限",$FFFFFFFF,""
+Field="有効使用回数","limit_times","int unisgned",,,"","nullの場合は無制限",$FFFFFFFF,""
+Field="使用された回数","use_times","int unisgned",,,"","limit_timesが指定されていない場合はnull",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20230907121500
+Position="MAIN",200,1000,220,203
+ZOrder=26
+
+[Relation]
+Entity1=events
+Entity2=event_join_tokens
+RelationType1=2
+RelationType2=3
+Fields1=event_id
+Fields2=event_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,466,9444,646,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=47
+Bar2=944
+Bar3=65
+TermPos1=R
+TermPos2=R
+ZOrder=27

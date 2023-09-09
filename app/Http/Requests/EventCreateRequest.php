@@ -11,7 +11,7 @@ use Illuminate\Http\UploadedFile;
  * @property string $eventPeriodStart
  * @property string $eventPeriodEnd
  */
-class EventCreateRequest extends FormRequest
+class EventCreateRequest extends BaseFormRequest
 {
 //    public function authorize()
 //    {

@@ -38,7 +38,11 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
     });
 
     Route::prefix('event')->name('event.')->group(function() {
+        Route::get('/list/joined', 'EventsManage\EventsManageController@joinedList')->name('list.joined');
+        Route::get('/list/admin', 'EventsManage\EventsManageController@adminList')->name('list.admin');
         Route::post('/create', 'EventsManage\EventsManageController@create')->name('create');
+        Route::post('/token/create/{eventId}', 'EventsManage\EventsManageController@createJoinToken')->name('token.create');
+        Route::post('/join/{eventId}', 'EventsManage\EventsManageController@joinEvent')->name('join');
     });
 });
 

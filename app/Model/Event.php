@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon $event_period_start イベント開催期間(開始)
  * @property \Illuminate\Support\Carbon $event_period_end イベント開催期間(終了)
  * @property-read \App\Model\User|null $eventAdmin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\EventParticipant> $participants
+ * @property-read int|null $participants_count
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event onlyTrashed()
@@ -83,5 +86,14 @@ class Event extends BaseModel
     public function eventAdmin(): BelongsTo
     {
         return $this->belongsTo(User::class, 'event_admin_id', 'user_id');
+    }
+
+    /**
+     * イベント参加者
+     * @return HasMany
+     */
+    public function participants(): HasMany
+    {
+        return $this->hasMany(EventParticipant::class, 'event_id', 'event_id');
     }
 }
