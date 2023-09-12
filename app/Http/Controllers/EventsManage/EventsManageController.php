@@ -80,6 +80,17 @@ class EventsManageController extends Controller
     }
 
     /**
+     * イベント詳細
+     * @param $eventId
+     * @return JsonResponse
+     */
+    public function getEventDetail($eventId): JsonResponse
+    {
+        $event = Event::findOrFail($eventId);
+        return $this->sendResponse(array_key_camel($event->toArray()), 'ok');
+    }
+
+    /**
      * イベントの新規登録
      * @param EventCreateRequest $request
      * @return JsonResponse
