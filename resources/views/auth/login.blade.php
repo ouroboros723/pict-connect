@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="container">
+        <nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">
+            <div class="container">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active">利用者の方</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/welcome">はじめての方・写真受取り</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div id="login-card" class="card">
@@ -65,22 +77,29 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="container" style="margin-top: 20px !important;">
+                            <div class="row justify-content-center">
+                                <div id="twitter-login-box" class="other-login-box">
+                                    <a href="/login/twitter?mode=login"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterログイン"></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 {{--    TwitterAPIサスペンドに付き無効化--}}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div id="register-box" class="other-login-box">
-                <a href="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}"><img src="{{asset('/img/login/new_regist_button.png')}}" alt="新規登録ボタン"></a>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div id="twitter-login-box" class="other-login-box">
-                <a href="/login/twitter"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterログイン"></a>
-            </div>
-        </div>
-    </div>
+{{--    <div class="container">--}}
+{{--        <div class="row justify-content-center">--}}
+{{--            <div id="register-box" class="other-login-box">--}}
+{{--                <a href="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}"><img src="{{asset('/img/login/new_regist_button.png')}}" alt="新規登録ボタン"></a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="row justify-content-center">--}}
+{{--            <div id="twitter-login-box" class="other-login-box">--}}
+{{--                <a href="/login/twitter"><img src="{{asset('/img/login/twitter_button.png')}}" alt="Twitterログイン"></a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 @endsection

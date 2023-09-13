@@ -4,6 +4,7 @@
 <body>
 @yield('header')
 @yield('side-menu')
+{{--todo: メニューはユーザーアイコン部分に統一--}}
 {{--<nav id="func-menu-nav" class="navbar navbar-toggleable-md navbar-light bg-faded gnav">--}}
 {{--    <div class="container">--}}
 {{--        <ul class="nav nav-tabs">--}}

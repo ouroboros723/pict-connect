@@ -7,23 +7,26 @@ use App\Model\SnsIdList;
 use App\Model\User;
 use Cookie;
 use \File;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
-use mysql_xdevapi\Exception;
+use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwitterController extends Controller
 {
 
     // ログイン
-    public function redirectToProvider()
+    public function redirectToProvider(Request $request)
     {
+        $request->session()->put('twitterLoginMode', $request->input('mode'));
         return Socialite::driver('twitter')->redirect();
     }
 
     // コールバック
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
         try {
             $twitterUser = Socialite::driver('twitter')->user();
@@ -38,51 +41,64 @@ class TwitterController extends Controller
         } else {
             $user = User::where('user_id', $pc_user_id)->first();
         }
-        //オリジナルサイズのプロフィール画像取得
-        $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);
-        $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
-        if (!$user) {
-            DB::beginTransaction();
-            try {
-                //user_id重複対策(オートインクリメント)
-                $next_user_id = User::maxOrigUserID() + 1;
-                User::create([
-                    'user_id' => $next_user_id,
-                    'screen_name' => $twitterUser->nickname,
-                    'view_name' => $twitterUser->name,
-                    'description' => $twitterUser->user['description'],
-                    'user_icon_path' => $prof_icon_path,
-                    'token' => User::makeToken(),
-                    'token_sec' => User::makeToken(),
-                    'is_from_sns' => true,
-                ]);
-                SnsIdList::create([
-                    'pc_user_id' => $next_user_id,
-                    'sns_id' => $twitterUser->id,
-                    'sns_type' => SnsIdList::SNS_TYPE_TWITTER,
-                ]);
-                $user = User::where('user_id', $next_user_id)->first();
-            } catch (Exception $e) {
-                DB::rollBack();
-                throw $e;
-            }
-            DB::commit();
 
-        } else {
-            //Twitterの情報が変わってたら新しい情報に更新
+        $mode = $request->session()->pull('twitterLoginMode');
+        switch ($mode) {
+            case 'login':
+                //オリジナルサイズのプロフィール画像取得
+                $original_url = str_replace("_normal.", ".", $twitterUser->user['profile_image_url_https']);
+                $prof_icon_path = $this->_putProfileImage($twitterUser->id, $original_url);
+                if (!$user) {
+                    DB::beginTransaction();
+                    try {
+                        //user_id重複対策(オートインクリメント)
+                        $next_user_id = User::maxOrigUserID() + 1;
+                        User::create([
+                            'user_id' => $next_user_id,
+                            'screen_name' => $twitterUser->nickname,
+                            'view_name' => $twitterUser->name,
+                            'description' => $twitterUser->user['description'],
+                            'user_icon_path' => $prof_icon_path,
+                            'token' => User::makeToken(),
+                            'token_sec' => User::makeToken(),
+                            'is_from_sns' => true,
+                        ]);
+                        SnsIdList::create([
+                            'pc_user_id' => $next_user_id,
+                            'sns_id' => $twitterUser->id,
+                            'sns_type' => SnsIdList::SNS_TYPE_TWITTER,
+                        ]);
+                        $user = User::where('user_id', $next_user_id)->first();
+                    } catch (Exception $e) {
+                        DB::rollBack();
+                        throw $e;
+                    }
+                    DB::commit();
 
-            $user->screen_name = $twitterUser->nickname;
-            $user->view_name = $twitterUser->name;
-            $user->description = $twitterUser->user['description'];
-            $user->user_icon_path = $prof_icon_path;
-            $user->save();
+                } else {
+                    //Twitterの情報が変わってたら新しい情報に更新
+
+                    // 2023/9/13 一度登録済みの場合は更新したくないので無効化
+//                    $user->screen_name = $twitterUser->nickname;
+//                    $user->view_name = $twitterUser->name;
+//                    $user->description = $twitterUser->user['description'];
+//                    $user->user_icon_path = $prof_icon_path;
+//                    $user->save();
+                }
+
+                Auth::login($user);
+                Cookie::queue(Cookie::make('X-User-Token', $user->token, 2147483647));
+                Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec, 2147483647));
+
+                return redirect('/');
+            case 'get-photos':
+                $request->session()->put('tempLoggedInTwitterId', $twitterUser->nickname);
+                dd('ok! this is get photos.', $request->session()->get('tempLoggedInTwitterId'));
+                // todo: リダイレクト先でtwitterIdの照合(紐づく写真の検索)を行ったら'tempLoggedInTwitterId'セッションを削除
+                return redirect('/get-photos');
+            default:
+                abort(Response::HTTP_BAD_REQUEST, 'invalid_request');
         }
-
-        Auth::login($user);
-        Cookie::queue(Cookie::make('X-User-Token', $user->token, 2147483647));
-        Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec, 2147483647));
-
-        return redirect('/');
     }
 
     // ログアウト

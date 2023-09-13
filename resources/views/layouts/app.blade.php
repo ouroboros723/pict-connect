@@ -125,6 +125,7 @@
                         </button>
                         @break
                     @case('login')
+                    @case('welcome')
                         <span id="app-title" class="navbar-brand">
                             {{Config::get('app.name')}}
                         </span>
@@ -166,7 +167,7 @@
 
 
         </nav>
-        <main id="main-container" class="py-4">
+        <main id="main-container" class="py-4" style="padding-top: 0 !important;">
             @yield('content')
         </main>
     </div>

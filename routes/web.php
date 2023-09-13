@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+// はじめての方画面
+Route::view('welcome', 'welcome');
+
 // TwitterログインURL
 Route::get('login/twitter', 'Auth\TwitterController@redirectToProvider'); //標準ログインにそろえて
 // TwitterコールバックURL
