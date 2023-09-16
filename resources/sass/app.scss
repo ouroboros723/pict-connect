@@ -48,6 +48,7 @@ input.form-control {
     .container {
         margin-left: 5px;
         margin-right: 5px;
+        min-height: 54px; // ログイン画面のタブがつぶれないように
     }
 
     overflow-x: hidden;

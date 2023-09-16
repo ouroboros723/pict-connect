@@ -105,13 +105,13 @@ Page=MAIN
 Left=750
 Top=150
 Field="pict_connectユーザーid","pc_user_id","bigint unsigned","NOT NULL",0,"","",$FFFFFFFF,""
-Field="連携先SNSid","sns_id","bigint","NOT NULL",,"","Twtter:ユーザーが自由に指定できるscreen_nameではなく、一意に降られているidを登録する点に注意\n他のSNSでも同様のパラメーターがあればそれを使用する。なければユーザーidを使用する",$FFFFFFFF,""
+Field="連携先SNSid","sns_id","bigint","NOT NULL",,"","Twtter:ユーザーが自由に指定できるscreen_nameではなく、一意に降られているidを登録する点に注意\n他のSNSでも同様のパラメーターがあればそれを使用する。なければユーザーidを使用する\n必要に応じてbigint => varchar に変更",$FFFFFFFF,""
 Field="SNS種別","sns_type","tinyint","NOT NULL",,"","0: pict_connect\n1: Twitter\n2: Mastodon\n3: Misskey",$FFFFFFFF,""
 Index=sns_id_lists_pc_user_id_uindex=2,pc_user_id
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230805132954
+ModifiedDateTime=20230916185037
 Position="MAIN",750,150
 ZOrder=-4
 
@@ -235,12 +235,12 @@ Left=750
 Top=500
 Field="アルバム-写真id","album_photo_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
 Field="アルバムマスタid","album_master_id","BIGINT UNSIGNED","NOT NULL",,"","",$FFFFFFFF,""
-Field="イベントid","event_id","BIGINT UNSIGNED",,,"","マスターの情報と同期（マスタ経由で辿ってもいいが、イベントグリッドショーを出す時にリレーションやフィルタがめんどくさそうなので追加）\nない場合は個人のアルバム",$FFFFFFFF,""
+Field="イベントid","event_id","BIGINT UNSIGNED",,,"","マスターの情報と同期（マスタ経由で辿ってもいいが、イベントグリッドショーを出す時にリレーションやフィルタがめんどくさそうなので追加）\nない場合は個人のアルバムという意味",$FFFFFFFF,""
 Field="写真id","photo_id","BIGINT UNSIGNED","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230805140422
+ModifiedDateTime=20230913233044
 Position="MAIN",750,500
 ZOrder=5
 
@@ -541,13 +541,14 @@ Left=950
 Top=1100
 Field="アルバムアクセス権限id","album_access_authority_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT UNIQUE"
 Field="アルバム-写真id","album_photo_id","BIGINT UNSIGNED","NOT NULL",,"","",$FFFFFFFF,""
-Field="アクセストークン","token","varchar(255)",,,"","authorized_user_idが入っていなければ必須",$FFFFFFFF,""
-Field="承認済みユーザー","authorized_user_id","BIGINT UNSIGNED",,,"","tokenが入っていなければ必須",$FFFFFFFF,""
+Field="アクセストークン","token","varchar(255)",,,"","authorized_user_id と sns_screen_name のいずれも入っていなければ必須",$FFFFFFFF,""
+Field="連携先SNS スクリーンネーム(@hoge)","sns_screen_name","varchar(255)",,,"","token と authorized_user_id いずれも入っていなければ必須\nTwitterのscreen_name(@hoge)にあたるものを入れる",$FFFFFFFF,""
+Field="承認済みユーザー","authorized_user_id","BIGINT UNSIGNED",,,"","token と sns_screen_name いずれも入っていなければ必須",$FFFFFFFF,""
 Field="アルバム内容の変更の可否","is_writable","TINYINT(1)","NOT NULL",,"false","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230805141538
+ModifiedDateTime=20230916191752
 Position="MAIN",950,1100
 ZOrder=23
 
@@ -633,3 +634,44 @@ Bar3=65
 TermPos1=R
 TermPos2=R
 ZOrder=27
+
+[Entity]
+PName=guest_logins
+LName=ゲストログイン
+Comment=SNSのID(screen name)を使用してアルバムにアクセスする権限があるかを評価するためのテーブル
+TableOption=
+Page=Main
+Left=1500
+Top=1150
+Field="ゲストログインid","guest_login_id","BIGINT UNSIGNED","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT"
+Field="連携先SNS スクリーンネーム(@hoge)","sns_screen_name","varchar(255)","NOT NULL",,"","Twitterのscreen_name(@hoge)にあたるものを入れる",$FFFFFFFF,""
+Field="SNS種別","sns_type","TINYINT(1)","NOT NULL",,"","",$FFFFFFFF,""
+Field="認証トークン","guest_token","varchar(64)","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20230916190315
+Position="Main",1500,1150
+ZOrder=28
+
+[Relation]
+Entity1=guest_logins
+Entity2=album_access_authorities
+RelationType1=4
+RelationType2=3
+Fields1=sns_screen_name
+Fields2=sns_screen_name
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4183,5817,4267,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20230916191219
+LineMode=0
+Bar1=418
+Bar2=582
+Bar3=427
+TermPos1=R
+TermPos2=R
+ZOrder=29
