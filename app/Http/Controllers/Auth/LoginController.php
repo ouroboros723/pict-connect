@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Config;
 use Cookie;
-use http\Env\Response;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
@@ -105,6 +104,7 @@ class LoginController extends Controller
 
         Cookie::queue(Cookie::forget('X-User-Token'));
         Cookie::queue(Cookie::forget('X-User-Token-Sec'));
+        Cookie::queue(Cookie::forget('X-Guest-Token'));
 
         return $this->loggedOut($request) ?: redirect('/login?pass_code='.Config::get('auth.access_code'));
     }
