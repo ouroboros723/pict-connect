@@ -39,7 +39,9 @@ Route::middleware(['cors'])->group(function () {
     Route::group(['middleware' => 'auth'], function () {
         // web ui routes
         Route::get('/', 'Viewer\EventLibController@index');
-        Route::get('/event-grid-show', 'Viewer\EventLibController@gridShow');
+        Route::get('/event/joined', 'Viewer\EventLibController@index');
+        Route::get('/event/joined/{eventId}', 'Viewer\EventLibController@joindEvent');
+        Route::get('/event-grid-show', 'Viewer\EventLibController@index');
         Route::view('/event-slide-show', 'viewer.pages.event-lib-slideshow');
         Route::view('/users', 'viewer.pages.user-list');
         Route::view('/user-lib', 'viewer.pages.user-lib');

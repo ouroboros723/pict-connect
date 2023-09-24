@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 /**
- * @property int $lastEventParticipantsId 最後に取得したイベント参加者id(無限スクロールの続き取得用)
+ * @property int $lastEventId 最後に取得したイベントid(無限スクロールの続き取得用)
  */
 class EventJoinedListRequest extends BaseFormRequest
 {
@@ -25,14 +25,14 @@ class EventJoinedListRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'lastEventParticipantsId' => ['nullable', 'numeric', 'exists:event_participants,event_participants_id'],
+            'lastEventId' => ['nullable', 'numeric', 'exists:events,event_id'],
         ];
     }
 
     public function attributes()
     {
         return [
-            'lastEventParticipantsId' => '最後に取得したイベント参加者id(無限スクロールの続き取得用)'
+            'lastEventId' => '最後に取得したイベントid(無限スクロールの続き取得用)'
         ];
     }
 }

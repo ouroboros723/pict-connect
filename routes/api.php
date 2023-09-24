@@ -35,6 +35,7 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
             Route::get('/{photo_id}/download', 'MediaDistributor\GetPhotoController@downloadFullSizePhoto')->name('download');
         });
         Route::get('/profile-icon/{user_id}', 'MediaDistributor\GetPhotoController@getProfileIcon')->name('profile_icon');
+        Route::get('/event-icon/{eventId}', 'MediaDistributor\GetEventIconController@getEventIcon')->name('event-icon');
     });
 
     Route::prefix('event')->name('event.')->group(function() {

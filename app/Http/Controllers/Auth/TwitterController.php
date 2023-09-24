@@ -92,7 +92,7 @@ class TwitterController extends Controller
                 Cookie::queue(Cookie::make('X-User-Token', $user->token, 2147483647));
                 Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec, 2147483647));
 
-                return redirect('/');
+                return redirect('/event/joined');
             case 'get-photos':
                 $GuestLogin = GuestLogin::whereSnsScreenName($twitterUser->nickname)->first();
                 if(is_null($GuestLogin)) {

@@ -13,6 +13,7 @@ use App\Model\EventJoinToken;
 use App\Model\EventParticipant;
 use App\Services\UserInfo;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,12 +27,12 @@ class EventsManageController extends Controller
      */
     public function joinedList(EventJoinedListRequest $request): JsonResponse
     {
-        $lastEventParticipantsId = $request->lastEventParticipantsId;
+        $lastEventId = $request->lastEventId;
 
         $userInfo = UserInfo::getOrFail($request);
         $userId = $userInfo->user_id;
 
-        if (empty($lastEventParticipantsId)) { // 初回読み込み
+        if (empty($lastEventId)) { // 初回読み込み
             $events = EventParticipant::whereUserId($userId)
                 ->orderBy('event_participants_id', 'desc')
                 ->with(['event', 'event.eventAdmin', 'user'])
@@ -39,14 +40,14 @@ class EventsManageController extends Controller
                 ->get();
         } else { // 追加読み込み
             $events = EventParticipant::whereUserId($userId)
-                ->where('event_participants_id', '<', $lastEventParticipantsId)
-                ->orderBy('event_participants_id', 'desc')
+                ->where('event_id', '<', $lastEventId)
+                ->orderBy('event_id', 'desc')
                 ->with(['event', 'event.eventAdmin', 'user'])
                 ->limit(20)
                 ->get();
         }
 
-        return $this->sendResponse($events, 'ok');
+        return $this->sendResponse(array_key_camel($events->toArray()), 'ok');
     }
 
     /**
@@ -76,7 +77,7 @@ class EventsManageController extends Controller
                 ->get();
         }
 
-        return $this->sendResponse($events, 'ok');
+        return $this->sendResponse(array_key_camel($events->toArray()), 'ok');
     }
 
     /**
@@ -97,21 +98,31 @@ class EventsManageController extends Controller
      */
     public function create(EventCreateRequest $request): JsonResponse
     {
-        $userInfo = UserInfo::getOrFail($request);
-        $eventIconPath = $request->icon->storeAs('eventicons', Str::random('16'));
-        $newEvent = Event::create([
-            'event_name' => $request->eventName,
-            'event_admin_id' => $userInfo->user_id,
-            'event_detail' => $request->eventDetail,
-            'description' => $request->description,
-            'icon_path' => $eventIconPath,
-            'event_period_start' => (new Carbon($request->eventPeriodStart))->format('Y-m-d H:i:s'),
-            'event_period_end' => (new Carbon($request->eventPeriodEnd))->format('Y-m-d H:i:s'),
-        ]);
-        if($newEvent instanceof Event) {
-            return $this->sendResponse(array_key_camel($newEvent->toArray()), 'ok');
-        }
-        $this->throwErrorResponse('event_save_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
+        return DB::transaction(function () use ($request) {
+            $userInfo = UserInfo::getOrFail($request);
+            $fileName = Str::random(10);
+            $newEvent = Event::create([
+                'event_name' => $request->eventName,
+                'event_admin_id' => $userInfo->user_id,
+                'event_detail' => $request->eventDetail,
+                'description' => $request->description,
+                'event_period_start' => (new Carbon($request->eventPeriodStart))->format('Y-m-d H:i:s'),
+                'event_period_end' => (new Carbon($request->eventPeriodEnd))->format('Y-m-d H:i:s'),
+            ]);
+            if($newEvent instanceof Event) {
+                $eventIconPath = $request->icon->storeAs('eventicons', $fileName);
+                $newEvent->event_icon_path = $eventIconPath;
+                $Participant = EventParticipant::create([
+                    'event_id' => $newEvent->event_id,
+                    'user_id' => $userInfo->user_id,
+                ]);
+
+                if($Participant instanceof EventParticipant && $newEvent->save()) {
+                    return $this->sendResponse(array_key_camel($newEvent->toArray()), 'ok');
+                }
+            }
+            $this->throwErrorResponse('event_save_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
+        });
     }
 
     /**

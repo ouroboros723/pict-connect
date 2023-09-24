@@ -13,7 +13,7 @@ class UserInfo
      * @param Request $request
      * @return User|null
      */
-    public function get(Request $request): ?User
+    public static function get(Request $request): ?User
     {
         return User::whereToken($request->userToken ?? '')->whereTokenSec($request->userTokenSec ?? '')->first();
     }
@@ -24,9 +24,9 @@ class UserInfo
      * @return User
      * @throws NotFoundHttpException
      */
-    public function getOrFail(Request $request): User
+    public static function getOrFail(Request $request): User
     {
-        $userInfo = $this->get($request);
+        $userInfo = self::get($request);
         if (is_null($userInfo)) {
             throw new NotFoundHttpException('user_info_not_found');
         }

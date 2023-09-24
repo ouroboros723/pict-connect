@@ -75,6 +75,8 @@
         <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
             <div class="list-group">
                 <a href="/user/edit" class="dropdown-item list-group-item list-group-item-action">ユーザー設定</a>
+                <a href="/event/create" class="dropdown-item list-group-item list-group-item-action">新規イベント作成</a>
+                <a href="/event/joined" class="dropdown-item list-group-item list-group-item-action">参加済みイベント一覧</a>
                 <a id="menu-logout" href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
             </div>'
         >

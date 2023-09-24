@@ -30,22 +30,6 @@
         {{-- 写真がここに入る --}}
         <div id="photo-list-bottom"></div>
     </div>
-    {{-- 写真選択・アップロードボタン --}}
-    <button type="button" id="camera-button" class="btn btn-primary rounded-circle p-0"><input id="camera-input"
-                                                                                               class="photo-input-hidden"
-                                                                                               type="file"
-                                                                                               name="image"
-                                                                                               accept="image/*"
-                                                                                               capture><label
-            for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
-    <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input multiple
-                                                                                                  id="photo-add-input"
-                                                                                                  class="photo-input-hidden"
-                                                                                                  type="file"
-                                                                                                  name="image"
-                                                                                                  accept="image/*"><label
-            for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
-
     <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -91,9 +75,9 @@
     @yield('commonscript')
 
     <script>
-        var user_info = @json($user_info);
-        var last_photo_id = "";
-        var begin_photo_id = "";
+        var user_info = @json($user_info) ?? null;
+        var last_event_id = "";
+        var begin_event_id = "";
         var photo_count = 0;
         var ajax_status = true;
         var prev_photo_ajax_status = true;
@@ -104,16 +88,16 @@
         }
 
         window.addEventListener('load', function () {
-            getPhotos();
+            getEvents();
         });
         window.addEventListener('focus', function () {
-            getPhotos();
+            getEvents();
             setTimeout(function () {
                 window.Echo.channel('event-lib')
                     .listen('PublicEvent', (e) => {
                         // console.log(e.message);
                         if (e.message === 'new_photo_posted' && ajax_status) {
-                            getPhotos();
+                            getEvents();
                         } else if (e.message === 'photo_deleted' && ajax_status) {
                             // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
@@ -128,19 +112,12 @@
             }, 500);
         });
 
-        document.getElementById("camera-button").addEventListener("change", function () {
-            photoUploadExec(user_info);
-        });
-        document.getElementById("photo-add-button").addEventListener("change", function () {
-            photoUploadExec(user_info);
-        });
-
         $(document).ready(function () {
             window.Echo.channel('event-lib')
                 .listen('PublicEvent', (e) => {
                     // console.log(e.message);
                     if (e.message === 'new_photo_posted' && ajax_status) {
-                        getPhotos();
+                        getEvents();
                     } else if (e.message === 'photo_deleted' && ajax_status) {
                         // console.log(e.delete_target_id);
                         photoDeleteEvent(e.delete_target_id);
@@ -178,11 +155,11 @@
         }
 
         //写真取得
-        function getPhotos() {
+        function getEvents() {
             if (ajax_status) {
                 $.ajax(
                     {
-                        url: '/api/media/photo/text-list?event_id=1&last_photo_id=' + last_photo_id,
+                        url: '/api/event/list/joined?lastEventId=' + last_event_id,
                         type: 'GET',
                         processData: false,
                         contentType: false,
@@ -190,9 +167,6 @@
                         headers: {
                             'X-User-Token': user_info.token,
                             'X-User-Token-Sec': user_info.token_sec,
-                        },
-                        data: {
-                            "event_id": {{$event_id}}, // todo: 現在参加中のイベントidを入れるようにする
                         },
                         beforeSend: function () {
                             ajax_status = false;
@@ -203,37 +177,39 @@
                     // Ajaxリクエストが成功した時発動
                     .done(
                         (data) => {
-                            // console.log(data.photos);
-                            if (data.photos.length === 0) {
+                            console.log(data.body.length);
+                            // return;
+                            if (data.body.length === 0) {
                                 return;
                             }
-                            last_photo_id = data.photos[0].photo_id;
+                            last_event_id = data.body[0]?.event?.eventId ?? '';
                             var photo_list_elements = '';
 
-                            Object.keys(data.photos).forEach(function (key) {
+                            Object.keys(data.body).forEach(function (key) {
                                 // console.log(key);
                                 if (photo_count == 0) {
-                                    begin_photo_id = data.photos[data.photos.length - 1].photo_id;
+                                    begin_event_id = data.body[data.body.length - 1].event.eventId;
                                 }
                                 photo_list_elements +=
 
-                                    '<div id="photo_' + data.photos[key].photo_id + '" class="col photo-cell">\n' +
+                                    '<div id="photo_' + (data.body[key]?.event?.eventId ?? null) + '" class="col photo-cell">\n' +
                                     // '                    <div class="card">\n' +
-                                    '                        <a href="/api/media/photo/' + data.photos[key].photo_id + '" data-lity="data-lity"><img class="card-img-top lazyload" src="/img/common/photoloading.gif" data-src="/api/media/photo/' + data.photos[key].photo_id + '/thumbnail" />\n' +
+                                    '                        <a href="/event/joined/' + (data.body[key]?.event?.eventId ?? null) + '" ><img class="card-img-top lazyload" src="/img/common/photoloading.gif" data-src="/api/media/event-icon/' + (data.body[key]?.event?.eventId ?? null) + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <img class="user-icon lazyload" data-src="/api/media/profile-icon/' + data.photos[key].user_info.user_id + '" /><span class="card-text">' + data.photos[key].user_info.view_name + '</span>\n' +
+                                    '                            <span class="card-text">' + data.body[key].event.eventName + '</span>\n' +
                                     '                        </div></a>\n';
-                                photo_list_elements +=
-                                    '<a href="/api/media/photo/'+ data.photos[key].photo_id +'/download" ><img class="download-icon" src="/img/common/download.svg"></a>\n';
-                                if (user_info.user_id == data.photos[key].user_info.user_id) {
-                                    photo_list_elements +=
-                                        '                    <a href="#" onclick="deletePhoto(' + data.photos[key].photo_id + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
-                                }
+                                // photo_list_elements +=
+                                    // '<a href="/api/media/photo/'+ (data.body[key]?.event?.eventId ?? null) +'/download" ><img class="download-icon" src="/img/common/download.svg"></a>\n';
+                                // if (user_info.user_id == data.body[key].user_info.user_id) {
+                                //     photo_list_elements +=
+                                //         '                    <a href="#" onclick="deletePhoto(' + data.body[key]?.event?.event_id ?? null + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
+                                // }
                                 photo_list_elements +=
                                     '                </div>';
 
                                 photo_count++;
                             });
+                            console.log(photo_list_elements);
                             $("#photo-list-top").after(
                                 photo_list_elements
                             );
@@ -285,8 +261,7 @@
                     // Ajaxリクエストが成功・失敗どちらでも発動
                     .always(
                         (data) => {
-                            document.getElementById("camera-input").value = "";
-                            document.getElementById("photo-add-input").value = "";
+
 
                             ajax_status = true;
                             // $("#loading").css("display", "none");
@@ -301,7 +276,7 @@
             if (prev_photo_ajax_status) {
                 $.ajax(
                     {
-                        url: '/api/media/photo/prev_list?event_id=1&begin_photo_id=' + begin_photo_id,
+                        url: '/api/event/list/joined?lastEventId=' + begin_event_id,
                         type: 'GET',
                         processData: false,
                         contentType: false,
@@ -311,7 +286,7 @@
                             'X-User-Token-Sec': user_info.token_sec,
                         },
                         data: {
-                            "event_id": {{$event_id}},
+                            "event_id": '1',
                         },
                         beforeSend: function () {
                             prev_photo_ajax_status = false;
@@ -326,7 +301,7 @@
                             if (data.photos.length === 0) {
                                 return;
                             }
-                            begin_photo_id = data.photos[data.photos.length - 1].photo_id;
+                            begin_event_id = data.photos[data.photos.length - 1].photo_id;
                             var photo_list_elements = '';
 
                             Object.keys(data.photos).forEach(function (key) {
@@ -370,8 +345,7 @@
                     // Ajaxリクエストが成功・失敗どちらでも発動
                     .always(
                         (data) => {
-                            document.getElementById("camera-input").value = "";
-                            document.getElementById("photo-add-input").value = "";
+
 
                             prev_photo_ajax_status = true;
                             // $("#loading").css("display", "none");
@@ -382,46 +356,46 @@
         }
 
         //アップロード確認ダイアログ(今回使用しない)
-        function uploadConfirmDialog() {
-            // console.log(document.getElementById("camera-input").value);
-            // console.log(document.getElementById("photo-add-input").value);
-            if (document.getElementById("camera-input").value != "" || document.getElementById("photo-add-input").value != "") {
-
-                if (document.getElementById("camera-input").value != "") {
-                    var photo_input_path = document.getElementById("camera-input").value;
-                } else if (document.getElementById("photo-add-input").value != "") {
-                    var photo_input_path = document.getElementById("photo-add-input").value;
-                } else {
-                    var photo_input_path = "";
-                }
-
-                // console.log(photo_input_path);
-
-                var element = document.getElementById("upload-confirm-dialog-trigger");
-                if (document.createEvent) {
-                    // IE以外
-                    var evt = document.createEvent("HTMLEvents");
-                    evt.initEvent("click", true, true ); // event type, bubbling, cancelable
-
-                    // inputを初期化
-                    document.getElementById("camera-input").value = "";
-                    document.getElementById("photo-add-input").value = "";
-
-                    // イベント発火
-                    return element.dispatchEvent(evt);
-                } else {
-                    // IE
-                    var evt = document.createEventObject();
-
-                    // inputを初期化
-                    document.getElementById("camera-input").value = "";
-                    document.getElementById("photo-add-input").value = "";
-
-                    // イベント発火
-                    return element.fireEvent("onclick", evt);
-                }
-            }
-        }
+        // function uploadConfirmDialog() {
+        //     // console.log(document.getElementById("camera-input").value);
+        //     // console.log(document.getElementById("photo-add-input").value);
+        //     if (document.getElementById("camera-input").value != "" || document.getElementById("photo-add-input").value != "") {
+        //
+        //         if (document.getElementById("camera-input").value != "") {
+        //             var photo_input_path = document.getElementById("camera-input").value;
+        //         } else if (document.getElementById("photo-add-input").value != "") {
+        //             var photo_input_path = document.getElementById("photo-add-input").value;
+        //         } else {
+        //             var photo_input_path = "";
+        //         }
+        //
+        //         // console.log(photo_input_path);
+        //
+        //         var element = document.getElementById("upload-confirm-dialog-trigger");
+        //         if (document.createEvent) {
+        //             // IE以外
+        //             var evt = document.createEvent("HTMLEvents");
+        //             evt.initEvent("click", true, true ); // event type, bubbling, cancelable
+        //
+        //             // inputを初期化
+        //             document.getElementById("camera-input").value = "";
+        //             document.getElementById("photo-add-input").value = "";
+        //
+        //             // イベント発火
+        //             return element.dispatchEvent(evt);
+        //         } else {
+        //             // IE
+        //             var evt = document.createEventObject();
+        //
+        //             // inputを初期化
+        //             document.getElementById("camera-input").value = "";
+        //             document.getElementById("photo-add-input").value = "";
+        //
+        //             // イベント発火
+        //             return element.fireEvent("onclick", evt);
+        //         }
+        //     }
+        // }
 
         function photoUploadExec(user_info) {
             var fd = new FormData();
@@ -497,7 +471,7 @@
                             (data) => {
                                 // console.log(data);
                                 iziToast.success({message: '写真のアップロードに成功しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
-                                getPhotos();
+                                getEvents();
                             }
                         )
                         // Ajaxリクエストが失敗した時発動
@@ -566,8 +540,7 @@
                     // Ajaxリクエストが成功・失敗どちらでも発動
                     .always(
                         (data) => {
-                            document.getElementById("camera-input").value = "";
-                            document.getElementById("photo-add-input").value = "";
+
                             // $("#loading").css("display", "none");
                             upload_status = true;
                         }
