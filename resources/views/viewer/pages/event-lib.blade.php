@@ -182,7 +182,7 @@
             if (ajax_status) {
                 $.ajax(
                     {
-                        url: '/api/media/photo/text-list?event_id=1&last_photo_id=' + last_photo_id,
+                        url: '/api/media/photo/text-list?event_id={{$event_id}}&last_photo_id=' + last_photo_id,
                         type: 'GET',
                         processData: false,
                         contentType: false,
@@ -301,7 +301,7 @@
             if (prev_photo_ajax_status) {
                 $.ajax(
                     {
-                        url: '/api/media/photo/prev_list?event_id=1&begin_photo_id=' + begin_photo_id,
+                        url: '/api/media/photo/prev_list?event_id={{$event_id}}&begin_photo_id=' + begin_photo_id,
                         type: 'GET',
                         processData: false,
                         contentType: false,

@@ -111,7 +111,7 @@ class EventsManageController extends Controller
             ]);
             if($newEvent instanceof Event) {
                 $eventIconPath = $request->icon->storeAs('eventicons', $fileName);
-                $newEvent->event_icon_path = $eventIconPath;
+                $newEvent->icon_path = $eventIconPath;
                 $Participant = EventParticipant::create([
                     'event_id' => $newEvent->event_id,
                     'user_id' => $userInfo->user_id,
