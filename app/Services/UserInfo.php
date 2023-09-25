@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Model\User;
+use Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -15,6 +16,9 @@ class UserInfo
      */
     public static function get(Request $request): ?User
     {
+        if(Auth::check()) {
+            return Auth::user();
+        }
         return User::whereToken($request->userToken ?? '')->whereTokenSec($request->userTokenSec ?? '')->first();
     }
 

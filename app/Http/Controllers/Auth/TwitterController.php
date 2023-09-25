@@ -57,7 +57,7 @@ class TwitterController extends Controller
                         $next_user_id = User::maxOrigUserID() + 1;
                         User::create([
                             'user_id' => $next_user_id,
-                            'screen_name' => $twitterUser->nickname,
+                            'screen_name' => $twitterUser->nickname.'@twitter.com',
                             'view_name' => $twitterUser->name,
                             'description' => $twitterUser->user['description'],
                             'user_icon_path' => $prof_icon_path,

@@ -196,7 +196,7 @@
                                     // '                    <div class="card">\n' +
                                     '                        <a href="/event/joined/' + (data.body[key]?.event?.eventId ?? null) + '" ><img class="card-img-top lazyload" src="/img/common/photoloading.gif" data-src="/api/media/event-icon/' + (data.body[key]?.event?.eventId ?? null) + '" />\n' +
                                     '                        <div class="card-body">\n' +
-                                    '                            <span class="card-text">' + data.body[key].event.eventName + '</span>\n' +
+                                    '                            <span class="event-text">' + data.body[key].event.eventName + '</span>\n' +
                                     '                        </div></a>\n';
                                 // photo_list_elements +=
                                     // '<a href="/api/media/photo/'+ (data.body[key]?.event?.eventId ?? null) +'/download" ><img class="download-icon" src="/img/common/download.svg"></a>\n';

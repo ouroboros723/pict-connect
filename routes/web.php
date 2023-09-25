@@ -13,6 +13,7 @@
 /*** 認証 ***/
 
 // 標準ログインルートインポート
+use App\Http\Middleware\CheckEventJoined;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,7 @@ Route::middleware(['cors'])->group(function () {
         // web ui routes
         Route::get('/', 'Viewer\EventLibController@index');
         Route::get('/event/joined', 'Viewer\EventLibController@index');
-        Route::get('/event/joined/{eventId}', 'Viewer\EventLibController@joindEvent');
+        Route::middleware(CheckEventJoined::class)->get('/event/joined/{eventId}', 'Viewer\EventLibController@joindEvent');
         Route::get('/event-grid-show', 'Viewer\EventLibController@index');
         Route::view('/event-slide-show', 'viewer.pages.event-lib-slideshow');
         Route::view('/users', 'viewer.pages.user-list');
