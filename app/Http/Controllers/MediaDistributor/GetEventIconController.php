@@ -4,9 +4,11 @@ namespace App\Http\Controllers\MediaDistributor;
 
 use App\Http\Requests\GetPhotosListRequest;
 use App\Model\Event;
+use App\Model\EventJoinToken;
 use Config;
 use File;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\User;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GetEventIconController extends Controller
 {
@@ -34,6 +37,21 @@ class GetEventIconController extends Controller
         }
         return Redirect::to('/img/common/photos.png');
     }
+
+	/**
+	 * @param $eventToken
+	 * @return RedirectResponse|StreamedResponse
+	 */
+	public function getEventIconFromJoinToken($eventToken) {
+		$event = EventJoinToken::whereJoinToken($eventToken)->with(['event'])->firstOrFail()->event;
+
+		if (File::exists(Storage::path($event->icon_path ?? null))) {
+			return Storage::response($event->icon_path, null, [
+				'Cache-Control' => 'max-age='.Config::get('cache.photo.full.max-age').', private',
+			]);
+		}
+		return Redirect::to('/img/common/photos.png');
+	}
 
     /**
      * @param Request $request

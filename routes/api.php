@@ -38,6 +38,7 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
                 Route::get('/{photo_id}/download', 'MediaDistributor\GetPhotoController@downloadFullSizePhoto')->name('download');
         });
         Route::get('/profile-icon/{user_id}', 'MediaDistributor\GetPhotoController@getProfileIcon')->name('profile_icon');
+        Route::get('/event-icon/join-token/{joinToken}', 'MediaDistributor\GetEventIconController@getEventIconFromJoinToken')->name('event-icon.join-token');
         Route::middleware(CheckEventJoined::class)->group(function(){
             Route::get('/event-icon/{eventId}', 'MediaDistributor\GetEventIconController@getEventIcon')->name('event-icon');
         });
@@ -47,12 +48,13 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
         Route::get('/list/joined', 'EventsManage\EventsManageController@joinedList')->name('list.joined');
         Route::get('/list/admin', 'EventsManage\EventsManageController@adminList')->name('list.admin');
         Route::post('/create', 'EventsManage\EventsManageController@create')->name('create');
+        Route::get('/detail/join-token/{joinToken}', 'EventsManage\EventsManageController@getEventDetailFromToken')->name('detail.join_token');
         Route::middleware(CheckEventJoined::class)->group(function(){
-            Route::post('/detail/{eventID}', 'EventsManage\EventsManageController@getEventDetail')->name('create');
+            Route::get('/detail/{eventId}', 'EventsManage\EventsManageController@getEventDetail')->name('detail');
         });
 
         Route::post('/token/create/{eventId}', 'EventsManage\EventsManageController@createJoinToken')->name('token.create');
-        Route::post('/join/{eventId}', 'EventsManage\EventsManageController@joinEvent')->name('join');
+        Route::post('/join/{joinToken}', 'EventsManage\EventsManageController@joinEvent')->name('join');
     });
 });
 

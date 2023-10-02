@@ -14,7 +14,7 @@ class EventJoinRequest extends BaseFormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,13 +25,13 @@ class EventJoinRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'joinToken' => ['required', 'string'],
+//            'joinToken' => ['required', 'string'],
         ];
     }
 
     public function attributeNames(){
         return [
-            'joinToken' => '参加トークン',
+//            'joinToken' => '参加トークン',
         ];
     }
 }

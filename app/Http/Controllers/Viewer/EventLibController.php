@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Viewer;
 
+use App\Model\Event;
 use App\Model\User;
 use App\Services\UserInfo;
 use Illuminate\Http\Request;
@@ -35,6 +36,21 @@ class EventLibController extends Controller
             default:
                 return view('viewer.pages.event-lib', ['user_info' => $user_info]);
         }
+    }
+
+    public function joinEvent(Request $request, $joinToken)
+    {
+        $user_info = Auth::user();
+        if(!empty(Storage::exists($user_info['user_icon_path']))){
+            $user_icon = Storage::get($user_info['user_icon_path']);
+            $user_icon_ext = \File::extension($user_info['user_icon_path']);
+            $user_info['avatar'] = base64_encode($user_icon);
+            $user_info['avatar_ext'] = $user_icon_ext;
+        } else {
+            $user_info['avatar'] = null;
+        }
+
+        return view('viewer.pages.event-join', ['user_info' => $user_info, 'join_token' => $joinToken]);
     }
 
     public function joindEvent(Request $request, $eventId)

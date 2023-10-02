@@ -88,7 +88,24 @@ class EventsManageController extends Controller
     public function getEventDetail($eventId): JsonResponse
     {
         $event = Event::findOrFail($eventId);
-        return $this->sendResponse(array_key_camel($event->toArray()), 'ok');
+        $eventArray = array_key_camel($event->toArray());
+        $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
+        $eventArray['eventPeriodEnd'] = $event->event_period_end->format('Y年m月d日 H:i:s');
+        return $this->sendResponse($eventArray, 'ok');
+    }
+
+    /**
+     * イベント詳細(トークンから)
+     * @param $joinToken 参加トークン
+     * @return JsonResponse
+     */
+    public function getEventDetailFromToken($joinToken): JsonResponse
+    {
+        $event = EventJoinToken::whereJoinToken($joinToken)->with(['event'])->firstOrFail()->event;
+        $eventArray = array_key_camel($event->toArray());
+        $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
+        $eventArray['eventPeriodEnd'] = $event->event_period_end->format('Y年m月d日 H:i:s');
+        return $this->sendResponse($eventArray, 'ok');
     }
 
     /**
@@ -147,14 +164,14 @@ class EventsManageController extends Controller
      * @param int $eventId イベントid
      * @return JsonResponse
      */
-    public function joinEvent(EventJoinRequest $request, $eventId): JsonResponse
+    public function joinEvent(EventJoinRequest $request, $joinToken): JsonResponse
     {
         $userInfo = UserInfo::getOrFail($request);
-        $eventJoinToken = EventJoinToken::where('join_token', $request->joinToken)->first();
+        $eventJoinToken = EventJoinToken::where('join_token', $joinToken)->with('event')->first();
         if($eventJoinToken instanceof EventJoinToken) {
             $eventParticipant = new EventParticipant();
-            if($eventParticipant->joinEvent($eventId, $userInfo->user_id)) {
-                return $this->sendResponse(['eventId' => $eventId], 'joined');
+            if($eventParticipant->joinEvent($eventJoinToken->event->event_id, $userInfo->user_id)) {
+                return $this->sendResponse(['eventId' => $eventJoinToken->event->event_id], 'joined');
             }
             $this->throwErrorResponse('event_join_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
