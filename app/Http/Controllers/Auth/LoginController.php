@@ -8,6 +8,7 @@ use Config;
 use Cookie;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -78,7 +79,18 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             Cookie::queue(Cookie::make('X-User-Token', Auth::User()->token, 2147483647));
             Cookie::queue(Cookie::make('X-User-Token-Sec', Auth::User()->token_sec, 2147483647));
-            return $this->sendLoginResponse($request);
+
+            $request->session()->regenerate();
+
+            $this->clearLoginAttempts($request);
+
+            if ($response = $this->authenticated($request, $this->guard()->user())) {
+                return $response;
+            }
+
+            return $request->wantsJson()
+                ? new JsonResponse([], 204)
+                : redirect()->intended(empty($request->input('redirect_url')) ? $this->redirectPath() : $request->input('redirect_url'));
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts

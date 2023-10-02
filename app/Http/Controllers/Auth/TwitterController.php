@@ -24,6 +24,9 @@ class TwitterController extends Controller
     public function redirectToProvider(Request $request)
     {
         $request->session()->put('twitterLoginMode', $request->input('mode'));
+        if(!empty($request->input('redirect_url'))) {
+            $request->session()->put('redirectUrl', $request->input('redirect_url'));
+        }
         return Socialite::driver('twitter')->redirect();
     }
 
@@ -92,7 +95,7 @@ class TwitterController extends Controller
                 Cookie::queue(Cookie::make('X-User-Token', $user->token, 2147483647));
                 Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec, 2147483647));
 
-                return redirect('/event/joined');
+                return is_null($request->session()->get('redirectUrl')) ? redirect('/event/joined') : redirect($request->session()->pull('redirectUrl'));
             case 'get-photos':
                 $GuestLogin = GuestLogin::whereSnsScreenName($twitterUser->nickname)->first();
                 if(is_null($GuestLogin)) {

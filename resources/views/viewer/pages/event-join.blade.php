@@ -71,7 +71,6 @@
             getEventDetail();
         });
         const getEventDetail = () => {
-            alert('getEventDetail');
             $.ajax(
                 {
                     url: '/api/event/detail/join-token/{{$join_token}}',
