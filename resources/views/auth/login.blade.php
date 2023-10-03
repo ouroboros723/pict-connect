@@ -9,7 +9,7 @@
                         <a class="nav-link active">利用者の方</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/welcome{!! empty(request()->query('redirect_url')) ? null : '?redirect_url='.urlencode(request()->query('redirect_url')) !!}">はじめての方・写真受取り</a>
+                        <a class="nav-link" href="/welcome{!! empty(request()->query('redirect_url')) ? '?pass_code='.Config::get('auth.access_code') : '?pass_code='.Config::get('auth.access_code').'&redirect_url='.urlencode(request()->query('redirect_url')) !!}">はじめての方・写真受取り</a>
                     </li>
                 </ul>
             </div>

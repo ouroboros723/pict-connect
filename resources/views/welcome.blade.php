@@ -1,3 +1,9 @@
+@php
+    if (!(\Config::get('auth.access_code', null) === '') && request()->input('pass_code') !== Config::get('auth.access_code', null)) {
+            echo "Unauthorize";
+            exit;
+        }
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -6,7 +12,7 @@
             <div class="container">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link" href="/login{!! empty(request()->query('redirect_url')) ? null : '?redirect_url='.urlencode(request()->query('redirect_url')) !!}">利用者の方</a>
+                        <a class="nav-link" href="/login{!! empty(request()->query('redirect_url')) ? '?pass_code='.Config::get('auth.access_code') : '?pass_code='.Config::get('auth.access_code').'&redirect_url='.urlencode(request()->query('redirect_url')) !!}">利用者の方</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active">はじめての方・写真受取り</a>

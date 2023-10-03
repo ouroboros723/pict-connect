@@ -17,6 +17,8 @@ use App\Http\Middleware\CheckEventJoined;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/event/joined'); // リダイレクトパス
+
 Auth::routes();
 
 // はじめての方画面
@@ -40,7 +42,6 @@ Route::middleware(['cors'])->group(function () {
     Route::group(['middleware' => 'auth'], function () {
         // web ui routes
 //        Route::get('/', 'Viewer\EventLibController@index');
-        Route::redirect('/', '/event/joined');
         Route::get('/event/join/{joinToken}', 'Viewer\EventLibController@joinEvent');
         Route::get('/event/joined', 'Viewer\EventLibController@index');
         Route::middleware(CheckEventJoined::class)->get('/event/joined/{eventId}', 'Viewer\EventLibController@joindEvent');
