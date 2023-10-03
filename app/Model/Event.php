@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Model\User|null $eventAdmin
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\EventParticipant> $participants
  * @property-read int|null $participants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\Photo> $photos
+ * @property-read int|null $photos_count
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event onlyTrashed()
@@ -95,5 +97,10 @@ class Event extends BaseModel
     public function participants(): HasMany
     {
         return $this->hasMany(EventParticipant::class, 'event_id', 'event_id');
+    }
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(Photo::class, 'event_id', 'event_id');
     }
 }

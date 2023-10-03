@@ -87,10 +87,12 @@ class EventsManageController extends Controller
      */
     public function getEventDetail($eventId): JsonResponse
     {
-        $event = Event::findOrFail($eventId);
+        $event = Event::with(['participants', 'photos'])->findOrFail($eventId);
         $eventArray = array_key_camel($event->toArray());
         $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
         $eventArray['eventPeriodEnd'] = $event->event_period_end->format('Y年m月d日 H:i:s');
+        $eventArray['participantsCount'] = $event->participants->count() ?? 0;
+        $eventArray['postedPhotosCount'] = $event->photos->count() ?? 0;
         return $this->sendResponse($eventArray, 'ok');
     }
 
@@ -101,10 +103,12 @@ class EventsManageController extends Controller
      */
     public function getEventDetailFromToken($joinToken): JsonResponse
     {
-        $event = EventJoinToken::whereJoinToken($joinToken)->with(['event'])->firstOrFail()->event;
+        $event = EventJoinToken::whereJoinToken($joinToken)->with(['event', 'event.participants', 'event.photos'])->firstOrFail()->event;
         $eventArray = array_key_camel($event->toArray());
         $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
         $eventArray['eventPeriodEnd'] = $event->event_period_end->format('Y年m月d日 H:i:s');
+        $eventArray['participantsCount'] = $event->participants->count() ?? 0;
+        $eventArray['postedPhotosCount'] = $event->photos->count() ?? 0;
         return $this->sendResponse($eventArray, 'ok');
     }
 

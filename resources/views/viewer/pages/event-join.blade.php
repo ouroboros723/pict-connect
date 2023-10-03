@@ -16,40 +16,49 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
-                                    <img id="eventIcon" alt="イベントアイコン" src="{{asset('img/common/anonman.svg')}}" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-
-                                <label for="eventName" class="col-md-4 col-form-label text-md-right">{{ __('イベント名') }}</label>
-
-                                <div class="col-md-6">
-                                    <span id="eventName"></span>
+                                <div style="width: 100%; text-align: center;">
+                                    <img id="eventIcon" alt="イベントアイコン" style="width: 128px" src="{{asset('img/common/anonman.svg')}}" />
+                                    <h2 style="padding-top: 10px" id="eventName"></h2>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="eventDetail" class="col-md-4 col-form-label text-md-right">{{ __('イベント詳細') }}</label>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-form-label">
                                     <span id="eventDetail"></span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="eventPeriodStart" class="col-md-4 col-form-label text-md-right">{{ __('開催期間（開始）') }}</label>
+                                <label for="eventPeriodStart" class="col-md-4 col-form-label text-md-right">{{ __('開催期間(開始)') }}</label>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-form-label">
                                     <span id="eventPeriodStart"></span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="eventPeriodEnd" class="col-md-4 col-form-label text-md-right">{{ __('開催期間（終了）') }}</label>
+                                <label for="eventPeriodEnd" class="col-md-4 col-form-label text-md-right">{{ __('開催期間(終了)') }}</label>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-form-label">
                                     <span id="eventPeriodEnd"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="participantsCount" class="col-md-4 col-form-label text-md-right">{{ __('参加者数') }}</label>
+
+                                <div class="col-md-6 col-form-label">
+                                    <span id="participantsCount"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="postedPhotosCount" class="col-md-4 col-form-label text-md-right">{{ __('投稿写真数') }}</label>
+
+                                <div class="col-md-6 col-form-label">
+                                    <span id="postedPhotosCount"></span>
                                 </div>
                             </div>
 
@@ -64,6 +73,11 @@
             </div>
         </div>
     </div>
+    <style>
+        label {
+            font-weight: bold;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script>
         const user_info = @json($user_info);
@@ -96,6 +110,8 @@
                 $('#eventDetail').html(data.body?.eventDetail);
                 $('#eventPeriodStart').html(data.body?.eventPeriodStart);
                 $('#eventPeriodEnd').html(data.body?.eventPeriodEnd);
+                $('#participantsCount').html(data.body?.participantsCount);
+                $('#postedPhotosCount').html(data.body?.postedPhotosCount);
             }).fail(() => {
                 alert('イベント情報の取得に失敗しました')
             });
