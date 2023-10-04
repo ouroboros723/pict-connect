@@ -37,9 +37,9 @@ reinit:
 	docker-compose exec app php artisan key:generate
 	docker-compose exec app php artisan storage:link
 	docker-compose exec app chmod -R 777 storage bootstrap/cache
+	@make db-add-authority
 	docker-compose exec app composer install
 	docker-compose exec app php artisan migrate
-	@make db-add-authority
 	@make yarn-install
 	@make yarn-dev
 	#docker-compose exec app bash -c "rm -f /work/.scribe/endpoints.cache/*"
@@ -109,25 +109,10 @@ migrate:
 	docker-compose down --remove-orphans --volumes
 	docker-compose up -d --build
 	docker-compose exec app bash -c "sleep 30"
+	@make db-add-authority
 	docker-compose exec db bash -c "mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE) < /dbBackup/db_before_migrate.sql"
 	docker-compose exec app composer install
 	docker-compose exec app php artisan migrate
-	docker-compose exec db bash -c "echo \"create user 'root'@'127.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to 'root'@'127.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user 'root'@'172.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to 'root'@'172.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user 'root'@'192.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to 'root'@'192.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user 'root'@'_gateway' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to 'root'@'_gateway' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user '$(DB_USERNAME)'@'127.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to '$(DB_USERNAME)'@'127.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user '$(DB_USERNAME)'@'172.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to '$(DB_USERNAME)'@'172.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user '$(DB_USERNAME)'@'192.*' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to '$(DB_USERNAME)'@'192.*' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"create user '$(DB_USERNAME)'@'_gateway' identified by '$(DB_PASSWORD)';\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
-	docker-compose exec db bash -c "echo \"grant all on $(DB_DATABASE).* to '$(DB_USERNAME)'@'_gateway' with grant option;\" | mysql -u root -p$(DB_PASSWORD) $(DB_DATABASE)"
 	yarn install
 	yarn run dev
 	#docker-compose exec app bash -c "rm -f /work/.scribe/endpoints.cache/*"

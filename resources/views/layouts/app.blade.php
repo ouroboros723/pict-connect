@@ -125,11 +125,13 @@
                         </button>
                         @break
                     @case('login')
+                    @case('welcome')
                         <span id="app-title" class="navbar-brand">
                             {{Config::get('app.name')}}
                         </span>
                         @break
                     @case('user/edit')
+                    @case('event/create')
                     <button id="back-icon" type="button" class="btn btn-secondary" onClick="history.back()">
                         <span><</span>
                     </button>
@@ -151,6 +153,8 @@
                     <button id="user-icon" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content='
             <div class="list-group">
                 <a href="/user/edit" class="list-group-item list-group-item-action">ユーザー設定</a>
+                <a href="/event/create" class="dropdown-item list-group-item list-group-item-action">新規イベント作成</a>
+                <a href="/event/joined" class="dropdown-item list-group-item list-group-item-action">参加済みイベント一覧</a>
                 <a href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
             </div>'
                     >
@@ -165,7 +169,7 @@
 
 
         </nav>
-        <main id="main-container" class="py-4">
+        <main id="main-container" class="py-4" style="padding-top: 0 !important;">
             @yield('content')
         </main>
     </div>

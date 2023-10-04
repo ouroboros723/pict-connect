@@ -48,6 +48,7 @@ input.form-control {
     .container {
         margin-left: 5px;
         margin-right: 5px;
+        min-height: 54px; // ログイン画面のタブがつぶれないように
     }
 
     overflow-x: hidden;
@@ -158,6 +159,17 @@ input.form-control {
     position: absolute;
     bottom: 15px;
     left: 45px;
+    width: calc(100% - 55px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.event-text {
+    color: #FFFFFF;
+    position: absolute;
+    bottom: 15px;
+    left: 5px;
     width: calc(100% - 55px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -393,14 +405,6 @@ button {
     box-shadow: gainsboro  0 5px 2px ;
 }
 
-#user-icon {
-    float: right;
-}
-#user-icon img {
-    width: 30px !important;
-    border-radius: 3px;
-}
-
 #app-title {
     cursor: pointer;
     color: whitesmoke;
@@ -420,6 +424,14 @@ button {
 }
 
 #user-icon {
+    float: right;
+}
+#user-icon img {
+    width: 30px !important;
+    border-radius: 3px;
+}
+
+#user-icon {
     background-color: unset;
     border-color: unset;
     border: none;
@@ -433,6 +445,27 @@ button {
     background-color: #5a6268;
     border-color: #545b62;
 }
+
+#event-detail-dialog-trigger img {
+    width: 30px !important;
+    border-radius: 3px;
+}
+
+#event-detail-dialog-trigger {
+    background-color: unset;
+    border-color: unset;
+    border: none;
+    position: absolute;
+    left: 3px;
+    top: 0
+}
+
+#event-detail-dialog-trigger:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
 
 main .container {
     overflow-x: hidden;

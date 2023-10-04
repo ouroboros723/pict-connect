@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\MediaDistributor;
 
+use App\Http\Requests\GetPhotosListRequest;
 use Config;
 use File;
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,19 +18,11 @@ use RuntimeException;
 
 class GetPhotoController extends Controller
 {
-    public function getPhotosList(Request $request, $limit = 12)
+    public function getPhotosList(GetPhotosListRequest $request, $limit = 12)
     {
-        // Auth Params
-        $user_token = $request->userToken;
-        $user_token_sec = $request->userTokenSec;
-
         // Get Settings Params
-        $event_id = $request->input('event_id');
-        $last_photo_id = $request->input('last_photo_id');
-
-        $user_id = User::where('token', $user_token)
-            ->where('token_sec',$user_token_sec)
-            ->first(['user_id'])['user_id'];
+        $event_id = $request->event_id;
+        $last_photo_id = $request->last_photo_id;
 
         if(empty($last_photo_id)){
             $photos = Photo::where('event_id', $event_id)

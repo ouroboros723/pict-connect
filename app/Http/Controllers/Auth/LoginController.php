@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Config;
 use Cookie;
-use http\Env\Response;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -34,7 +34,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/event/joined';
 
     /**
      * Create a new controller instance.
@@ -79,7 +79,18 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             Cookie::queue(Cookie::make('X-User-Token', Auth::User()->token, 2147483647));
             Cookie::queue(Cookie::make('X-User-Token-Sec', Auth::User()->token_sec, 2147483647));
-            return $this->sendLoginResponse($request);
+
+            $request->session()->regenerate();
+
+            $this->clearLoginAttempts($request);
+
+            if ($response = $this->authenticated($request, $this->guard()->user())) {
+                return $response;
+            }
+
+            return $request->wantsJson()
+                ? new JsonResponse([], 204)
+                : redirect()->intended(empty($request->input('redirect_url')) ? $this->redirectPath() : $request->input('redirect_url'));
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -105,6 +116,7 @@ class LoginController extends Controller
 
         Cookie::queue(Cookie::forget('X-User-Token'));
         Cookie::queue(Cookie::forget('X-User-Token-Sec'));
+        Cookie::queue(Cookie::forget('X-Guest-Token'));
 
         return $this->loggedOut($request) ?: redirect('/login?pass_code='.Config::get('auth.access_code'));
     }

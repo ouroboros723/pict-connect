@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('新規登録') }}</div>
 
                     <div class="card-body">
-                        <form id="register-form" method="POST" action="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}" enctype="multipart/form-data">
+                        <form id="register-form" method="POST" action="{{ route('register') }}?pass_code={{Config::get('auth.access_code')}}{!! empty(request()->query('redirect_url')) ? null : '&redirect_url='.urlencode(request()->query('redirect_url')) !!}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">

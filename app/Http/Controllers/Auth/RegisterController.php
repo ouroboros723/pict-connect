@@ -126,6 +126,6 @@ class RegisterController extends Controller
         Cookie::queue(Cookie::make('X-User-Token-Sec', $user->token_sec));
 
         return $this->registered($request, $user)
-            ?: redirect('/login?pass_code='.Config::get('auth.access_code'));
+            ?: redirect(empty($request->input('redirect_url')) ? '/login?pass_code='.Config::get('auth.access_code') : $request->input('redirect_url'));
     }
 }

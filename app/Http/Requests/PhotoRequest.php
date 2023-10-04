@@ -1,8 +1,7 @@
 <?php
 namespace App\Http\Requests;
-use Illuminate\Foundation\Http\FormRequest;
 
-class PhotoRequest extends FormRequest
+class PhotoRequest extends BaseFormRequest
 {
 //    public function authorize()
 //    {
