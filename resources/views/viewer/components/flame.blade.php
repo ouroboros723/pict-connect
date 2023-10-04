@@ -80,7 +80,7 @@
                 <a id="menu-logout" href="/auth/twitter/logout" class="list-group-item list-group-item-action">ログアウト</a>
             </div>'
         >
-            <img src="@if(isset($user_info['avatar']))
+            <img title="メニュー" src="@if(isset($user_info['avatar']))
                 data:image/@if($user_info['avatar_ext'] === 'jpg')jpeg @else {{$user_info['avatar_ext']}}@endif;base64,{{$user_info['avatar']}}
             @else
                 {{asset('img/common/anonman.svg')}}

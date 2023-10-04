@@ -37,15 +37,85 @@
                                                                                                name="image"
                                                                                                accept="image/*"
                                                                                                capture><label
-            for="camera-input"><img src="{{ asset('img/common/camera.png') }}"/></label></button>
+            for="camera-input"><img title="カメラを起動" src="{{ asset('img/common/camera.png') }}"/></label></button>
     <button type="button" id="photo-add-button" class="btn btn-primary rounded-circle p-0"><input multiple
                                                                                                   id="photo-add-input"
                                                                                                   class="photo-input-hidden"
                                                                                                   type="file"
                                                                                                   name="image"
                                                                                                   accept="image/*"><label
-            for="photo-add-input"><img src="{{ asset('img/common/photos.png') }}"/></label></button>
+            for="photo-add-input"><img title="写真を選択してアップロード" src="{{ asset('img/common/photos.png') }}"/></label></button>
 
+    <div id="event-detail-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>
+                        <div class="modal-title" id="myModalLabel">イベント詳細</div>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+
+                                            <div class="form-group row">
+                                                <div style="width: 100%; text-align: center;">
+                                                    <img id="eventIcon" alt="イベントアイコン" style="width: 128px" src="{{asset('img/common/anonman.svg')}}" />
+                                                    <h2 style="padding-top: 10px" id="eventName"></h2>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="eventDetail" class="col-md-4 col-form-label text-md-right">{{ __('イベント詳細') }}</label>
+
+                                                <div class="col-md-6 col-form-label">
+                                                    <span id="eventDetail"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="eventPeriodStart" class="col-md-4 col-form-label text-md-right">{{ __('開催期間(開始)') }}</label>
+
+                                                <div class="col-md-6 col-form-label">
+                                                    <span id="eventPeriodStart"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="eventPeriodEnd" class="col-md-4 col-form-label text-md-right">{{ __('開催期間(終了)') }}</label>
+
+                                                <div class="col-md-6 col-form-label">
+                                                    <span id="eventPeriodEnd"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="participantsCount" class="col-md-4 col-form-label text-md-right">{{ __('参加者数') }}</label>
+
+                                                <div class="col-md-6 col-form-label">
+                                                    <span id="participantsCount"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="postedPhotosCount" class="col-md-4 col-form-label text-md-right">{{ __('投稿写真数') }}</label>
+
+                                                <div class="col-md-6 col-form-label">
+                                                    <span id="postedPhotosCount"></span>
+                                                </div>
+                                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="upload-confirm-dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="basicModal"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -67,6 +137,7 @@
         </div>
 
         <a id="upload-confirm-dialog-trigger" class="btn btn-primary" data-toggle="modal" data-target="#upload-confirm-dialog" style="display: none"></a>
+        <a id="event-detail-dialog-trigger" class="btn btn-primary" data-toggle="modal" data-target="#event-detail-dialog" style=""></a>
 
         @yield('footer')
     </div>
@@ -105,6 +176,8 @@
 
         window.addEventListener('load', function () {
             getPhotos();
+            getEventDetail();
+            $('#title-nav').append('<a id="event-detail-dialog-trigger" class="btn btn-primary" data-toggle="modal" data-target="#event-detail-dialog" style=""><img id="event-detail-img" src="{{asset('img/common/info.svg')}}" title="イベント詳細" style="width: 30px" /></a>');
         });
         window.addEventListener('focus', function () {
             getPhotos();
@@ -423,6 +496,66 @@
             }
         }
 
+        function eventDetailDialog() {
+            // console.log(document.getElementById("camera-input").value);
+            // console.log(document.getElementById("photo-add-input").value);
+
+                // console.log(photo_input_path);
+
+                var element = document.getElementById("event-detail-dialog-trigger");
+                if (document.createEvent) {
+                    // IE以外
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent("click", true, true ); // event type, bubbling, cancelable
+
+                    // イベント発火
+                    return element.dispatchEvent(evt);
+                } else {
+                    // IE
+                    var evt = document.createEventObject();
+
+                    // inputを初期化
+                    document.getElementById("camera-input").value = "";
+                    document.getElementById("photo-add-input").value = "";
+
+                    // イベント発火
+                    return element.fireEvent("onclick", evt);
+                }
+        }
+
+        const getEventDetail = () => {
+            $.ajax(
+                {
+                    url: '/api/event/detail/{{$event_id}}',
+                    type: 'GET',
+                    // processData: false,
+                    // contentType: false,
+                    async: true,
+                    headers: {
+                        'X-User-Token': user_info.token,
+                        'X-User-Token-Sec': user_info.token_sec,
+                    },
+                    // beforeSend: function () {
+                    //     ajax_status = false;
+                    //     // $("#loading").css("display", "block");
+                    // },
+                }
+            ).done((data) => {
+                console.log(data);
+                if(data.body?.iconPath) {
+                    $('#eventIcon').attr('src', '/api/media/event-icon/{{$event_id}}');
+                }
+                $('#eventName').html(data.body?.eventName);
+                $('#eventDetail').html(data.body?.eventDetail);
+                $('#eventPeriodStart').html(data.body?.eventPeriodStart);
+                $('#eventPeriodEnd').html(data.body?.eventPeriodEnd);
+                $('#participantsCount').html(data.body?.participantsCount);
+                $('#postedPhotosCount').html(data.body?.postedPhotosCount);
+            }).fail(() => {
+                alert('イベント情報の取得に失敗しました')
+            });
+        }
+
         function photoUploadExec(user_info) {
             var fd = new FormData();
             if (document.getElementById("camera-input").value !== "") {
@@ -457,7 +590,7 @@
                 fd.append('photo_data[' + i + ']', photo_data[i]);
             }
             // fd.append("photo_data", imgobj);
-            fd.append("event_id", "1");
+            fd.append("event_id", "{{$event_id}}");
 
             $.ajax(
                 {
