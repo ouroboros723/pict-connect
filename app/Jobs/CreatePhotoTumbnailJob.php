@@ -32,19 +32,24 @@ class CreatePhotoTumbnailJob implements ShouldQueue
      * @var mixed
      */
     public $eventId;
+    /**
+     * @var mixed
+     */
+    public $storeDir;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($storedPath, string $thumbnailDir, string $fileToken, $userId, $eventId)
+    public function __construct($storedPath, string $thumbnailDir, string $fileToken, $userId, $eventId, $storeDir)
     {
         $this->storedPath = $storedPath;
         $this->thumbnailDir = $thumbnailDir;
         $this->fileToken = $fileToken;
         $this->userId = $userId;
         $this->eventId = $eventId;
+        $this->storeDir = $storeDir;
     }
 
     /**
@@ -54,13 +59,15 @@ class CreatePhotoTumbnailJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::debug($this->storedPath);
+        $imageRaw = Storage::get($this->storedPath);
+        $image = Image::make($imageRaw);
+        $image->orientate();
+        $image = $image->save(Storage::path($this->storedPath));
 
         //サムネイル画像バイナリ生成();
         $maxWidth = 500; // your max width
         $maxHeight = 500; // your max heightG
-        $image = Storage::get($this->storedPath);
-        $image = Image::make($image);
+
 //            $image->stream('jpg', 5);
         $image->height() > $image->width() ? $maxWidth = null : $maxHeight = null;
         $image->resize($maxWidth, $maxHeight, function ($constraint) {

@@ -55,12 +55,10 @@ class PhotoUploadController extends Controller
         foreach ($request->file('photo_data') as $value) {
             $file_token = Str::random();
 
-            $image = Image::make($value);
-            $image->orientate();
-            $image->save($value);
             $stored_path = Storage::putFileAs($store_dir, $value, $file_token);
             $status = $status && is_string($stored_path);
-            CreatePhotoTumbnailJob::dispatchIf(is_string($stored_path), $stored_path, $thumbnail_dir, $file_token, $user_id, $event_id);
+            CreatePhotoTumbnailJob::dispatchIf(is_string($stored_path), $stored_path, $thumbnail_dir, $file_token, $user_id, $event_id, $store_dir);
+//            CreatePhotoTumbnailJob::dispatchNow($stored_path, $thumbnail_dir, $file_token, $user_id, $event_id, $store_dir); // テスト用
         }
 
         return $status ? response()->json(['status' => 'success']) : response()->json(['status' => 'process_failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
