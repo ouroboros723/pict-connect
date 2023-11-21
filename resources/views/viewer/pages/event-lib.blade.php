@@ -570,6 +570,19 @@
                 var photo_data = "";
             }
 
+            if(photo_data.length > 100) {
+                iziToast.error(
+                    {
+                        id: 'max-uploads-count-over',
+                        message: '一度にアップロードできるのは100件までです。',
+                        position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',
+                        close: 'false',
+                    }
+                );
+
+                return false;
+            }
+
             iziToast.info(
                 {
                     id: 'uploading-toast',
@@ -629,7 +642,7 @@
                         .done(
                             (data) => {
                                 // console.log(data);
-                                iziToast.success({message: '写真のアップロードに成功しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
+                                iziToast.success({message: "写真のアップロードに成功しました。\n反映されるまで暫くお待ちください。", position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                                 getPhotos();
                             }
                         )
