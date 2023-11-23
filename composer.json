@@ -10,20 +10,20 @@
     "require": {
         "php": "7.4.*",
         "ext-fileinfo": "*",
+        "ext-json": "*",
+        "facade/ignition": "^2.3.6",
         "fideloper/proxy": "*",
         "google/apiclient": "*",
-        "intervention/image": "*",
         "guzzlehttp/guzzle": "^7.0.1",
-        "facade/ignition": "^2.3.6",
+        "intervention/image": "*",
         "laravel-frontend-presets/material-dashboard": "*",
+        "laravel/framework": "^8.0",
         "laravel/socialite": "*",
         "laravel/tinker": "*",
-        "laravel/framework": "^8.0",
         "laravel/ui": "^3.0",
         "morrislaptop/laravel-queue-clear": "*",
         "predis/predis": "*",
-        "stechstudio/laravel-zipstream": "^4.13",
-        "ext-json": "*"
+        "stechstudio/laravel-zipstream": "^4.13"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "*",

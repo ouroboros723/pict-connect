@@ -11,12 +11,17 @@ use App\Http\Requests\EventJoinTokenCreateRequest;
 use App\Model\Event;
 use App\Model\EventJoinToken;
 use App\Model\EventParticipant;
+use App\Model\Photo;
+use App\Services\MimesToExt;
 use App\Services\UserInfo;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Storage;
+use STS\ZipStream\ZipStream;
 use Symfony\Component\HttpFoundation\Response;
+use Zip;
 
 class EventsManageController extends Controller
 {
@@ -87,6 +92,7 @@ class EventsManageController extends Controller
      */
     public function getEventDetail($eventId): JsonResponse
     {
+        /** @var Event $event */
         $event = Event::with(['participants', 'photos'])->findOrFail($eventId);
         $eventArray = array_key_camel($event->toArray());
         $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
@@ -180,5 +186,32 @@ class EventsManageController extends Controller
             $this->throwErrorResponse('event_join_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $this->throwErrorResponse('event_join_token_not_found', Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * イベントアルバム内の全写真をダウンロード
+     * @param $eventId
+     * @return ZipStream
+     */
+    public function getAllEventPhotos($eventId): ZipStream
+    {
+        // 対象File取得
+        $Event = Event::findOrFail($eventId);
+
+        // todo: 写真-イベントidのつながりを変更した際に改修が必要
+        /** @var Photo[] $photos */
+        $photos = Photo::with(['user'])->where('event_id', $eventId)
+            ->where('deleted_at', null)
+            ->orderBy('photo_id', 'desc')
+            ->get();
+
+        // zipファイルを指定ディレクトリに作成
+        $ZipFile = Zip::create("$Event->event_name.zip");
+
+        foreach($photos as $photo) {
+            $ZipFile->add(Storage::path($photo->store_path), $photo->user->screen_name.'/'.basename($photo->store_path).'.'.MimesToExt::getImageExtFromMimeType(Storage::mimeType($photo->store_path)));
+        }
+
+        return $ZipFile;
     }
 }
