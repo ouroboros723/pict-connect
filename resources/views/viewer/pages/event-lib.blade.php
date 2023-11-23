@@ -111,6 +111,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button id="all-download-button" type="button" class="btn btn-default" style="position: absolute;left: 16px;padding-left: 12px;background: #3490dc;color: white;">全写真ダウンロード</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
                 </div>
             </div>
@@ -228,6 +229,11 @@
             iziToast.settings({
                 transitionIn: 'fadeInDown',
                 transitionOut: 'fadeOutUp',
+            });
+
+            // 全写真ダウンロードボタンのリンク先を追加
+            $('#all-download-button').on('click', () => {
+                window.location.href = '/api/event/zip/{{$event_id}}';
             });
             // $('#main-container').on('scroll', function () {
             //     var scrollPosition = document.getElementById("main-container").scrollTop;
@@ -551,6 +557,8 @@
                 $('#eventPeriodEnd').html(data.body?.eventPeriodEnd);
                 $('#participantsCount').html(data.body?.participantsCount);
                 $('#postedPhotosCount').html(data.body?.postedPhotosCount);
+
+                $('#app-title').html(data.body?.eventName); // タイトルバーにイベント名を表示
             }).fail(() => {
                 alert('イベント情報の取得に失敗しました')
             });
