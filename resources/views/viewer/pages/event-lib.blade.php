@@ -182,6 +182,7 @@
         });
         window.addEventListener('focus', function () {
             getPhotos();
+            getEventDetail();
             setTimeout(function () {
                 window.Echo.channel('event-lib')
                     .listen('PublicEvent', (e) => {
@@ -192,13 +193,16 @@
                             // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
+                        getEventDetail();
                     }).listen('PhotoDeleteEvent', (e) => {
                         alert();
                         if (e.message === 'photo_deleted') {
                             // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
+                        getEventDetail();
                     });
+                // todo: ユーザー参加のイベントを追加
             }, 500);
         });
 
@@ -219,13 +223,16 @@
                         // console.log(e.delete_target_id);
                         photoDeleteEvent(e.delete_target_id);
                     }
+                    getEventDetail();
                 }).listen('PhotoDeleteEvent', (e) => {
                     alert();
                     if (e.message === 'photo_deleted') {
                         // console.log(e.delete_target_id)
                         photoDeleteEvent(e.delete_target_id);
                     }
+                    getEventDetail();
                 });
+                // todo: ユーザー参加のイベントを追加
             iziToast.settings({
                 transitionIn: 'fadeInDown',
                 transitionOut: 'fadeOutUp',
