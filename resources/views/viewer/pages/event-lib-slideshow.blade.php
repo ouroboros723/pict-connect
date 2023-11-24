@@ -106,21 +106,21 @@
 
                         // 削除された写真をDOMから削除
                         $('.photo-data').each((index, el) => {
-                            console.log(el);
+                            // console.log(el);
                             if(data.photos.findIndex((element) => Number(element.photo_id) === Number(el?.getAttribute('data-photo-id'))) === -1) {
                                 $('.slider').slick("slickRemove", index);
-                                console.log('deleted: ', el?.getAttribute('data-photo-id'));
+                                // console.log('deleted: ', el?.getAttribute('data-photo-id'));
                             }
-                            console.log('not deleted: ', el?.getAttribute('data-photo-id'));
+                            // console.log('not deleted: ', el?.getAttribute('data-photo-id'));
                         });
 
                         let k = 1;
                         data.photos.map((value, index) =>{
-                            console.log($('[data-photo-id="' + value.photo_id + '"]'));
+                            // console.log($('[data-photo-id="' + value.photo_id + '"]'));
                             if($('[data-photo-id="' + value.photo_id + '"]')?.length <= 0) {
                                 $('.slider').slick("slickAdd", '<div class="photo-data" data-photo-id="' + value.photo_id + '"><img data-lazy = "/api/media/photo/' + value.photo_id + '"></div>', currentSlide + k + 1);
                                 k ++;
-                                console.log('added!');
+                                // console.log('added!');
                             }
                         });
                     }
@@ -164,7 +164,6 @@
 
 
     $(function () {
-        alert();
         $.ajax(
             {
                 url: '/api/media/photo/text-list?event_id={{$event_id}}',
@@ -210,10 +209,11 @@
                         centerMode: true, // 中央揃え
                         speed: 5000,
                         rows: 1,
+                        infinite: true,
                     });
                     $('.slider').on('beforeChange', function (event, slick, thisCurrentSlide, nextSlide) {
                         currentSlide = thisCurrentSlide;
-                        console.log('currentSlide: ' + currentSlide);
+                        // console.log('currentSlide: ' + currentSlide);
                     });
                 }
             )
