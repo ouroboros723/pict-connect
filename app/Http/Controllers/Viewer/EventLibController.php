@@ -68,6 +68,21 @@ class EventLibController extends Controller
         return view('viewer.pages.event-lib', ['user_info' => $user_info, 'event_id' => $eventId]);
     }
 
+    public function slideShow(Request $request, $eventId)
+    {
+        $user_info = Auth::user();
+        if(!empty(Storage::exists($user_info['user_icon_path']))){
+            $user_icon = Storage::get($user_info['user_icon_path']);
+            $user_icon_ext = \File::extension($user_info['user_icon_path']);
+            $user_info['avatar'] = base64_encode($user_icon);
+            $user_info['avatar_ext'] = $user_icon_ext;
+        } else {
+            $user_info['avatar'] = null;
+        }
+
+        return view('viewer.pages.event-lib-slideshow', ['user_info' => $user_info, 'event_id' => $eventId]);
+    }
+
 //    public function gridShow()
 //    {
 //        $user_info = Auth::user();
