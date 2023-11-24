@@ -35,6 +35,26 @@
             height: 300px;
             margin: 0 auto;
         }
+        .photo-info-area img.user-icon {
+            position: absolute;
+            display: inline;
+            height: 100% !important;
+            left: 50px;
+        }
+
+        .photo-info-area {
+            height: 20vh;
+            position: relative;
+        }
+
+        .photo-info-area .user-name {
+            position: absolute;
+            left: 250px;
+            top: 50%;
+            transform: translate(0, -50%);
+            font-size: xx-large;
+            color: white;
+        }
     </style>
     <title>slide show</title>
 </head>
@@ -67,6 +87,16 @@
     var user_info = @json($user_info);
     var ajax_status = true;
     var currentSlide = null;
+
+    window.Echo.channel('event-lib')
+        .listen('PublicEvent', (e) => {
+            // console.log(e.message);
+            if (e.message === 'new_photo_posted' && ajax_status) {
+                getPhotos();
+            } else if (e.message === 'photo_deleted' && ajax_status) {
+                getPhotos();
+            }
+        });
 
     iziToast.settings({
         transitionIn: 'fadeInDown',
@@ -118,7 +148,13 @@
                         data.photos.map((value, index) =>{
                             // console.log($('[data-photo-id="' + value.photo_id + '"]'));
                             if($('[data-photo-id="' + value.photo_id + '"]')?.length <= 0) {
-                                $('.slider').slick("slickAdd", '<div class="photo-data" data-photo-id="' + value.photo_id + '"><img data-lazy = "/api/media/photo/' + value.photo_id + '"></div>', currentSlide + k + 1);
+                                $('.slider').slick("slickAdd", '<div class="photo-data" data-photo-id="' + value.photo_id + '">' +
+                                    '<img data-lazy = "/api/media/photo/' + value.photo_id + '">' +
+                                    '<div class="photo-info-area">' +
+                                        '<img class="user-icon" data-lazy="/api/media/profile-icon/' + value.user_info.user_id + '" />' +
+                                        '<span class="user-name">' + value.user_info.view_name + '</span>' +
+                                        '</div>' +
+                                    '</div>', currentSlide + k + 1);
                                 k ++;
                                 // console.log('added!');
                             }
@@ -192,17 +228,23 @@
                         return;
                     }
                         for (let i = 0; i < data.photos.length; i++) {
-                            $('.slider').append('<div class="photo-data" data-photo-id="' + data.photos[i].photo_id + '"><img data-lazy = "/api/media/photo/' + data.photos[i].photo_id + '"></div>');
+                            $('.slider').append('<div class="photo-data" data-photo-id="' + data.photos[i].photo_id + '">' +
+                                    '<img data-lazy = "/api/media/photo/' + data.photos[i].photo_id + '">' +
+                                    '<div class="photo-info-area">' +
+                                        '<img class="user-icon" data-lazy="/api/media/profile-icon/' + data.photos[i].user_info.user_id + '" />' +
+                                        '<span class="user-name">' + data.photos[i].user_info.view_name + '</span>' +
+                                    '</div>' +
+                                '</div>');
                         }
 
                     // スライダーの設定
                     $('.slider').slick({
                         lazyLoad: 'ondemand',
-                        pauseOnHover: false,
+                        pauseOnHover: true,
                         pauseOnFocus: false,
-                        arrows: true,
+                        arrows: false,
                         autoplay: true,
-                        autoplaySpeed: 4000,
+                        autoplaySpeed: 6000,
                         accessibility: true, // 高さを合わせる
                         useTransform: true,
                         fade: true,
