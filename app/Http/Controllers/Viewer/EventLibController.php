@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Viewer;
 
 use App\Model\Event;
+use App\Model\EventJoinToken;
+use App\Model\EventParticipant;
 use App\Model\User;
 use App\Services\UserInfo;
 use Illuminate\Http\Request;
@@ -40,17 +42,22 @@ class EventLibController extends Controller
 
     public function joinEvent(Request $request, $joinToken)
     {
-        $user_info = Auth::user();
-        if(!empty(Storage::exists($user_info['user_icon_path']))){
-            $user_icon = Storage::get($user_info['user_icon_path']);
-            $user_icon_ext = \File::extension($user_info['user_icon_path']);
-            $user_info['avatar'] = base64_encode($user_icon);
-            $user_info['avatar_ext'] = $user_icon_ext;
-        } else {
-            $user_info['avatar'] = null;
+        $userInfo = UserInfo::getOrFail($request);
+        $eventId = EventJoinToken::with('event')->whereJoinToken($joinToken)->firstOrFail()->event_id;
+        if(EventParticipant::whereUserId($userInfo->user_id)->whereEventId($eventId)->exists()) {
+            return redirect("/event/joined/$eventId");
         }
 
-        return view('viewer.pages.event-join', ['user_info' => $user_info, 'join_token' => $joinToken]);
+        if(!empty(Storage::exists($userInfo['user_icon_path']))){
+            $user_icon = Storage::get($userInfo['user_icon_path']);
+            $user_icon_ext = \File::extension($userInfo['user_icon_path']);
+            $userInfo['avatar'] = base64_encode($user_icon);
+            $userInfo['avatar_ext'] = $user_icon_ext;
+        } else {
+            $userInfo['avatar'] = null;
+        }
+
+        return view('viewer.pages.event-join', ['user_info' => $userInfo, 'join_token' => $joinToken]);
     }
 
     public function joindEvent(Request $request, $eventId)
