@@ -147,6 +147,7 @@
                         let k = 1;
                         data.photos.map((value, index) =>{
                             // console.log($('[data-photo-id="' + value.photo_id + '"]'));
+                            // console.log($('.photo-data').children('div').length <= (currentSlide + k + 1) ? null : (currentSlide + k + 1));
                             if($('[data-photo-id="' + value.photo_id + '"]')?.length <= 0) {
                                 $('.slider').slick("slickAdd", '<div class="photo-data" data-photo-id="' + value.photo_id + '">' +
                                     '<img data-lazy = "/api/media/photo/' + value.photo_id + '">' +
@@ -154,7 +155,7 @@
                                         '<img class="user-icon" data-lazy="/api/media/profile-icon/' + value.user_info.user_id + '" />' +
                                         '<span class="user-name">' + value.user_info.view_name + '</span>' +
                                         '</div>' +
-                                    '</div>', currentSlide + k + 1);
+                                    '</div>', $('.photo-data').children('div').length <= (currentSlide + k + 1) ? null : (currentSlide + k + 1));
                                 k ++;
                                 // console.log('added!');
                             }
@@ -223,20 +224,6 @@
             // Ajaxリクエストが成功した時発動
             .done(
                 (data) => {
-                    // console.log(data.photos);
-                    if (data.photos.length === 0) {
-                        return;
-                    }
-                        for (let i = 0; i < data.photos.length; i++) {
-                            $('.slider').append('<div class="photo-data" data-photo-id="' + data.photos[i].photo_id + '">' +
-                                    '<img data-lazy = "/api/media/photo/' + data.photos[i].photo_id + '">' +
-                                    '<div class="photo-info-area">' +
-                                        '<img class="user-icon" data-lazy="/api/media/profile-icon/' + data.photos[i].user_info.user_id + '" />' +
-                                        '<span class="user-name">' + data.photos[i].user_info.view_name + '</span>' +
-                                    '</div>' +
-                                '</div>');
-                        }
-
                     // スライダーの設定
                     $('.slider').slick({
                         lazyLoad: 'ondemand',
@@ -257,6 +244,20 @@
                         currentSlide = thisCurrentSlide;
                         // console.log('currentSlide: ' + currentSlide);
                     });
+
+                    // console.log(data.photos);
+                    if (data.photos.length === 0) {
+                        return;
+                    }
+                        for (let i = 0; i < data.photos.length; i++) {
+                            $('.slider').slick("slickAdd",'<div class="photo-data" data-photo-id="' + data.photos[i].photo_id + '">' +
+                                    '<img data-lazy = "/api/media/photo/' + data.photos[i].photo_id + '">' +
+                                    '<div class="photo-info-area">' +
+                                        '<img class="user-icon" data-lazy="/api/media/profile-icon/' + data.photos[i].user_info.user_id + '" />' +
+                                        '<span class="user-name">' + data.photos[i].user_info.view_name + '</span>' +
+                                    '</div>' +
+                                '</div>');
+                        }
                 }
             )
             // Ajaxリクエストが失敗した時発動
