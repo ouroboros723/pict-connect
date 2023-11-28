@@ -60,7 +60,7 @@ class CreatePhotoTumbnailJob implements ShouldQueue
     public function handle()
     {
         $imageRaw = Storage::get($this->storedPath);
-        $image = Image::make($imageRaw);
+        $image = Image::make($imageRaw)->setFileInfoFromPath(Storage::path($this->storedPath));
         $image->orientate();
         $image = $image->save(Storage::path($this->storedPath));
 
