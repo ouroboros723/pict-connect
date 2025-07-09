@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Events\PublicEvent;
-use App\Model\Photo;
+use App\Models\Photo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 use Log;
 
 class CreatePhotoTumbnailJob implements ShouldQueue
@@ -59,20 +60,21 @@ class CreatePhotoTumbnailJob implements ShouldQueue
      */
     public function handle()
     {
-        $imageRaw = Storage::get($this->storedPath);
-        $image = Image::make($imageRaw)->setFileInfoFromPath(Storage::path($this->storedPath));
-        $image->orientate();
-        $image = $image->save(Storage::path($this->storedPath));
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read(Storage::path($this->storedPath));
+        $image->save(Storage::path($this->storedPath));
 
         //サムネイル画像バイナリ生成();
         $maxWidth = 500; // your max width
-        $maxHeight = 500; // your max heightG
+        $maxHeight = 500; // your max height
 
-//            $image->stream('jpg', 5);
-        $image->height() > $image->width() ? $maxWidth = null : $maxHeight = null;
-        $image->resize($maxWidth, $maxHeight, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        if ($image->height() > $image->width()) {
+            $maxWidth = null;
+        } else {
+            $maxHeight = null;
+        }
+
+        $image->scale($maxWidth, $maxHeight);
         $image->save(Storage::path($this->thumbnailDir . '/' . $this->fileToken));
 
         $newPhoto = Photo::create(

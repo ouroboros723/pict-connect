@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Uploader;
 
 use App\Http\Requests\PhotoRequest;
 use App\Jobs\CreatePhotoTumbnailJob;
-use App\Model\User;
+use App\Models\User;
 use DateTime;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class PhotoUploadController extends Controller

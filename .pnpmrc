@@ -1,0 +1,14 @@
+# pnpm設定ファイル
+# シンボリックリンクを無効化
+node-linker=hoisted
+symlink=false
+
+# パッケージの共有を無効化
+enable-modules-dir=true
+hoist-pattern=*
+
+# 厳密なピア依存関係チェックを無効化（互換性のため）
+strict-peer-dependencies=false
+
+# 自動インストールを無効化
+auto-install-peers=false

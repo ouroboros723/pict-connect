@@ -4,7 +4,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Model\User;
+use App\Models\User;
 use Auth;
 use Closure;
 use Cookie;

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateAlbumPhotosTable extends Migration
 {
@@ -13,19 +14,17 @@ class CreateAlbumPhotosTable extends Migration
      */
     public function up()
     {
-        DB::transaction(function (){
-            Schema::create('album_photos', function (Blueprint $table) {
-                $table->id('album_master_id')->comment('アルバム-写真id');
-                $table->unsignedBigInteger('user_id')->comment('アルバムマスタid');
-                $table->unsignedBigInteger('event_id')->nullable()->comment('イベントid');
-                $table->unsignedBigInteger('photo_id')->comment('写真id');
-                $table->dateTime('created_at')->nullable()->comment('作成日時');
-                $table->dateTime('updated_at')->nullable()->comment('更新日時');
-                $table->dateTime('deleted_at')->nullable()->comment('削除日時');
-            });
-
-            DB::statement("ALTER TABLE album_photos COMMENT 'アルバム-写真'");
+        Schema::create('album_photos', function (Blueprint $table) {
+            $table->id('album_master_id')->comment('アルバム-写真id');
+            $table->unsignedBigInteger('user_id')->comment('アルバムマスタid');
+            $table->unsignedBigInteger('event_id')->nullable()->comment('イベントid');
+            $table->unsignedBigInteger('photo_id')->comment('写真id');
+            $table->dateTime('created_at')->nullable()->comment('作成日時');
+            $table->dateTime('updated_at')->nullable()->comment('更新日時');
+            $table->dateTime('deleted_at')->nullable()->comment('削除日時');
         });
+
+        DB::statement("ALTER TABLE album_photos COMMENT 'アルバム-写真'");
     }
 
     /**

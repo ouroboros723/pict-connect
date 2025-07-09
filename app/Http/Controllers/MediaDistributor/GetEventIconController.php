@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\MediaDistributor;
 
 use App\Http\Requests\GetPhotosListRequest;
-use App\Model\Event;
-use App\Model\EventJoinToken;
+use App\Models\Event;
+use App\Models\EventJoinToken;
 use Config;
 use File;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\User;
-use App\Model\Photo;
+use App\Models\User;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+
 use Redirect;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,10 +20,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $icon_path イベントアイコンのパス
  * @property \Illuminate\Support\Carbon $event_period_start イベント開催期間(開始)
  * @property \Illuminate\Support\Carbon $event_period_end イベント開催期間(終了)
- * @property-read \App\Model\User|null $eventAdmin
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\EventParticipant> $participants
+ * @property-read \App\Models\User|null $eventAdmin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventParticipant> $participants
  * @property-read int|null $participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\Photo> $photos
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo> $photos
  * @property-read int|null $photos_count
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()

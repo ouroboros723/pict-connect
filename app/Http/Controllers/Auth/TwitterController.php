@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Model\GuestLogin;
-use App\Model\SnsIdList;
-use App\Model\User;
+use App\Models\GuestLogin;
+use App\Models\SnsIdList;
+use App\Models\User;
 use Cookie;
 use \File;
 use Illuminate\Http\Request;

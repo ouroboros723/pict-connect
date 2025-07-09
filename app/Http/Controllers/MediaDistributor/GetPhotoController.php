@@ -8,11 +8,12 @@ use File;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\User;
-use App\Model\Photo;
+use App\Models\User;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 use Redirect;
 use RuntimeException;
 
@@ -44,9 +45,9 @@ class GetPhotoController extends Controller
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
             if (File::exists(storage_path() . '/app/' . $value['store_path']) && !empty($value['store_path'])) {
-                $image = Image::make(storage_path() . '/app/' . $value['store_path']);
-                $image->orientate();
-                $tumbnail = $image->stream('jpg', 50); //サムネイル画像バイナリ生成
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read(storage_path() . '/app/' . $value['store_path']);
+                $tumbnail = $image->toJpeg(50); //サムネイル画像バイナリ生成
                 $photos[$key]['photo_base64'] = base64_encode($tumbnail);
                 $photos[$key]['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['store_path']);
             }
@@ -238,13 +239,12 @@ class GetPhotoController extends Controller
             $photo['user_info'] = User::where('user_id', $value["user_id"])
                 ->first(['user_id', 'screen_name', 'view_name', 'user_icon_path']);
 
-            $image = Image::make(storage_path() . '/app/' . $value['store_path']);
-            $image->orientate();
-            $pict = $image->stream('jpg', 100); //元サイズ画像バイナリ生成
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read(storage_path() . '/app/' . $value['store_path']);
+            $pict = $image->toJpeg(100); //元サイズ画像バイナリ生成
             $photo['photo_base64'] = base64_encode($pict);
-            $user_icon = Image::make(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
-            $user_icon->orientate();
-            $user_icon_bin = $user_icon->stream('jpg', 60);
+            $user_icon = $manager->read(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
+            $user_icon_bin = $user_icon->toJpeg(60);
             $photo['user_info']['user_icon_base64'] = base64_encode($user_icon_bin);
             $photo['mime_type'] = mime_content_type(storage_path() . '/app/' . $value['user_info']['user_icon_path']);
         }

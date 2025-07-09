@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,9 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at 作成日時
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
- * @property-read \App\Model\AlbumMaster|null $albumMaster
- * @property-read \App\Model\Event|null $event
- * @property-read \App\Model\Photo|null $photo
+ * @property-read \App\Models\AlbumMaster|null $albumMaster
+ * @property-read \App\Models\Event|null $event
+ * @property-read \App\Models\Photo|null $photo
  * @method static \Illuminate\Database\Eloquent\Builder|AlbumPhoto newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AlbumPhoto newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AlbumPhoto onlyTrashed()

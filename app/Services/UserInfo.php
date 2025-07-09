@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Model\User;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

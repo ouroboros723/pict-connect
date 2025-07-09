@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,9 +25,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Illuminate\Support\Carbon|null $created_at 作成日時
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\Event> $adminEvents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $adminEvents
  * @property-read int|null $admin_events_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Model\EventParticipant> $joinedEvents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EventParticipant> $joinedEvents
  * @property-read int|null $joined_events_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count

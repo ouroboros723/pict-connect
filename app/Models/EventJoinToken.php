@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +19,7 @@ use Str;
  * @property \Illuminate\Support\Carbon|null $created_at 作成日時
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
- * @property-read \App\Model\Event|null $event
+ * @property-read \App\Models\Event|null $event
  * @method static \Illuminate\Database\Eloquent\Builder|EventJoinToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventJoinToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventJoinToken onlyTrashed()

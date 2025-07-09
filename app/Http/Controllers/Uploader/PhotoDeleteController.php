@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Uploader;
 
 use App\Events\PhotoDeleteEvent;
-use App\Model\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\Photo;
+use App\Models\Photo;
 use App\Events\PublicEvent;
 
 class PhotoDeleteController extends Controller

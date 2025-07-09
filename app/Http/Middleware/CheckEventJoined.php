@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Model\EventParticipant;
+use App\Models\EventParticipant;
 use App\Services\UserInfo;
 use Closure;
 use Illuminate\Http\Request;

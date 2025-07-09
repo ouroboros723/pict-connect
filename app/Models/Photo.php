@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at 作成日時
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property string|null $deleted_at 削除日時
- * @property-read \App\Model\User|null $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Photo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Photo newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Photo query()

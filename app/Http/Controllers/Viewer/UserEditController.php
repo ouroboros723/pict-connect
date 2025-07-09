@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Viewer;
 
 use App\Http\Requests\UserUpdateRequest;
-use App\Model\User;
+use App\Models\User;
 use File;
 use HttpException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;

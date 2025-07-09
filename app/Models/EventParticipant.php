@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at 作成日時
  * @property \Illuminate\Support\Carbon|null $updated_at 更新日時
  * @property \Illuminate\Support\Carbon|null $deleted_at 削除日時
- * @property-read \App\Model\Event|null $event
- * @property-read \App\Model\User|null $user
+ * @property-read \App\Models\Event|null $event
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EventParticipant onlyTrashed()

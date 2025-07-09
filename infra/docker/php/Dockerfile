@@ -1,4 +1,4 @@
-FROM php:7-fpm-buster
+FROM php:8.2-fpm-buster
 LABEL maintainer="ucan-lab <yes@u-can.pro>"
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
@@ -12,10 +12,13 @@ ENV TZ=JST \
   COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
-  apt-get -y install task-japanese git libicu-dev libonig-dev libzip-dev gzip unzip locales imagemagick libmagickwand-dev && \
+  apt-get -y install task-japanese git libicu-dev libonig-dev libzip-dev gzip unzip locales imagemagick libmagickwand-dev curl && \
+  curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+  apt-get install -y nodejs && \
+  npm install -g pnpm && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   locale-gen en_US.UTF-8 && \

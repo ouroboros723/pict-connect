@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Viewer;
 
-use App\Model\Event;
-use App\Model\EventJoinToken;
-use App\Model\EventParticipant;
-use App\Model\User;
+use App\Models\Event;
+use App\Models\EventJoinToken;
+use App\Models\EventParticipant;
+use App\Models\User;
 use App\Services\UserInfo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
