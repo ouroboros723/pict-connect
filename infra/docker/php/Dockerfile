@@ -1,4 +1,4 @@
-FROM php:7-fpm-buster
+FROM php:8.2-fpm-bullseye
 LABEL maintainer="ucan-lab <yes@u-can.pro>"
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
@@ -12,7 +12,7 @@ ENV TZ=JST \
   COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
   apt-get -y install task-japanese git libicu-dev libonig-dev libzip-dev gzip unzip locales imagemagick libmagickwand-dev && \
