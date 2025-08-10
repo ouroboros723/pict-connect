@@ -13,8 +13,8 @@
         "ext-json": "*",
         "google/apiclient": "*",
         "guzzlehttp/guzzle": "^7.8",
+        "inertiajs/inertia-laravel": "^2.0",
         "intervention/image": "^2.7",
-
         "laravel/framework": "^11.0",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.9",
