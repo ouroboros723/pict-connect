@@ -46,7 +46,7 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/event/joined', 'Viewer\EventLibController@index');
         Route::middleware(CheckEventJoined::class)->get('/event/joined/{eventId}', 'Viewer\EventLibController@joindEvent');
         Route::get('/event-grid-show', 'Viewer\EventLibController@index');
-        Route::view('/event-slide-show', 'viewer.pages.event-lib-slideshow');
+        Route::middleware(CheckEventJoined::class)->get('/event/joined/{eventId}/slide', 'Viewer\EventLibController@slideShow');
         Route::view('/users', 'viewer.pages.user-list');
         Route::view('/user-lib', 'viewer.pages.user-lib');
         Route::view('/event/create', 'viewer.pages.event-create');

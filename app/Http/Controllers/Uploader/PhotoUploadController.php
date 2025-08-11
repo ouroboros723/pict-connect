@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Uploader;
 
 use App\Http\Requests\PhotoRequest;
+use App\Jobs\CreatePhotoTumbnailJob;
 use App\Model\User;
 use DateTime;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Model\Photo;
-use App\Events\PublicEvent;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Symfony\Component\HttpFoundation\Response;
 
 class PhotoUploadController extends Controller
 {
+    public function __construct() {
+        ini_set('max_file_uploads', 100);
+        ini_set('post_max_size', '3096M');
+        ini_set('memory_limit', '3096M');
+        ini_set('max_execution_time', '-1');
+    }
+
     /**
      * @throws FileNotFoundException
      */
@@ -44,39 +51,16 @@ class PhotoUploadController extends Controller
         Storage::makeDirectory($thumbnail_dir);
 //        dd($request->file('photo_data'));
         //TODO: ここをforeachで回す。
+        $status = true;
         foreach ($request->file('photo_data') as $value) {
             $file_token = Str::random();
 
-            $image = Image::make($value);
-            $image->orientate();
-            $image->save($value);
             $stored_path = Storage::putFileAs($store_dir, $value, $file_token);
-
-            //サムネイル画像バイナリ生成();
-            $maxWidth = 500; // your max width
-            $maxHeight = 500; // your max height
-            $image = Storage::get($stored_path);
-            $image = Image::make($image);
-//            $image->stream('jpg', 5);
-            $image->height() > $image->width() ? $maxWidth = null : $maxHeight = null;
-            $image->resize($maxWidth, $maxHeight, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $image->save(Storage::path($thumbnail_dir . '/' . $file_token));
-
-            Photo::create(
-                [
-                    'user_id' => $user_id,
-                    'event_id' => $event_id,
-                    'store_path' => $stored_path,
-                ]
-            );
+            $status = $status && is_string($stored_path);
+            CreatePhotoTumbnailJob::dispatchIf(is_string($stored_path), $stored_path, $thumbnail_dir, $file_token, $user_id, $event_id, $store_dir);
+//            CreatePhotoTumbnailJob::dispatchNow($stored_path, $thumbnail_dir, $file_token, $user_id, $event_id, $store_dir); // テスト用
         }
 
-
-        event(new PublicEvent('new_photo'));
-        return response()->json(['status' => 'success']);
-
+        return $status ? response()->json(['status' => 'success']) : response()->json(['status' => 'process_failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
 }

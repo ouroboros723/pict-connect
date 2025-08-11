@@ -11,7 +11,8 @@ class PhotoRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'files.*.photo_data' => 'bail|required|mimes:jpeg,bmp,png,gif',
+            'photo_data' => 'array|max:100',
+            'photo_data.*' => 'bail|required|mimes:jpeg,bmp,png,gif',
         ];
     }
 }

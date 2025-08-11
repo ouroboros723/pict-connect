@@ -51,6 +51,7 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
         Route::get('/detail/join-token/{joinToken}', 'EventsManage\EventsManageController@getEventDetailFromToken')->name('detail.join_token');
         Route::middleware(CheckEventJoined::class)->group(function(){
             Route::get('/detail/{eventId}', 'EventsManage\EventsManageController@getEventDetail')->name('detail');
+            Route::get('/zip/{eventId}', 'EventsManage\EventsManageController@getAllEventPhotos')->name('get_all_event_photos');
         });
 
         Route::post('/token/create/{eventId}', 'EventsManage\EventsManageController@createJoinToken')->name('token.create');
