@@ -227,7 +227,7 @@
                     // スライダーの設定
                     $('.slider').slick({
                         lazyLoad: 'ondemand',
-                        pauseOnHover: true,
+                        pauseOnHover: false,
                         pauseOnFocus: false,
                         arrows: false,
                         autoplay: true,

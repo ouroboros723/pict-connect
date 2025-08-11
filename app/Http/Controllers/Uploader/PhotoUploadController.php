@@ -18,8 +18,8 @@ class PhotoUploadController extends Controller
 {
     public function __construct() {
         ini_set('max_file_uploads', 100);
-        ini_set('post_max_size', '2048M');
-        ini_set('memory_limit', '2048M');
+        ini_set('post_max_size', '3096M');
+        ini_set('memory_limit', '3096M');
         ini_set('max_execution_time', '-1');
     }
 
