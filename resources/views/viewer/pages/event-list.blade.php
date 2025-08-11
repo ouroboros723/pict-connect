@@ -182,7 +182,7 @@
                             if (data.body.length === 0) {
                                 return;
                             }
-                            last_event_id = data.body[0]?.event?.eventId ?? '';
+                            last_event_id = data.body[(data.body.length - 1)]?.event?.eventId ?? '';
                             var photo_list_elements = '';
 
                             Object.keys(data.body).forEach(function (key) {
