@@ -16,7 +16,7 @@
         "google/apiclient": "*",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "*",
-        "laravel-frontend-presets/material-dashboard": "*",
+        "laravel-frontend-presets/material-dashboard": "^1.1.2",
         "laravel/framework": "^8.0",
         "laravel/socialite": "*",
         "laravel/tinker": "*",
@@ -35,7 +35,6 @@
         "nunomaduro/collision": "^5.0",
         "oscarafdev/migrations-generator": "^2.0",
         "phpunit/phpunit": "^9.0",
-        "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "*"
     },
     "config": {

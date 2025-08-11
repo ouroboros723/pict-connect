@@ -14,6 +14,9 @@ ENV TZ=JST \
 
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
+RUN sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list
+
 RUN apt-get update && \
   apt-get -y install task-japanese git libicu-dev libonig-dev libzip-dev gzip unzip locales imagemagick libmagickwand-dev && \
   apt-get clean && \
