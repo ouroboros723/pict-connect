@@ -17,7 +17,8 @@ use App\Http\Middleware\CheckEventJoined;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/event/joined'); // リダイレクトパス
+// メニュー画面
+Route::get('/', 'Viewer\MenuController@index')->middleware('auth');
 
 Auth::routes();
 
@@ -30,6 +31,11 @@ Route::get('login/twitter', 'Auth\TwitterController@redirectToProvider'); //標�
 Route::get('auth/twitter/callback', 'Auth\TwitterController@handleProviderCallback');
 // TwitterログアウトURL
 Route::get('auth/twitter/logout', 'Auth\TwitterController@logout');
+
+// ゲストログイン用の写真取得URL
+Route::get('get-photos', 'MediaDistributor\GetPhotosController@index');
+// ゲストログアウトURL
+Route::get('guest-logout', 'MediaDistributor\GetPhotosController@logout');
 
 Route::middleware(['cors'])->group(function () {
 
@@ -52,6 +58,8 @@ Route::middleware(['cors'])->group(function () {
         Route::view('/event/create', 'viewer.pages.event-create');
         Route::get('/user/edit', 'Viewer\UserEditController@show');
         Route::post('/user/edit', 'Viewer\UserEditController@update');
+        Route::get('/user/joined', 'Viewer\UserPhotosController@index');
+        Route::get('/user/joined/{eventId}', 'Viewer\UserPhotosController@showEventPhotos');
     });
 
 });
