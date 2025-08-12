@@ -97,6 +97,30 @@
                                 </div>
                             </div>
 
+                            <!-- 参加トークン作成セクション -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right">{{ __('参加URL') }}</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="joinUrl" type="text" class="form-control" readonly placeholder="参加トークンを作成してください">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="copyJoinUrl()" id="copyBtn" disabled>
+                                                {{ __('コピー') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <small class="form-text text-muted">このURLを共有することで、他のユーザーがイベントに参加できます。</small>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-info btn-sm" onclick="createJoinToken()">
+                                            {{ __('参加トークンを作成') }}
+                                        </button>
+                                        <div id="tokenInfo" class="mt-2" style="display: none;">
+                                            <small class="text-success">参加トークンが作成されました。</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="submit-area" style="display: block; text-align: center">
                                 <button type='button' onclick="eventUpdate()" class="btn btn-primary">
                                     {{ __('更新') }}
@@ -173,6 +197,82 @@
                     }
                 }
             );
+        }
+
+        // 参加トークン作成
+        const createJoinToken = () => {
+            if(!confirm('参加トークンを作成してよろしいですか？')) {
+                return;
+            }
+
+            $.ajax({
+                url: '/api/event/token/create/' + event_id,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                async: true,
+                headers: {
+                    'X-User-Token': user_info.token,
+                    'X-User-Token-Sec': user_info.token_sec,
+                },
+                beforeSend: function () {
+                    $('button[onclick="createJoinToken()"]').prop('disabled', true).text('作成中...');
+                },
+                success: function (data) {
+                    console.log('API Response:', data); // デバッグ用ログ
+
+                    if (data.success && data.body && data.body.eventJoinToken) {
+                        const tokenData = data.body.eventJoinToken;
+                        // 複数の可能性のあるプロパティ名をチェック
+                        const joinToken = tokenData.joinToken || tokenData.join_token || tokenData.token;
+
+                        console.log('Token Data:', tokenData, 'Join Token:', joinToken); // デバッグ用ログ
+
+                        if (joinToken) {
+                            const joinUrl = window.location.origin + '/event/join/' + joinToken;
+
+                            $('#joinUrl').val(joinUrl);
+                            $('#copyBtn').prop('disabled', false);
+                            $('#tokenInfo').show();
+
+                            alert('参加トークンを作成しました。URLをコピーして共有してください。');
+                        } else {
+                            console.error('Join token not found in response:', tokenData);
+                            alert('参加トークンの取得に失敗しました。');
+                        }
+                    } else {
+                        console.error('Invalid API response:', data);
+                        alert('参加トークンの作成に失敗しました。');
+                    }
+                },
+                error: function (xhr) {
+                    var message = '参加トークンの作成に失敗しました。';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    alert(message);
+                    if (xhr.status === 401) {
+                        window.location.href = '/login?pass_code={{Config::get('auth.access_code')}}';
+                    }
+                },
+                complete: function () {
+                    $('button[onclick="createJoinToken()"]').prop('disabled', false).text('参加トークンを作成');
+                }
+            });
+        }
+
+        // 参加URL をクリップボードにコピー
+        const copyJoinUrl = () => {
+            const joinUrlInput = document.getElementById('joinUrl');
+            joinUrlInput.select();
+            joinUrlInput.setSelectionRange(0, 99999); // モバイル対応
+
+            try {
+                document.execCommand('copy');
+                alert('参加URLをクリップボードにコピーしました。');
+            } catch (err) {
+                alert('コピーに失敗しました。手動でURLをコピーしてください。');
+            }
         }
     </script>
 @endsection
