@@ -252,7 +252,18 @@
                                     '                        </div></a>\n';
 
                                 // ログイン中ユーザーがイベント管理者の場合、編集・削除アイコンを表示
-                                if (user_info.user_id == data.body[key].event.eventAdminId) {
+                                // console.log('Debug info:', {
+                                //     user_id: user_info.user_id,
+                                //     user_id_type: typeof user_info.user_id,
+                                //     event_admin_id: data.body[key].event.eventAdminId,
+                                //     event_admin_id_type: typeof data.body[key].event.eventAdminId,
+                                //     is_equal: user_info.user_id == data.body[key].event.eventAdminId,
+                                //     is_strict_equal: user_info.user_id === data.body[key].event.eventAdminId,
+                                //     event_name: data.body[key].event.eventName
+                                // });
+
+                                if (user_info && user_info.user_id && data.body[key].event && data.body[key].event.eventAdminId &&
+                                    parseInt(user_info.user_id) === parseInt(data.body[key].event.eventAdminId)) {
                                     photo_list_elements +=
                                         '                        <a href="/event/edit/' + (data.body[key]?.event?.eventId ?? null) + '"><img class="edit-icon" src="/img/common/edit.svg" alt="編集"></a>\n' +
                                         '                        <a href="#" onclick="deleteEvent(' + (data.body[key]?.event?.eventId ?? null) + ')"><img class="trash-icon" src="/img/common/trash.svg" alt="削除"></a>\n';
