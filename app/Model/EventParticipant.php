@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Scopes\ExcludeDeletedEventScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,6 +55,8 @@ class EventParticipant extends BaseModel
         'user_id' => 'integer',
     ];
 
+
+
     /*** Relations ***/
     /**
      * イベント参加者
@@ -71,6 +74,17 @@ class EventParticipant extends BaseModel
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class, 'event_id', 'event_id');
+    }
+
+    /*** Scopes ***/
+    /**
+     * 削除されていないイベントに関連する参加者のみを取得するスコープ
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithActiveEvents($query)
+    {
+        return $query->whereHas('event');
     }
 
     /*** Methods ***/

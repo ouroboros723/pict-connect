@@ -48,6 +48,8 @@ Route::middleware(AuthPictConnectAccount::class)->group(function () {
         Route::get('/list/joined', 'EventsManage\EventsManageController@joinedList')->name('list.joined');
         Route::get('/list/admin', 'EventsManage\EventsManageController@adminList')->name('list.admin');
         Route::post('/create', 'EventsManage\EventsManageController@create')->name('create');
+        Route::put('/update/{eventId}', 'EventsManage\EventsManageController@updateEvent')->name('update');
+        Route::delete('/delete/{eventId}', 'EventsManage\EventsManageController@deleteEvent')->name('delete');
         Route::get('/detail/join-token/{joinToken}', 'EventsManage\EventsManageController@getEventDetailFromToken')->name('detail.join_token');
         Route::middleware(CheckEventJoined::class)->group(function(){
             Route::get('/detail/{eventId}', 'EventsManage\EventsManageController@getEventDetail')->name('detail');

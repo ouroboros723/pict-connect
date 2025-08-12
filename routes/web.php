@@ -50,6 +50,31 @@ Route::middleware(['cors'])->group(function () {
         Route::view('/users', 'viewer.pages.user-list');
         Route::view('/user-lib', 'viewer.pages.user-lib');
         Route::view('/event/create', 'viewer.pages.event-create');
+        Route::get('/event/edit/{eventId}', 'Viewer\EventEditController@show');
+
+        // デバッグ用ルート（一時的）
+//        Route::get('/debug/event/{eventId}', function($eventId) {
+//            $event = \App\Model\Event::withTrashed()->find($eventId);
+//            if (!$event) {
+//                return response()->json(['error' => 'Event not found', 'eventId' => $eventId]);
+//            }
+//            return response()->json([
+//                'event' => $event,
+//                'is_deleted' => $event->trashed(),
+//                'deleted_at' => $event->deleted_at
+//            ]);
+//        });
+
+        // ミドルウェアテスト用ルート（一時的）
+//        Route::middleware(CheckEventJoined::class)->get('/debug/middleware-test', function(\Illuminate\Http\Request $request) {
+//            return response()->json([
+//                'message' => 'Middleware passed',
+//                'event_id' => $request->input('event_id'),
+//                'eventId' => $request->input('eventId'),
+//                'route_eventId' => $request->route('eventId')
+//            ]);
+//        });
+
         Route::get('/user/edit', 'Viewer\UserEditController@show');
         Route::post('/user/edit', 'Viewer\UserEditController@update');
     });
