@@ -62,6 +62,17 @@ class EventLibController extends Controller
 
     public function joindEvent(Request $request, $eventId)
     {
+        // イベントが存在するかチェック（論理削除されたものも含む）
+        $event = Event::withTrashed()->find($eventId);
+        if (!$event) {
+            abort(404, 'Event not found');
+        }
+
+        // イベントが論理削除されている場合は404を返す
+        if ($event->trashed()) {
+            abort(404, 'Event has been deleted');
+        }
+
         $user_info = Auth::user();
         if(!empty(Storage::exists($user_info['user_icon_path']))){
             $user_icon = Storage::get($user_info['user_icon_path']);
@@ -77,6 +88,17 @@ class EventLibController extends Controller
 
     public function slideShow(Request $request, $eventId)
     {
+        // イベントが存在するかチェック（論理削除されたものも含む）
+        $event = Event::withTrashed()->find($eventId);
+        if (!$event) {
+            abort(404, 'Event not found');
+        }
+
+        // イベントが論理削除されている場合は404を返す
+        if ($event->trashed()) {
+            abort(404, 'Event has been deleted');
+        }
+
         $user_info = Auth::user();
         if(!empty(Storage::exists($user_info['user_icon_path']))){
             $user_icon = Storage::get($user_info['user_icon_path']);
