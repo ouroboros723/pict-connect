@@ -32,6 +32,12 @@ RUN docker-php-ext-enable imagick
 RUN composer config -g process-timeout 3600 && \
     composer config -g repos.packagist composer https://packagist.org
 
+RUN apt-get update && \
+    apt-get install -y nodejs npm && \
+    npm -g install n && \
+    n 18 && \
+    corepack enable
+
 COPY ./infra/docker/php/php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 COPY ./infra/docker/php/php.ini /usr/local/etc/php/php.ini
 
