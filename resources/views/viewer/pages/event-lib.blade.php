@@ -111,6 +111,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button id="all-download-button" type="button" class="btn btn-default" style="position: absolute;left: 16px;padding-left: 12px;background: #3490dc;color: white;">全写真ダウンロード</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
                 </div>
             </div>
@@ -181,6 +182,7 @@
         });
         window.addEventListener('focus', function () {
             getPhotos();
+            getEventDetail();
             setTimeout(function () {
                 window.Echo.channel('event-lib')
                     .listen('PublicEvent', (e) => {
@@ -191,13 +193,16 @@
                             // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
+                        getEventDetail();
                     }).listen('PhotoDeleteEvent', (e) => {
                         alert();
                         if (e.message === 'photo_deleted') {
                             // console.log(e.delete_target_id);
                             photoDeleteEvent(e.delete_target_id);
                         }
+                        getEventDetail();
                     });
+                // todo: ユーザー参加のイベントを追加
             }, 500);
         });
 
@@ -218,16 +223,24 @@
                         // console.log(e.delete_target_id);
                         photoDeleteEvent(e.delete_target_id);
                     }
+                    getEventDetail();
                 }).listen('PhotoDeleteEvent', (e) => {
                     alert();
                     if (e.message === 'photo_deleted') {
                         // console.log(e.delete_target_id)
                         photoDeleteEvent(e.delete_target_id);
                     }
+                    getEventDetail();
                 });
+                // todo: ユーザー参加のイベントを追加
             iziToast.settings({
                 transitionIn: 'fadeInDown',
                 transitionOut: 'fadeOutUp',
+            });
+
+            // 全写真ダウンロードボタンのリンク先を追加
+            $('#all-download-button').on('click', () => {
+                window.location.href = '/api/event/zip/{{$event_id}}';
             });
             // $('#main-container').on('scroll', function () {
             //     var scrollPosition = document.getElementById("main-container").scrollTop;
@@ -551,6 +564,8 @@
                 $('#eventPeriodEnd').html(data.body?.eventPeriodEnd);
                 $('#participantsCount').html(data.body?.participantsCount);
                 $('#postedPhotosCount').html(data.body?.postedPhotosCount);
+
+                $('#app-title').html(data.body?.eventName); // タイトルバーにイベント名を表示
             }).fail(() => {
                 alert('イベント情報の取得に失敗しました')
             });
@@ -568,6 +583,19 @@
                 // console.log(photo_data);
             } else {
                 var photo_data = "";
+            }
+
+            if(photo_data.length > 100) {
+                iziToast.error(
+                    {
+                        id: 'max-uploads-count-over',
+                        message: '一度にアップロードできるのは100件までです。',
+                        position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',
+                        close: 'false',
+                    }
+                );
+
+                return false;
             }
 
             iziToast.info(
@@ -629,7 +657,7 @@
                         .done(
                             (data) => {
                                 // console.log(data);
-                                iziToast.success({message: '写真のアップロードに成功しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
+                                iziToast.success({message: "写真のアップロードに成功しました。\n反映されるまで暫くお待ちください。", position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});
                                 getPhotos();
                             }
                         )

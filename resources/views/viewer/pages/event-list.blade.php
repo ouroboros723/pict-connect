@@ -68,6 +68,58 @@
     <script src="{{asset('js/lity.js')}}"></script>
     <link rel="stylesheet" href="{{asset('css/lity.css')}}" crossorigin="anonymous">
 
+    <style>
+        /* イベント一覧用のアイコンスタイル */
+        @media screen and (max-width: 699px) {
+            .photo-cell a img.edit-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: 5px;
+            }
+            .photo-cell a img.trash-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: calc(100% - 30px);
+            }
+        }
+        @media screen and (min-width: 700px) and (max-width: 999px) {
+            .photo-cell a img.edit-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: 5px;
+            }
+            .photo-cell a img.trash-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: calc(100% - 30px);
+            }
+        }
+        @media screen and (min-width: 1000px) {
+            .photo-cell a img.edit-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: 5px;
+            }
+            .photo-cell a img.trash-icon {
+                width: 25px;
+                height: 25px !important;
+                position: absolute;
+                top: 7px;
+                left: calc(100% - 30px);
+            }
+        }
+    </style>
+
     <button id="InstallBtn" class="installbotton" style="display:none;">
         アプリをインストールする
     </button>
@@ -182,7 +234,7 @@
                             if (data.body.length === 0) {
                                 return;
                             }
-                            last_event_id = data.body[0]?.event?.eventId ?? '';
+                            last_event_id = data.body[(data.body.length - 1)]?.event?.eventId ?? '';
                             var photo_list_elements = '';
 
                             Object.keys(data.body).forEach(function (key) {
@@ -198,12 +250,14 @@
                                     '                        <div class="card-body">\n' +
                                     '                            <span class="event-text">' + data.body[key].event.eventName + '</span>\n' +
                                     '                        </div></a>\n';
-                                // photo_list_elements +=
-                                    // '<a href="/api/media/photo/'+ (data.body[key]?.event?.eventId ?? null) +'/download" ><img class="download-icon" src="/img/common/download.svg"></a>\n';
-                                // if (user_info.user_id == data.body[key].user_info.user_id) {
-                                //     photo_list_elements +=
-                                //         '                    <a href="#" onclick="deletePhoto(' + data.body[key]?.event?.event_id ?? null + ')"><img class="trash-icon" src="/img/common/trash.svg"></a>\n';
-                                // }
+
+                                // ログイン中ユーザーがイベント管理者の場合、編集・削除アイコンを表示
+                                if (user_info.user_id == data.body[key].event.eventAdminId) {
+                                    photo_list_elements +=
+                                        '                        <a href="/event/edit/' + (data.body[key]?.event?.eventId ?? null) + '"><img class="edit-icon" src="/img/common/edit.svg" alt="編集"></a>\n' +
+                                        '                        <a href="#" onclick="deleteEvent(' + (data.body[key]?.event?.eventId ?? null) + ')"><img class="trash-icon" src="/img/common/trash.svg" alt="削除"></a>\n';
+                                }
+
                                 photo_list_elements +=
                                     '                </div>';
 
@@ -551,6 +605,67 @@
 
         function photoDeleteEvent(delete_target_id){
             $('#photo_'+delete_target_id).remove();
+        }
+
+        // イベント削除関数
+        function deleteEvent(eventId) {
+            // 削除確認のための文字列入力ダイアログを表示
+            var confirmText = prompt('イベントを削除するには、「delete」と入力してください:');
+            if (confirmText === null || confirmText === '') {
+                return; // キャンセルまたは空の場合は処理を中止
+            }
+
+            if (confirmText !== 'delete') {
+                alert('「delete」と正確に入力してください。');
+                return;
+            }
+
+            // 削除確認
+            if (!confirm('本当にこのイベントを削除しますか？この操作は取り消せません。')) {
+                return;
+            }
+
+            // Ajax リクエストでイベント削除API を呼び出し
+            $.ajax({
+                url: '/api/event/delete/' + eventId,
+                type: 'DELETE',
+                data: {
+                    confirmText: confirmText
+                },
+                headers: {
+                    'X-User-Token': user_info.token,
+                    'X-User-Token-Sec': user_info.token_sec,
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {
+                    // ローディング表示
+                },
+                success: function (data) {
+                    iziToast.success({
+                        message: 'イベントを削除しました。',
+                        position: 'topCenter',
+                        transitionInMobile: 'fadeInDown',
+                        transitionOutMobile: 'fadeOutUp'
+                    });
+                    // イベントタイルを削除
+                    $('#photo_' + eventId).remove();
+                },
+                error: function (xhr) {
+                    var message = 'イベントの削除に失敗しました。';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    iziToast.error({
+                        message: message,
+                        position: 'topCenter',
+                        transitionInMobile: 'fadeInDown',
+                        transitionOutMobile: 'fadeOutUp'
+                    });
+                    if (xhr.status === 401) {
+                        window.location.href = '/login?pass_code={{\Config::get('auth.access_code')}}';
+                    }
+                }
+            });
         }
     </script>
 </body>

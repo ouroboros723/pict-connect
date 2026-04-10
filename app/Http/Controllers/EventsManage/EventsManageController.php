@@ -5,18 +5,26 @@ namespace App\Http\Controllers\EventsManage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventAdminListRequest;
 use App\Http\Requests\EventCreateRequest;
+use App\Http\Requests\EventDeleteRequest;
 use App\Http\Requests\EventJoinedListRequest;
 use App\Http\Requests\EventJoinRequest;
+use App\Http\Requests\EventUpdateRequest;
 use App\Http\Requests\EventJoinTokenCreateRequest;
 use App\Model\Event;
 use App\Model\EventJoinToken;
 use App\Model\EventParticipant;
+use App\Model\Photo;
+use App\Services\MimesToExt;
 use App\Services\UserInfo;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Storage;
+use STS\ZipStream\ZipStream;
 use Symfony\Component\HttpFoundation\Response;
+use Zip;
 
 class EventsManageController extends Controller
 {
@@ -34,12 +42,14 @@ class EventsManageController extends Controller
 
         if (empty($lastEventId)) { // 初回読み込み
             $events = EventParticipant::whereUserId($userId)
+                ->withActiveEvents() // 削除されていないイベントのみ
                 ->orderBy('event_participants_id', 'desc')
                 ->with(['event', 'event.eventAdmin', 'user'])
                 ->limit(20)
                 ->get();
         } else { // 追加読み込み
             $events = EventParticipant::whereUserId($userId)
+                ->withActiveEvents() // 削除されていないイベントのみ
                 ->where('event_id', '<', $lastEventId)
                 ->orderBy('event_id', 'desc')
                 ->with(['event', 'event.eventAdmin', 'user'])
@@ -87,6 +97,7 @@ class EventsManageController extends Controller
      */
     public function getEventDetail($eventId): JsonResponse
     {
+        /** @var Event $event */
         $event = Event::with(['participants', 'photos'])->findOrFail($eventId);
         $eventArray = array_key_camel($event->toArray());
         $eventArray['eventPeriodStart'] = $event->event_period_start->format('Y年m月d日 H:i:s');
@@ -98,7 +109,7 @@ class EventsManageController extends Controller
 
     /**
      * イベント詳細(トークンから)
-     * @param $joinToken 参加トークン
+     * @param $joinToken string 参加トークン
      * @return JsonResponse
      */
     public function getEventDetailFromToken($joinToken): JsonResponse
@@ -180,5 +191,102 @@ class EventsManageController extends Controller
             $this->throwErrorResponse('event_join_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $this->throwErrorResponse('event_join_token_not_found', Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * イベントアルバム内の全写真をダウンロード
+     * @param $eventId
+     * @return ZipStream
+     */
+    public function getAllEventPhotos($eventId): ZipStream
+    {
+        // 対象File取得
+        $Event = Event::findOrFail($eventId);
+
+        // todo: 写真-イベントidのつながりを変更した際に改修が必要
+        /** @var Photo[] $photos */
+        $photos = Photo::with(['user'])->where('event_id', $eventId)
+            ->where('deleted_at', null)
+            ->orderBy('photo_id', 'desc')
+            ->get();
+
+        // zipファイルを指定ディレクトリに作成
+        $ZipFile = Zip::create("$Event->event_name.zip");
+
+        foreach($photos as $photo) {
+            $ZipFile->add(Storage::path($photo->store_path), $photo->user->screen_name.'/'.basename($photo->store_path).'.'.MimesToExt::getImageExtFromMimeType(Storage::mimeType($photo->store_path)));
+        }
+
+        return $ZipFile;
+    }
+
+    /**
+     * イベント削除（論理削除）
+     * @param EventDeleteRequest $request
+     * @param int $eventId
+     * @return JsonResponse
+     */
+    public function deleteEvent(EventDeleteRequest $request, int $eventId): JsonResponse
+    {
+        $userInfo = UserInfo::getOrFail($request);
+
+        // イベントを取得
+        $event = Event::findOrFail($eventId);
+
+        // イベント管理者かどうかチェック
+        if ($event->event_admin_id !== $userInfo->user_id) {
+            $this->throwErrorResponse('unauthorized', Response::HTTP_FORBIDDEN);
+        }
+
+        // 削除確認テキストのチェック（バリデーションで既にチェック済みだが念のため）
+        if ($request->confirmText !== 'delete') {
+            $this->throwErrorResponse('invalid_confirm_text', Response::HTTP_BAD_REQUEST);
+        }
+
+        // 論理削除実行
+        $event->delete();
+
+        return $this->sendResponse([], 'イベントを削除しました');
+    }
+
+    /**
+     * イベント更新
+     * @param EventUpdateRequest $request
+     * @param int $eventId
+     * @return JsonResponse
+     */
+    public function updateEvent(EventUpdateRequest $request, int $eventId): JsonResponse
+    {
+        return DB::transaction(function () use ($request, $eventId) {
+            $userInfo = UserInfo::getOrFail($request);
+
+            // イベントを取得
+            $event = Event::findOrFail($eventId);
+
+            // イベント管理者かどうかチェック
+            if ($event->event_admin_id !== $userInfo->user_id) {
+                $this->throwErrorResponse('unauthorized', Response::HTTP_FORBIDDEN);
+            }
+
+            // イベント情報を更新
+            $event->event_name = $request->eventName;
+            $event->event_detail = $request->eventDetail;
+            $event->description = $request->description;
+            $event->event_period_start = (new Carbon($request->eventPeriodStart))->format('Y-m-d H:i:s');
+            $event->event_period_end = (new Carbon($request->eventPeriodEnd))->format('Y-m-d H:i:s');
+
+            // アイコンが更新された場合
+            if ($request->hasFile('icon')) {
+                $fileName = Str::random(10);
+                $eventIconPath = $request->icon->storeAs('eventicons', $fileName);
+                $event->icon_path = $eventIconPath;
+            }
+
+            if ($event->save()) {
+                return $this->sendResponse(array_key_camel($event->toArray()), 'イベントを更新しました');
+            }
+
+            $this->throwErrorResponse('event_update_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
+        });
     }
 }
