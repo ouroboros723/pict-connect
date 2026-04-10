@@ -31,6 +31,13 @@ Route::get('auth/twitter/callback', 'Auth\TwitterController@handleProviderCallba
 // TwitterログアウトURL
 Route::get('auth/twitter/logout', 'Auth\TwitterController@logout');
 
+// DiscordログインURL
+Route::get('login/discord', 'Auth\DiscordController@redirectToProvider');
+// DiscordコールバックURL
+Route::get('auth/discord/callback', 'Auth\DiscordController@handleProviderCallback');
+// DiscordログアウトURL
+Route::get('auth/discord/logout', 'Auth\DiscordController@logout');
+
 Route::middleware(['cors'])->group(function () {
 
     // 紹介ページ

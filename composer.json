@@ -23,6 +23,7 @@
         "laravel/ui": "^3.0",
         "morrislaptop/laravel-queue-clear": "*",
         "predis/predis": "*",
+        "socialiteproviders/discord": "^4.2",
         "stechstudio/laravel-zipstream": "^4.13"
     },
     "require-dev": {

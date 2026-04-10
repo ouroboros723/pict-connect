@@ -60,12 +60,14 @@ class GuestLogin extends BaseModel
     public const SNS_TYPE_TWITTER = 1;
     public const SNS_TYPE_MASTODON = 2;
     public const SNS_TYPE_MISSKEY = 3;
+    public const SNS_TYPE_DISCORD = 4;
 
     public const SNS_TYPE = [
         self::SNS_TYPE_PICTCONNECT => 'pict-connect',
         self::SNS_TYPE_TWITTER => 'Twitter(X)',
         self::SNS_TYPE_MASTODON => 'Mastodon',
         self::SNS_TYPE_MISSKEY => 'Misskey',
+        self::SNS_TYPE_DISCORD => 'Discord',
     ];
 
     /**

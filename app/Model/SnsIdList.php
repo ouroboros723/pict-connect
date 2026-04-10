@@ -41,17 +41,30 @@ class SnsIdList extends BaseModel
     public const SNS_TYPE_TWITTER = 1;
     public const SNS_TYPE_MASTODON = 2;
     public const SNS_TYPE_MISSKEY = 3;
+    public const SNS_TYPE_DISCORD = 4;
 
     public const SNS_TYPE = [
         self::SNS_TYPE_PICTCONNECT => 'pict-connect',
         self::SNS_TYPE_TWITTER => 'Twitter(X)',
         self::SNS_TYPE_MASTODON => 'Mastodon',
         self::SNS_TYPE_MISSKEY => 'Misskey',
+        self::SNS_TYPE_DISCORD => 'Discord',
     ];
 
     public static function getOrigID($twitter_id)
     {
         $orig_id_temp = self::query()->where('sns_id', $twitter_id)->where('sns_type', self::SNS_TYPE_TWITTER)->first('pc_user_id');
+        if ($orig_id_temp) {
+            $orig_id = $orig_id_temp['pc_user_id'];
+        } else {
+            $orig_id = null;
+        }
+        return $orig_id;
+    }
+
+    public static function getOrigIDByDiscord($discord_id)
+    {
+        $orig_id_temp = self::query()->where('sns_id', $discord_id)->where('sns_type', self::SNS_TYPE_DISCORD)->first('pc_user_id');
         if ($orig_id_temp) {
             $orig_id = $orig_id_temp['pc_user_id'];
         } else {
