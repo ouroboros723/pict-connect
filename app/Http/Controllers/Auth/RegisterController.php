@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\RegisterRequest;
 use App\Model\SnsIdList;
 use App\Model\User;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 /**
@@ -61,24 +61,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'screen_name' => ['required', 'string', 'max:255', 'unique:users,screen_name'],
-            'view_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'min:8', 'email:rfc', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'user_icon' => ['nullable', 'file'], //mimetypeが正しく判定できないのでいったん解除
-        ]);
-    }
-
-
-    /**
      * @param array $data
      * @return Model|User
      */
@@ -101,14 +83,12 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param Request $request
+     * @param RegisterRequest $request
      * @return Application|RedirectResponse|Response|Redirector
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         $params = $request->all();
-
-        $this->validator($params)->validate();
 
         $store_dir = 'user-icon/'.$request->screen_name;
         if(!is_null($request->file('user_icon'))) {

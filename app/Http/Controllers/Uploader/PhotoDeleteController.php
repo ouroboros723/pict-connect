@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Uploader;
 
 use App\Events\PhotoDeleteEvent;
+use App\Http\Requests\PhotoDeleteRequest;
 use App\Model\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Photo;
 use App\Events\PublicEvent;
 
 class PhotoDeleteController extends Controller
 {
-    public function photoDelete(Request $request){
+    public function photoDelete(PhotoDeleteRequest $request){
 
         // Auth Params
         $user_token = $request->header('X-User-Token');
@@ -28,10 +28,6 @@ class PhotoDeleteController extends Controller
         {
             return response()->json(['status' => 'unauthorized'], 401);
         }
-
-        $request->validate([
-            'delete_target_id' => 'string|required',
-        ]);
 
         $delete_target_photo_user_id = Photo::where('photo_id', $request['delete_target_id'])->first()['user_id'];
 
