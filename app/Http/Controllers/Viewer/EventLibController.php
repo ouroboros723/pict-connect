@@ -43,9 +43,13 @@ class EventLibController extends Controller
     public function joinEvent(Request $request, $joinToken)
     {
         $userInfo = UserInfo::getOrFail($request);
-        $eventId = EventJoinToken::with('event')->whereJoinToken($joinToken)->firstOrFail()->event_id;
+        $eventJoinToken = EventJoinToken::with('event')->whereJoinToken($joinToken)->firstOrFail();
+        $eventId = $eventJoinToken->event_id;
         if(EventParticipant::whereUserId($userInfo->user_id)->whereEventId($eventId)->exists()) {
             return redirect("/event/joined/$eventId");
+        }
+        if ($reason = $eventJoinToken->unusableReason()) {
+            abort(403, $reason);
         }
 
         if(!empty(Storage::exists($userInfo['user_icon_path']))){

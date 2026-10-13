@@ -109,7 +109,18 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <small class="form-text text-muted">このURLを共有することで、他のユーザーがイベントに参加できます。</small>
+                                    <small class="form-text text-muted">このURLかQRを会場で見せると、来場した人が参加できます。</small>
+                                    <div class="form-group mt-2 mb-0">
+                                        <label for="limitTimes">{{ __('使用回数') }}</label>
+                                        <input id="limitTimes" type="number" min="1" class="form-control" placeholder="空欄なら無制限">
+                                        <small class="form-text text-muted">1 にすると、このコードは1人だけが使えます。</small>
+                                    </div>
+                                    <div class="form-group mt-2 mb-0">
+                                        <label for="expiredAt">{{ __('有効期限') }}</label>
+                                        <input id="expiredAt" type="datetime-local" class="form-control">
+                                        <small class="form-text text-muted">空欄なら期限なしです。</small>
+                                    </div>
+                                    <div id="joinQr" class="mt-3"></div>
                                     <div class="mt-2">
                                         <button type="button" class="btn btn-info btn-sm" onclick="createJoinToken()">
                                             {{ __('参加トークンを作成') }}
@@ -137,6 +148,7 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script>
         var user_info = @json($user_info) ?? null;
@@ -205,9 +217,20 @@
                 return;
             }
 
+            const fd = new FormData();
+            const limitTimes = $('#limitTimes').val();
+            const expiredAt = $('#expiredAt').val();
+            if (limitTimes) {
+                fd.append('limitTimes', limitTimes);
+            }
+            if (expiredAt) {
+                fd.append('expiredAt', expiredAt);
+            }
+
             $.ajax({
                 url: '/api/event/token/create/' + event_id,
                 type: 'POST',
+                data: fd,
                 processData: false,
                 contentType: false,
                 async: true,
@@ -234,6 +257,9 @@
                             $('#joinUrl').val(joinUrl);
                             $('#copyBtn').prop('disabled', false);
                             $('#tokenInfo').show();
+                            const qr = document.getElementById('joinQr');
+                            qr.innerHTML = '';
+                            new QRCode(qr, {text: joinUrl, width: 220, height: 220});
 
                             alert('参加トークンを作成しました。URLをコピーして共有してください。');
                         } else {

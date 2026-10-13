@@ -165,9 +165,9 @@
                 )
                 // Ajaxリクエストが失敗した時発動
                 .fail(
-                    (data) => {
-                        console.log(data);
-                        alert("エラーが発生しました。しばらくしてから再度お試しください。\n"+data.message);
+                    (xhr) => {
+                        const message = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '';
+                        alert("エラーが発生しました。しばらくしてから再度お試しください。\n" + message);
                         {{--// console.log(data);--}}
                         {{--iziToast.error({message: '写真のアップロードに失敗しました。', position: 'topCenter', transitionInMobile: 'fadeInDown', transitionOutMobile: 'fadeOutUp',});--}}
                         {{--if (data.status == "unauthorized") {--}}

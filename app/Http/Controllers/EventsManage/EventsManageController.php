@@ -166,7 +166,9 @@ class EventsManageController extends Controller
     public function createJoinToken(EventJoinTokenCreateRequest $request, $eventId): JsonResponse
     {
         $eventJoinToken = new EventJoinToken();
-        $eventJoinToken->makeEventJoinToken($eventId, $request->expiredAt ?? null, $request->limitTimes ?? null);
+        $expiredAt = $request->filled('expiredAt') ? Carbon::parse($request->expiredAt) : null;
+        $limitTimes = $request->filled('limitTimes') ? (int) $request->limitTimes : null;
+        $eventJoinToken->makeEventJoinToken((int) $eventId, $expiredAt, $limitTimes);
         if($eventJoinToken->save()) {
             return $this->sendResponse(['eventJoinToken' => $eventJoinToken], 'ok');
         }
@@ -182,15 +184,26 @@ class EventsManageController extends Controller
     public function joinEvent(EventJoinRequest $request, $joinToken): JsonResponse
     {
         $userInfo = UserInfo::getOrFail($request);
-        $eventJoinToken = EventJoinToken::where('join_token', $joinToken)->with('event')->first();
-        if($eventJoinToken instanceof EventJoinToken) {
-            $eventParticipant = new EventParticipant();
-            if($eventParticipant->joinEvent($eventJoinToken->event->event_id, $userInfo->user_id)) {
-                return $this->sendResponse(['eventId' => $eventJoinToken->event->event_id], 'joined');
+
+        return DB::transaction(function () use ($userInfo, $joinToken) {
+            $eventJoinToken = EventJoinToken::where('join_token', $joinToken)->lockForUpdate()->first();
+            if (!$eventJoinToken instanceof EventJoinToken || !$eventJoinToken->event) {
+                $this->throwErrorResponse('event_join_token_not_found', Response::HTTP_NOT_FOUND);
             }
-            $this->throwErrorResponse('event_join_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-        $this->throwErrorResponse('event_join_token_not_found', Response::HTTP_NOT_FOUND);
+            $eventId = $eventJoinToken->event->event_id;
+            if (EventParticipant::whereUserId($userInfo->user_id)->whereEventId($eventId)->exists()) {
+                $this->throwErrorResponse('すでにこのイベントに参加しています', Response::HTTP_CONFLICT);
+            }
+            if ($reason = $eventJoinToken->unusableReason()) {
+                $this->throwErrorResponse($reason, Response::HTTP_FORBIDDEN);
+            }
+            $eventParticipant = new EventParticipant();
+            if (!$eventParticipant->joinEvent($eventId, $userInfo->user_id)) {
+                $this->throwErrorResponse('event_join_failed', Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+            $eventJoinToken->recordUse();
+            return $this->sendResponse(['eventId' => $eventId], 'joined');
+        });
     }
 
     /**

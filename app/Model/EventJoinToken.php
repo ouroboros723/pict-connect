@@ -93,6 +93,27 @@ class EventJoinToken extends BaseModel
         $this->event_id = $eventId;
         $this->expired_at = $expiredAt ? $expiredAt->format('Y-m-d H:i:s') : null;
         $this->limit_times = $limitTimes;
+        $this->use_times = 0;
         return $this;
+    }
+
+    /**
+     * 参加に使えない理由。使えるときは null。
+     */
+    public function unusableReason(): ?string
+    {
+        if ($this->expired_at !== null && $this->expired_at->isPast()) {
+            return '参加コードの有効期限が切れています';
+        }
+        if ($this->limit_times !== null && (int) $this->use_times >= (int) $this->limit_times) {
+            return '参加コードの使用回数を超えています';
+        }
+        return null;
+    }
+
+    public function recordUse(): void
+    {
+        $this->use_times = (int) $this->use_times + 1;
+        $this->save();
     }
 }
