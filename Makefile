@@ -46,7 +46,7 @@ reinit:
 	#docker-compose exec app php artisan scribe:generate
 init-staging:
 	export NODE_OPTIONS="--max-old-space-size=1024"
-	php ./composer.phar install
+	composer install
 	-@chmod 777 -R ./
 	php artisan key:generate
 	php artisan storage:link
@@ -119,7 +119,7 @@ migrate:
 	#docker-compose exec app php artisan scribe:generate
 migrate-staging:
 	export NODE_OPTIONS="--max-old-space-size=1024"
-	php ./composer.phar install
+	composer install
 	php artisan migrate
 	yarn install
 	yarn run dev
