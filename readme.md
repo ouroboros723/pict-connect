@@ -6,6 +6,7 @@
 - GNU Make
 - Docker
 - docker-compose
+- PHP 8.4 と Composer 2（Docker を使用しない場合）
 - laravel-echo-server
 
 # セットアップ方法

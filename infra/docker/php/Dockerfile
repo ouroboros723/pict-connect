@@ -1,9 +1,10 @@
-FROM php:7-fpm-buster
+FROM php:8.4-fpm-bookworm
 LABEL maintainer="ucan-lab <yes@u-can.pro>"
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
 # timezone environment
-ENV TZ=JST \
+ARG TZ=Asia/Tokyo
+ENV TZ=${TZ} \
   # locale
   LANG=ja_JP.UTF-8 \
   LANGUAGE=ja_JP:ja \
@@ -12,10 +13,7 @@ ENV TZ=JST \
   COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
-
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
-RUN sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
   apt-get -y install task-japanese git libicu-dev libonig-dev libzip-dev gzip unzip locales imagemagick libmagickwand-dev && \
