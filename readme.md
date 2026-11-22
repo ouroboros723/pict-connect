@@ -15,6 +15,17 @@
 - `laravel-echo-server.json.sample` を `laravel-echo-server.json` という名前でコピーします。
 - `make init` コマンドを実行します。
 - http://localhost へアクセスします。
+
+## nginx の更新
+
+nginx の更新後、設定の再読み込みだけではなく、イメージを再ビルドして web コンテナを再作成します。
+
+```sh
+docker compose build --pull web
+docker compose up -d --no-deps web
+docker compose exec web nginx -v
+```
+
 # makeコマンド
 - `make init` docker-compose経由でセットアップを開始します。
 - `make reinit` .envの生成を除くセットアップ手順をdocker-compose経由で再実行します。
