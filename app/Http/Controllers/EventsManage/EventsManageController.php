@@ -22,7 +22,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Storage;
-use STS\ZipStream\ZipStream;
+use STS\ZipStream\Builder;
 use Symfony\Component\HttpFoundation\Response;
 use Zip;
 
@@ -196,9 +196,9 @@ class EventsManageController extends Controller
     /**
      * イベントアルバム内の全写真をダウンロード
      * @param $eventId
-     * @return ZipStream
+     * @return Builder
      */
-    public function getAllEventPhotos($eventId): ZipStream
+    public function getAllEventPhotos($eventId): Builder
     {
         // 対象File取得
         $Event = Event::findOrFail($eventId);
@@ -214,7 +214,7 @@ class EventsManageController extends Controller
         $ZipFile = Zip::create("$Event->event_name.zip");
 
         foreach($photos as $photo) {
-            $ZipFile->add(Storage::path($photo->store_path), $photo->user->screen_name.'/'.basename($photo->store_path).'.'.MimesToExt::getImageExtFromMimeType(Storage::mimeType($photo->store_path)));
+            $ZipFile->add(Storage::path($photo->store_path), $photo->user->screen_name.'/'.basename($photo->store_path).'.'.(new MimesToExt())->getImageExtFromMimeType(Storage::mimeType($photo->store_path)));
         }
 
         return $ZipFile;
